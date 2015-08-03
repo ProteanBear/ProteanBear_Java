@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ProteanBear-应用系统-图集文章编辑</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../include/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/proteanbear/css/proteanbear-0.1.css" rel="stylesheet" media="screen">
+        <link href="include/css/index.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <div id="mainContent" class="main"></div>
+
+        <!--模板：图集内容配置内容-->
+        <script id="template_main" type="text/html">
+            <!--[if(data){]-->
+            <!--内容顶部标题栏-->
+            <nav class="navbar navbar-clear" role="navigation">
+                <div class="container-fluid">
+                    <!--内容顶部导航栏：标题-->
+                    <div class="navbar-header">
+                        <span class="navbar-brand">
+                            <ul class="breadcrumb">
+                                <li>
+                                    <span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;
+                                    <a href="#" load="sub_articles.html?sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->"><!--[=local.name_article]--></a>
+                                </li>
+                                <li>
+                                    <!--[if(mode==="create"){]-->
+                                    <!--[=local.action["insert"]+local.articleType["0"]+"（"+local.name_belong+local.name_section+"："+sectionName+"）"]-->
+                                    <!--[}else{]-->
+                                    <!--[=local.action["edit"]+local.name_article+"（"+data.articleTitle+"）"]-->
+                                    <!--[}]-->
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </nav>
+            <!--编辑内容-->
+            <div id="article" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <!--左侧区域：编辑内容-->
+                    <div class="col-sm-8">
+                        <!--标题-->
+                        <div class="form-group">
+                            <input id="sectionCode" name="sectionCode" type="hidden" value="<!--[=data.sectionCode]-->" />
+                            <input id="articleTitle" name="articleTitle" type="input" class="form-control" value="<!--[=data.articleTitle]-->" placeholder="<!--[=local.placeholder['articleTitle']]-->">
+                        </div>
+                        <!--静态相关-->
+                        <div class="form-group nopadding">
+                            <div class="col-sm-7">
+                                <span class="text"><!--[=local.property["articleHtml"]]-->—
+                                    <a href="#"><!--[=local.placeholder["nullHttp"]]--></a>
+                                </span>
+                            </div>
+                            <div class="col-sm-5 pagination-right">
+                                <button type="button" class="btn btn-info navbar-btn btn-sm">
+                                    <span class="glyphicon glyphicon-compressed"></span><!--[=local.action["html"]]-->
+                                </button>
+                                <button type="button" class="btn btn-info navbar-btn btn-sm">
+                                    <span class="glyphicon glyphicon-qrcode"></span><!--[=local.action["qrcode"]]-->
+                                </button>
+                            </div>
+                        </div>
+                        <!--添加和编辑模式-->
+                        <div class="form-group nopadding">
+                            <div class="col-sm-9">
+                                <input type="hidden" id="albumUpload" name="albumUpload" data-extra="{appCode:'<!--[=appCode]-->',articleId:'<!--[=id]-->'}" />
+                                <input type="file" id="albumUpload_file" name="albumUpload_file" to="albumUpload" style="display:none;" action-plugin="ARTICLE_ALBUM_UPLOAD" />
+                                <button action-mode="upload" to="albumUpload" class="btn btn-success navbar-btn btn-sm">
+                                    <span class="glyphicon glyphicon-cloud-upload"></span><!--[=local.action["upload"]+local.name_picture]-->
+                                </button>
+                                <button action-mode="data-dialog" name="module" name-dialog="moduleDialog" title="<!--[=local.action['insert']+local.name_module]-->" type="button" class="btn btn-success navbar-btn btn-sm">
+                                    <span class="glyphicon glyphicon-link"></span><!--[=local.action["insert"]+local.name_link]-->
+                                </button>
+                            </div>
+                            <div class="col-sm-3 pagination-right">
+                                <ul class="nav nav-pills">
+                                    <li class="active"><a href="#"><span class="glyphicon glyphicon-th-large"></span></a></li>
+                                    <li><a href="#"><span class="glyphicon glyphicon-picture"></span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--图集内容-->
+                        <div class="form-group">
+                            <ul class="pb-thumbnails clearfix">
+                                <!--[for(var i=0;i<data.attachments.length;i++){]-->
+                                <li>
+                                    <div>
+                                        <img id="resourceThumb" name="resourceThumb" alt="" src="<!--[=data.attachments[i].resourceThumb]-->">
+                                        <div class="text">
+                                            <div class="inner">
+                                                <p><input id="resourceTitle" name="resourceTitle" value="<!--[=data.attachments[i].resourceTitle]-->" placeholder="<!--[=local.placeholder['albumTitle']]-->"></p>
+                                                <p><textarea id="dataRemark" name="dataRemark" placeholder="<!--[=local.placeholder['albumSummary']]-->"><!--[=data.attachments[i].dataRemark]--></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tools tools-bottom">
+                                        <a href="#"><i class="glyphicon glyphicon-pushpin"></i></a>
+                                        <a href="#"><i class="glyphicon glyphicon-link"></i></a>
+                                        <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
+                                    </div>
+                                </li>
+                                <!--[}]-->
+                            </ul>
+                        </div>
+                    </div>
+                    <!--右侧区域-->
+                    <div class="col-sm-4">
+                        <!--发布区域-->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><!--[=local.name_publish]--></h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-horizontal" role="form">
+                                    <div class="form-group form-group-short">
+                                        <label class="col-sm-2 control-label"><!--[=local.property["articleStatus"]]--></label>
+                                        <div class="col-sm-9">
+                                            <!--判断是否有审核权限（有审核权限才显示发布选择）-->
+                                            <!--如果没有审核权限但是当前状态为已发布，则只显示发布状态-->
+                                            <!--[if(data.articleStatus===2&&!limit.check){]-->
+                                            <input type="radio" id="articleStatus-2" name="articleStatus" value="2" checked> 
+                                            <!--[=local.articleStatus["2"]]-->
+                                            <!--[}else{]-->
+                                            <!--[var i=0;for(var status in local.articleStatus){]-->
+                                            <!--[var checked=(i===data.articleStatus);]-->
+                                            <!--[if(i===2&&!limit.check) continue;]-->
+                                            <label class="radio-inline">
+                                                <input type="radio" id="articleStatus-<!--[=status]-->" name="articleStatus" value="<!--[=status]-->" <!--[=checked?"checked":""]-->> 
+                                                       <!--[=local.articleStatus[status]]-->
+                                            </label>
+                                            <!--[i++;}]-->
+                                            <!--[}]-->
+                                            <br/>
+                                            <button type="button" class="btn btn-primary navbar-btn btn-xs">
+                                                <span class="glyphicon glyphicon-edit"></span><!--[=local.action["change"]]-->
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-short">
+                                        <label class="col-sm-2 control-label"><!--[=local.property["articleReleaseTime"]]--></label>
+                                        <div class="col-sm-9">
+                                            <input id="articleReleaseTime" name="articleReleaseTime" value="<!--[=data.articleReleaseTime]-->" class="form-control" placeholder="<!--[=local.placeholder['releaseTime']]-->">
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-short">
+                                        <label class="col-sm-2 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <label class="checkbox-inline">
+                                                <input id="articleIsTop" name="articleIsTop" type="checkbox" value="1" <!--[=(data.articleIsTop)?"checked":""]--> > <!--[=local.property["articleSort"]]-->
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input id="articleIsFocus" name="articleIsFocus" type="checkbox" value="1" <!--[=(data.articleIsFocus)?"checked":""]--> > <!--[=local.property["articleIsFocus"]]-->
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input id="articleCanCommit" name="articleCanCommit" type="checkbox" value="1" <!--[=(data.articleCanCommit)?"checked":""]--> > <!--[=local.property["articleCanCommit"]]-->
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="form-group">
+                                    <button action-mode="submit" name="BUSI_CMS_ARTICLE" type="button" class="btn btn-primary navbar-btn btn-sm" data-to="article" data-index="<!--[=data.articleId]-->" data-extra="{articleType:0}">
+                                        <span class="glyphicon glyphicon-save"></span><!--[=local.action["submit"]]-->
+                                    </button>
+                                    <button type="button" class="btn btn-danger navbar-btn btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span><!--[=local.action["remove"]]-->
+                                    </button>
+                                    <button type="button" class="btn btn-info navbar-btn btn-sm">
+                                        <span class="glyphicon glyphicon-eye-open"></span><!--[=local.action["preview"]]-->
+                                    </button>
+                                    <button type="button" class="btn btn-warning navbar-btn btn-sm">
+                                        <span class="glyphicon glyphicon-cloud-upload"></span><!--[=local.action["publish"]]-->
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--增强区域-->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><!--[=local.name_increase]--></h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel-form" role="form">
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label><!--[=local.property["articleImageTitle"]]--><br>(160x120)</label>
+                                                <input type="hidden" id="articleImageTitle" name="articleImageTitle" value="<!--[=data.articleImageTitle]-->" />
+                                                <input type="file" id="articleImageTitle_file" name="articleImageTitle_file" to="articleImageTitle" style="display:none;" />
+                                                <a action-mode='upload' to='articleImageTitle' href="#articleImageTitle" class="thumbnail">
+                                                    <img id="articleImageTitle_img" name="articleImageTitle_img" data-src="holder.js/160x120" style="width:80px;height:80px;" alt="...">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label><!--[=local.property["articleImageFocus"]]--><br>(640x360)</label>
+                                                <input type="hidden" id="articleImageFocus" name="articleImageFocus" value="<!--[=data.articleImageFocus]-->" />
+                                                <input type="file" id="articleImageFocus_file" name="articleImageFocus_file" to="articleImageFocus" style="display:none;" />
+                                                <a action-mode='upload' to='articleImageFocus' href="#articleImageFocus" class="thumbnail">
+                                                    <img id="articleImageFocus_img" name="articleImageFocus_img" data-src="holder.js/640x360" style="width:80px;height:80px;" alt="...">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><!--[=local.property["articleSummary"]]--></label>
+                                        <textarea id="articleSummary" name="articleSummary" class="form-control" placeholder="<!--[=local.placeholder['articleSummary']]-->"><!--[=data.articleSummary]--></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><!--[=local.property["articleKeywords"]]--></label>
+                                        <textarea id="articleKeywords" name="articleKeywords" class="form-control" placeholder="<!--[=local.placeholder['keywords']]-->"><!--[=data.articleKeywords]--></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--其他区域-->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><!--[=local.name_other]--></h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-horizontal" role="form">
+                                    <div class="form-group form-group-short">
+                                        <label class="col-sm-2 control-label"><!--[=local.property["articleAuthor"]]--></label>
+                                        <div class="col-sm-9">
+                                            <input id="articleAuthor" name="articleAuthor" value="<!--[=data.articleAuthor]-->" type="input" class="form-control" placeholder="<!--[=local.placeholder['author']]-->">
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-short">
+                                        <label class="col-sm-2 control-label"><!--[=local.property["articleSource"]]--></label>
+                                        <div class="col-sm-9">
+                                            <input id="articleSource" name="articleSource" value="<!--[=data.articleSource]-->" type="input" class="form-control" placeholder="<!--[=local.placeholder['source']]-->">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--[}else{]-->
+
+            <!--[}]-->
+        </script>
+
+        <!--相关JS脚本-->
+        <script src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script src="../include/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../include/lib/template.min.js"></script>
+        <script src="../include/js/template.js"></script>
+        <script src="include/config/template.js"></script>
+        <script src="include/config/busi_cms_article.js"></script>
+        <script src="include/js/subload.js"></script>
+        <script for="parentLoad" type="text/html" src="../include/lib/bootstrap/js/holder.js"></script>
+        <script for="parentLoad" type="text/html" src="../include/lib/jquery-ajaxupload.js"></script>
+        <script for="parentLoad" type="text/html" src="include/config/busi_cms_article.js"></script>
+    </body>
+</html>

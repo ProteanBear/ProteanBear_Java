@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ProteanBear-运维系统-企业类型配置</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../include/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/proteanbear/css/proteanbear-0.1.css" rel="stylesheet" media="screen">
+        <link href="include/css/index.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <!--顶部信息栏-->
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"></div>
+        <!--主视图区域-->
+        <div class="container-fluid">
+            <div class="row">
+                <!--左侧菜单栏-->
+                <div class="col-sm-3 col-md-2 sidebar"></div>
+                <!--中心内容-->
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
+            </div>
+        </div>
+
+        <!--模板：中心内容-->
+        <script id="template_main" type="text/html">
+            <!--内容顶部标题栏-->
+            <nav class="navbar navbar-clear" role="navigation">
+                <div class="container-fluid">
+                    <!--内容顶部导航栏：标题-->
+                    <div class="navbar-header">
+                        <span class="navbar-brand"><span class="glyphicon <!--[=icon]-->"></span>&nbsp;&nbsp;<!--[=title]--></span>
+                    </div>
+                    <!--内容顶部导航栏：功能按钮-->
+                    <div class="collapse navbar-collapse">
+                        <!--[if(limit.insert){]-->
+                        <button action-mode="data-dialog" name="<!--[=active]-->" name-dialog="typeDialog" title="<!--[=local.action['insert']+local.name_comtype]-->" type="button" class="btn btn-default navbar-btn btn-xs">
+                            <span class="glyphicon glyphicon-plus"></span><!--[=local.action.insert+local.name_comtype]-->
+                        </button>
+                        <!--[}]-->
+                        <div class="navbar-form navbar-right" role="search">
+                            <div class="input-group input-group-sm">
+                                <input id="searchValue" name="typeName like ?" type="text" class="form-control" placeholder="<!--[=local.search_input]-->">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" action-mode="data-search" name="<!--[=active]-->">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="col-sm-12 col-md-12 property"></div>
+            <!--左侧菜单-->
+            <div id="tableList" class="col-sm-4 col-md-3"></div>
+            <!--属性编辑区域-->
+            <div id="property" class="col-sm-8 col-md-9"></div>
+        </script>
+
+        <!--模板：插件数据内容-->
+        <script id="template_list" type="text/html">
+            <!--[if(data.length>0){]-->
+            <div class="panel panel-success">
+                <div class="panel-body panel-over">
+                    <ul class="nav nav-pills nav-stacked">
+                        <!--[for(var i=0;i<data.length;i++){]-->
+                        <li class="<!--[=(i==0)?'active':'']-->">
+                            <a href="#" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_comtype]-->（<!--[=data[i].typeName]-->）" action-mode="data-display" data-index="<!--[=i]-->">
+                                <!--[=data[i].typeName]-->
+                            </a>
+                        </li>
+                        <!--[}]-->
+                    </ul>
+                </div>
+            </div>
+            <!--[}]-->
+        </script>
+
+        <!--相关JS脚本-->
+        <script src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script src="../include/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../include/lib/template.min.js"></script>
+        <script src="../include/js/template.js"></script>
+        <script src="include/config/template.js"></script>
+        <script src="include/config/system_areatype.js"></script>
+        <script src="../include/js/index.js"></script>
+    </body>
+</html>

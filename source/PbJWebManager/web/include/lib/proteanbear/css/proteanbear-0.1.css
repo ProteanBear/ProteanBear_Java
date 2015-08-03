@@ -1,0 +1,191 @@
+/* 
+    Document   : pblib-css.0.1
+    Created on : 2013-3-14, 14:55:18
+    Author     : maqiang
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*遮盖层*/
+.modal-backdrop-white
+{
+    background-color:whitesmoke;
+}
+.modal-backdrop-white .close
+{
+    font-size:32px;
+    margin-top:10px;
+    margin-right:20px;
+}
+.modal-backdrop .content
+{
+    margin:0 auto;
+    text-align:center;
+    position: fixed;
+    top: 40%;
+    width: 100%;
+}
+.modal-backdrop .content p
+{
+    margin-top:4px;
+    font-size:18px;
+    text-shadow:1px 1px 1px white;
+    color: gray;
+}
+
+/*系统显示区域*/
+#sysFrame{width:100%;height:100%;overflow:auto;}
+
+/*载入动画*/
+#Gen{
+    margin-left: auto;
+    margin-right: auto;
+}
+.gen_64
+{
+    width:64px;
+    height:64px;
+}
+.gen_48
+{
+    width:48px;
+    height:48px;
+}
+.gen_32
+{
+    width:32px;
+    height:32px;
+}
+.gen_24
+{
+    width:24px;
+    height:24px;
+}
+.gen_16
+{
+    width:16px;
+    height:16px;
+}
+.block{
+    -moz-border-radius:8px 8px 0px 0px;
+    -webkit-border-radius:8px 8px 0px 0px;
+    background-color:#efefef;
+    height:36%;
+    width:10%;
+    float:left;
+    -webkit-transform:scale(0.4);
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 0.6s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: linear;
+    -moz-transform:scale(0.4);
+    -moz-animation-name: fade;
+    -moz-animation-duration: 0.6s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-direction: linear;
+    transform:scale(0.4);
+    animation-name: fade;
+    animation-duration: 0.6s;
+    animation-iteration-count: infinite;
+    animation-direction: linear;
+}
+#rotate_01{
+    -webkit-transform:rotate(-90deg);
+    -moz-transform:rotate(-90deg);
+    transform:rotate(-90deg);
+    margin-left:12%;
+    margin-top:30%;
+    -webkit-animation-delay: 0.3s;
+}	
+#rotate_02{
+    -webkit-transform:rotate(-60deg);
+    -moz-transform:rotate(-60deg);
+    transform:rotate(-60deg);
+    margin-left:-6%;
+    margin-top:14%;
+    -webkit-animation-delay: 0.35s;
+}
+#rotate_03{
+    -webkit-transform:rotate(-30deg);
+    -moz-transform:rotate(-30deg);
+    transform:rotate(-30deg);
+    margin-left:2%;
+    margin-top:2%;
+    -webkit-animation-delay: 0.4s;
+}
+#rotate_04{
+    -webkit-transform:rotate(0deg);
+    -moz-transform:rotate(0deg);
+    transform:rotate(0deg);
+    margin-left:6%;
+    margin-top:-2%;
+    -webkit-animation-delay: 0.45s;
+}
+#rotate_05{
+    -webkit-transform:rotate(30deg);
+    -moz-transform:rotate(30deg);
+    transform:rotate(30deg);
+    margin-left:7%;
+    margin-top:2%;
+    -webkit-animation-delay: 0.5s;
+}
+#rotate_06{
+    -webkit-transform:rotate(60deg);
+    -moz-transform:rotate(60deg);
+    transform:rotate(60deg);
+    margin-left:2%;
+    margin-top:15%;
+    -webkit-animation-delay: 0.55s;
+}
+#rotate_07{
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    transform:rotate(90deg);
+    margin-left:55%;
+    margin-top:-20%;
+    -webkit-animation-delay: 0.6s;
+}
+#rotate_08{
+    -webkit-transform:rotate(120deg);
+    -moz-transform:rotate(120deg);
+    transform:rotate(120deg);
+    margin-left:-15%;
+    margin-top:-4%;
+    -webkit-animation-delay: 0.65s;
+}
+#rotate_09{
+    -webkit-transform:rotate(150deg);
+    -moz-transform:rotate(150deg);
+    transform:rotate(150deg);
+    margin-left:-27%;
+    margin-top:8%;
+    -webkit-animation-delay: 0.7s;
+}
+#rotate_10{
+    -webkit-transform:rotate(180deg);
+    -moz-transform:rotate(180deg);
+    transform:rotate(180deg);
+    margin-left:-44%;
+    margin-top:12%;
+    -webkit-animation-delay: 0.75s;
+}
+#rotate_11{
+    -webkit-transform:rotate(-150deg);
+    -moz-transform:rotate(-150deg);
+    transform:rotate(-150deg);
+    margin-left:-61%;
+    margin-top:7%;
+    -webkit-animation-delay: 0.8s;
+}
+#rotate_12{
+    -webkit-transform:rotate(-120deg);
+    -moz-transform:rotate(-120deg);
+    transform:rotate(-120deg);
+    margin-left:-72%;
+    margin-top:-5%;
+    -webkit-animation-delay: 0.85s;
+}
+@-webkit-keyframes fade{
+    0%{background-color: #ababab;}
+    100%{background-color:whitesmoke;}
+}

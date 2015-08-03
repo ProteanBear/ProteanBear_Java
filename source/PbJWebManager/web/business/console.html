@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ProteanBear-应用系统</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../include/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/proteanbear/css/proteanbear-0.1.css" rel="stylesheet" media="screen">
+        <!--[if lte IE 6]>
+            <link rel="stylesheet" type="text/css" href="css/bootstrap-ie6.css">
+        <![endif]-->
+        <!--[if lte IE 7]>
+            <link rel="stylesheet" type="text/css" href="css/ie.css">
+        <![endif]-->
+    </head>
+    <body>
+        
+        <!--页面显示窗口-->
+        <iframe id="sysFrame" name="sysFrame" frameborder="0" src=""></iframe>
+        
+        <!--前置遮盖层模版-->
+        <script id="alert_template" type="text/html">
+            <div class="modal-backdrop fade modal-backdrop-white">
+                <button type="button" class="close">&times;</button>
+                <div class="content">
+                    <!--[=loading]-->
+                    <p><!--[=infor]--></p>
+                </div>
+            </div>
+        </script>
+        
+        <!--显示载入组件模版-->
+        <script id="loading_template" type="text/html">
+            <div id="Gen" class="gen_<!--[=loading_size]-->">
+                <div class="block" id="rotate_01"></div>
+                <div class="block" id="rotate_02"></div>
+                <div class="block" id="rotate_03"></div>
+                <div class="block" id="rotate_04"></div>
+                <div class="block" id="rotate_05"></div>
+                <div class="block" id="rotate_06"></div>
+                <div class="block" id="rotate_07"></div>
+                <div class="block" id="rotate_08"></div>
+                <div class="block" id="rotate_09"></div>
+                <div class="block" id="rotate_10"></div>
+                <div class="block" id="rotate_11"></div>
+                <div class="block" id="rotate_12"></div>
+                <div class="clearfix"></div>
+            </div>
+        </script>
+        
+        <!--相关JS脚本-->
+        <script src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script src="../include/lib/template.min.js"></script>
+        <script src="../include/lib/proteanbear/js/system.js"></script>
+        <script src="../include/lib/proteanbear/js/storage.js"></script>
+        <script src="../include/local/local-zh.js"></script>
+        <script src="include/local/local-zh.js"></script>
+        <script src="../include/js/console.js"></script>
+    </body>
+</html>

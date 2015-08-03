@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ProteanBear-运维系统-登录</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../include/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/proteanbear/css/proteanbear-0.1.css" rel="stylesheet" media="screen">
+        <link href="include/css/login.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <!--登录输入框模版-->
+        <script id="login_template" type="text/html">
+            <div class="container">
+                <form class="form-signin" role="form">
+                    <h2 class="form-signin-heading"><!--[=login_header]--></h2>
+                    <input id="userName" name="userName" class="form-control" placeholder="<!--[=login_name]-->" required="" autofocus=""/>
+                    <input id="password" name="password" type="password" class="form-control" placeholder="<!--[=login_pass]-->" required=""/>
+
+                    <div class="input-group">
+                        <input id="verycode" name="verycode" class="form-control" placeholder="<!--[=login_verify]-->"/>
+                        <div class="input-group-addon">
+                            <img id="verifyImage" class="verify-image" src="../verifyCode" alt="<!--[=login_verify]-->"
+                                 data-toggle="tooltip" data-placement="right" title="点击换一张" />
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input id="remember" type="checkbox" checked="checked"/> <!--[=login_remember]-->
+                        </label>
+                    </div>
+                    <button id="login_action" class="btn btn-lg btn-primary btn-block" type="button"><!--[=login_action]--></button>
+                </form>
+            </div>
+        </script>
+
+        <!--错误提示框内容模版-->
+        <script id="login_error" type="text/html">
+            <div class="alert alert-danger fade">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong><!--[=error]--></strong> <!--[=error_infor]-->
+            </div>
+        </script>
+
+        <!--相关JS脚本-->
+        <script src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script src="../include/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../include/lib/template.min.js"></script>
+        <script src="../include/js/template.js"></script>
+        <script src="include/config/template.js"></script>
+        <script src="../include/js/login.js"></script>
+    </body>
+</html>

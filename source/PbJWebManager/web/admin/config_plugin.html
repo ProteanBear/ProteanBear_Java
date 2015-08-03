@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ProteanBear-运维系统-系统插件配置</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../include/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/proteanbear/css/proteanbear-0.1.css" rel="stylesheet" media="screen">
+        <link href="include/css/index.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <!--顶部信息栏-->
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"></div>
+        <!--主视图区域-->
+        <div class="container-fluid">
+            <div class="row">
+                <!--左侧菜单栏-->
+                <div class="col-sm-3 col-md-2 sidebar"></div>
+                <!--中心内容-->
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
+            </div>
+        </div>
+
+        <!--模板：中心内容-->
+        <script id="template_main" type="text/html">
+            <!--内容顶部标题栏-->
+            <nav class="navbar navbar-clear" role="navigation">
+                <div class="container-fluid">
+                    <!--内容顶部导航栏：标题-->
+                    <div class="navbar-header">
+                        <span class="navbar-brand"><span class="glyphicon <!--[=icon]-->"></span>&nbsp;&nbsp;<!--[=title]--></span>
+                    </div>
+                    <!--内容顶部导航栏：功能按钮-->
+                    <div class="collapse navbar-collapse">
+                        <!--[if(limit.insert){]-->
+                        <button action-mode="data-dialog" name="module" name-dialog="moduleDialog" title="<!--[=local.action['insert']+local.name_module]-->" type="button" class="btn btn-default navbar-btn btn-xs">
+                            <span class="glyphicon glyphicon-plus"></span><!--[=local.action.insert+local.name_module]-->
+                        </button>
+                        <!--[}]-->
+                        <div class="navbar-form navbar-right" role="search">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" action-mode="data-search" placeholder="<!--[=local.search_input]-->">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" action-mode="data-search" name="">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!--属性编辑区域-->
+            <div id="property" class="col-sm-11 col-md-12 property"></div>
+        </script>
+
+        <!--模板：插件数据内容-->
+        <script id="template_plugins" type="text/html">
+            <!--[for(var i=0;i<data.length;i++){]-->
+            <!--[var module=data[i];]-->
+            <!--[if(module.pluginType==0){]-->
+            <div id="<!--[=module.pluginCode]-->" class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a href="#" action-mode="data-dialog" name="module" name-dialog="moduleDialog" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_module]-->（<!--[=module.pluginName]-->）" data-index="<!--[=i]-->">
+                            <!--[=module.pluginName]-->
+                        </a>
+                        <div class="btn-group btn-group-right">
+                            <!--[if(limit.insert){]--><button type="button" action-mode="data-dialog" name="plugin" name-dialog="pluginDialog" title="<!--[=local.action['insert']+local.name_plugin]-->" data-extra="{upId:'<!--[=module.pluginCode]-->'}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span><!--[=local.name_plugin]--></button><!--[}]-->
+                            <!--[if(limit.remove){]--><button type="button" action-mode="data-remove" name="module" title="<!--[=local.alert_infor['confirm']+local.name_module+'（'+module.pluginName+'）'+local.alert_infor['firmend']]-->" data-index="<!--[=i]-->" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-trash"></span><!--[=local.name_module]--></button><!--[}]-->
+                        </div>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <!--[for(var j=0;j<data.length;j++){]-->
+                    <!--[var plugin=data[j];]-->
+                    <!--[if(plugin.pluginType==1&&plugin.pluginCode.indexOf(module.pluginCode)===0){]-->
+                    <div id="<!--[=module.pluginCode]-->" class="panel panel-info col-sm-2 col-md-3">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a href="#" action-mode="data-dialog" name="plugin" name-dialog="pluginDialog" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_plugin]-->（<!--[=plugin.pluginName]-->）" data-index="<!--[=j]-->">
+                                    <!--[=plugin.pluginName]-->
+                                </a>
+                                <div class="btn-group btn-group-right">
+                                    <!--[if(limit.insert){]--><button type="button" action-mode="data-dialog" name="limit" name-dialog="limitDialog" title="<!--[=local.action['insert']+local.name_limit]-->" data-extra="{upId:'<!--[=plugin.pluginCode]-->'}" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-plus"></span><!--[=local.name_limit]--></button><!--[}]-->
+                                    <!--[if(limit.remove){]--><button type="button" action-mode="data-remove" name="plugin" title="<!--[=local.alert_infor['confirm']+local.name_plugin+'（'+plugin.pluginName+'）'+local.alert_infor['firmend']]-->" data-index="<!--[=j]-->" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-trash"></span><!--[=local.name_plugin]--></button><!--[}]-->
+                                </div>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <!--[for(var k=0;k<data.length;k++){]-->
+                                <!--[var lim=data[k];]-->
+                                <!--[if(lim.pluginType==2&&lim.pluginCode.indexOf(plugin.pluginCode)===0){]-->
+                                <div class="btn-group">
+                                    <!--[if(limit.remove){]--><button type="button" action-mode="data-remove" name="limit" title="<!--[=local.alert_infor['confirm']+local.name_limit+'（'+lim.pluginName+'）'+local.alert_infor['firmend']]-->" data-index="<!--[=k]-->" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button><!--[}]-->
+                                    <button type="button" action-mode="data-dialog" name="limit" name-dialog="limitDialog" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_limit]-->（<!--[=plugin.pluginName+'-'+lim.pluginName]-->）" data-index="<!--[=k]-->" class="btn btn-default btn-xs">
+                                        <!--[=lim.pluginName]-->
+                                    </button>
+                                </div>
+                                <!--[}]-->
+                            <!--[}]-->
+                        </div>
+                    </div>
+                    <!--[}]-->
+                    <!--[}]-->
+                </div>
+            </div>
+            <!--[}]-->
+            <!--[}]-->
+        </script>
+
+        <!--相关JS脚本-->
+        <script src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script src="../include/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../include/lib/template.min.js"></script>
+        <script src="../include/js/template.js"></script>
+        <script src="include/config/template.js"></script>
+        <script src="include/config/system_plugin.js"></script>
+        <script src="../include/js/index.js"></script>
+    </body>
+</html>

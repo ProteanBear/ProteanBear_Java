@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script type="text/javascript" src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="../include/lib/jquery-ajaxupload.js"></script>
+    </head>
+    <body>
+        <div>
+            <p style="display:none;">上传中。。。</p>
+            <input id="fileToUpload" type="file" name="fileToUpload" />
+            <button class="button" id="buttonUpload" onclick="return ajaxFileUpload();">上传</button>
+        </div>
+        <script type="text/javascript">
+            function ajaxFileUpload() {
+                loading();//动态加载小图标
+                jQuery.ajaxFileUpload({
+                    url: '../fileUpload',
+                    secureuri: false,
+                    fileElementId: 'fileToUpload',
+                    dataType: 'json',
+                    success: function(data, status) {
+                        if(data.success)
+                        {
+                            alert(data.path);
+                        }
+                    },
+                    error: function(data, status, e) {
+                        alert(e);
+                    }
+                })
+                return false;
+            }
+            function loading() {
+                jQuery("#loading ").ajaxStart(function() {
+                    jQuery(this).show();
+                }).ajaxComplete(function() {
+                    jQuery(this).hide();
+                });
+            }
+        </script>
+    </body>
+</html>

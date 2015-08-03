@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ProteanBear-应用系统-文章列表</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../include/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/proteanbear/css/proteanbear-0.1.css" rel="stylesheet" media="screen">
+        <link href="include/css/index.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <!--内容显示区域-->
+        <div class="main"></div>
+
+        <!--模板：文章列表配置内容-->
+        <script id="template_main" type="text/html">
+            <!--内容顶部标题栏-->
+            <nav class="navbar navbar-clear" role="navigation">
+                <div class="container-fluid">
+                    <!--内容顶部导航栏：标题-->
+                    <div class="navbar-header">
+                        <span class="navbar-brand"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;<!--[=local.name_article]-->（<!--[=local.name_section]-->：<!--[=sectionName]-->）</span>
+                    </div>
+                    <!--内容顶部导航栏：功能按钮-->
+                    <div class="collapse navbar-collapse">
+                        <button action-mode="popover" init-title="<!--[=local.name_article]-->" title="选择要添加的文章类型" data-placement="bottom" 
+                                data-template='
+                                <div class="popover" role="tooltip">
+                                <div class="arrow"></div>
+                                <h3 class="popover-title"></h3>
+                                <div class="buttons">
+                                <p><a href="#" load="sub_article_create_text.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" class="btn btn-success"><i class="glyphicon glyphicon-file"></i>文本</a>
+                                <a href="#" load="sub_article_create_album.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" class="btn btn-info"><i class="glyphicon glyphicon-picture"></i>图集</a></p>
+                                <p><a href="#" load="sub_article_create_video.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" class="btn btn-warning"><i class="glyphicon glyphicon-facetime-video"></i>视频</a>
+                                <a href="#" load="sub_article_create_topic.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" class="btn btn-danger"><i class="glyphicon glyphicon-list"></i>专题</a></p>
+                                </div>
+                                <div class="popover-content"></div>
+                                </div>'
+                                type="button" class="btn btn-default navbar-btn btn-xs">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <b><!--[=local.name_article]--></b>
+                        </button>
+                        <div class="btn-group btn-group-xs">
+                            <!--[for(var status in local.checkType){]-->
+                            <button type="button" class="btn btn-link"><!--[=local.checkType[status]]-->(<span id="statusNumber-<!--[=status]-->">...</span>)</button>
+                            <!--[}]-->
+                        </div>
+                        <form class="navbar-form navbar-right" role="search">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" placeholder="<!--[=local.search_input]-->">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+            <!--表格顶部-->
+            <div class="row">
+                <!--显示高级查询-->
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default btn-sm">
+                        <!--[=local.name_super+local.action["search"]]-->
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </button>
+                </div>
+                <!--批量操作-->
+                <form class="form-inline col-md-5" role="form">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon"><!--[=local.name_batch+local.name_operate]--></span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-edit"></span><!--[=local.action["edit"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-trash"></span><!--[=local.action["remove"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-export"></span><!--[=local.action["publish"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-import"></span><!--[=local.action["down"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-move"></span><!--[=local.action["move"]]-->
+                            </button>
+                        </span>
+                    </div>
+                </form>
+                <!--表格样式切换-->
+                <div class="col-md-1">
+                    <ul class="nav nav-pills">
+                        <li><a href="#"><span class="glyphicon glyphicon-align-justify"></span></a></li>
+                        <li class="active"><a href="#"><span class="glyphicon glyphicon-th-list"></span></a></li>
+                    </ul>
+                </div>
+                <!--页码显示-->
+                <div class="col-md-4 pagination-right">
+                </div>
+            </div>
+            <!--文章表格-->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <tr class="info">
+                            <th class="th-check"><input type="checkbox"></th>
+                            <th class="th-header"><span class="glyphicon glyphicon-header"></span><!--[=local.property["articleTitle"]]--></th>
+                            <th class="th-other"><span class="glyphicon glyphicon-user"></span><!--[=local.property["articleAuthor"]]--></th>
+                            <th class="th-other"><span class="glyphicon glyphicon-tags"></span><!--[=local.property["articleKeywords"]]--></th>
+                            <th class="th-other"><span class="glyphicon glyphicon-comment"></span></th>
+                            <th class="th-other"><span class="glyphicon glyphicon-calendar"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataList">
+                    </tbody>
+                </table>
+            </div>
+            <!--表格底部-->
+            <div class="row">
+                <!--批量操作-->
+                <form class="form-inline col-md-8" role="form">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon"><!--[=local.name_batch+local.name_operate]--></span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-edit"></span><!--[=local.action["edit"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-trash"></span><!--[=local.action["remove"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-export"></span><!--[=local.action["publish"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-import"></span><!--[=local.action["down"]]-->
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-move"></span><!--[=local.action["move"]]-->
+                            </button>
+                        </span>
+                    </div>
+                </form>
+                <!--页码显示-->
+                <div class="col-md-4 pagination-right">
+                </div>
+            </div>
+        </script>
+
+        <!--相关JS脚本-->
+        <script src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script src="../include/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../include/lib/template.min.js"></script>
+        <script src="../include/js/template.js"></script>
+        <script src="include/config/template.js"></script>
+        <script src="include/config/busi_cms_article.js"></script>
+        <script src="include/js/subload.js"></script>
+        <script for="parentLoad" type="text/html" src="include/config/busi_cms_article.js"></script>
+    </body>
+</html>
