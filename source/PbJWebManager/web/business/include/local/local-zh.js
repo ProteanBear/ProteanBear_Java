@@ -1,0 +1,116 @@
+var local=local||{};
+
+(function(local){
+    /*局部变量*/
+    var pathImage="../include/images/";
+    var pathIcon="../include/images/icons/";
+
+    /*左侧菜单栏使用*/
+    local.menu_index="首页";
+
+    /*显示内容使用*/
+    local.property={
+        custId:"自增主键",
+        sectionName:"栏目名称",
+        sectionAlias:"栏目别名",
+        sectionTypeContent:"内容类型",
+        sectionTypeDisplay:"显示类型",
+        sectionIconClose:"关闭图标",
+        sectionIconOpen:"展开图标",
+        sectionIcon:"栏目图标",
+        dataRemark:"栏目描述",
+        sectionEnable:"是否启用",
+        articleTitle:"标题",
+        articleTitleSub:"副标题",
+        articleAuthor:"作者",
+        articleKeywords:"标签",
+        articleHtml:"静态链接",
+        articleStatus:"状态",
+        articleReleaseTime:"时间",
+        articleSort:"置顶",
+        articleIsFocus:"焦点",
+        articleCanCommit:"允许评论",
+        articleImageTitle:"标题图片",
+        articleImageFocus:"焦点图片",
+        articleSummary:"简介",
+        articleSource:"来源",
+        groupName:"分组名称",
+        groupType:"显示类型"
+    };
+    local.action={"insert":"添加","edit":"编辑","look":"查看","submit":"保存","reset":"重置","remove":"删除",
+        "close":"关闭","cancel":"取消","confirm":"确定","search":"搜索","publish":"发布","down":"下架",
+        "move":"移动","push":"推送","html":"生成静态HTML","qrcode":"生成二维码","change":"更改","preview":"预览",
+        "quickEdit":"快速编辑","copy":"复制","upload":"上传","select":"选择"
+    };
+    local.contentType={"0":"新闻","1":"商户"};
+    local.displayType={"0":"图文","1":"图片","2":"视频"};
+    local.articleType={"0":"文章","1":"图集","2":"视频","3":"专题"};
+    local.checkType={"-1":"全部","2":"已发布","1":"待审核","0":"草稿"};
+    local.articleStatus={"0":"草稿","1":"待审","2":"发布"};
+    local.source={
+        use:{"0":"禁用","1":"启用"},
+        display:{"0":"隐藏","1":"显示"},
+        yesOrNo:{"0":"否","1":"是"},
+        type:{
+            content:{"0":"新闻类","1":"商业类"},
+            display:[pathImage+"example_table.png",pathImage+"example_collection.png"]
+        },
+        images:{
+            "categoryClose":[pathIcon+"index_close.png",pathIcon+"blue-folder-horizontal.png",
+                pathIcon+"blue-folder.png",pathIcon+"folder_blue.png",
+                pathIcon+"folder_recycled.png",pathIcon+"folder_yellow.png",
+                pathIcon+"folder-horizontal.png",pathIcon+"folder.png"
+            ],
+            "categoryOpen":[pathIcon+"index_open.png",pathIcon+"blue-folder-horizontal-open.png",
+                pathIcon+"blue-folder-open.png",pathIcon+"folder_classic_blue.png",
+                pathIcon+"folder_classic_recycled.png",pathIcon+"folder_classic_yellow.png",
+                pathIcon+"folder-horizontal-open.png",pathIcon+"folder-open.png"
+            ]
+        },
+        typeIcons:["file","picture","facetime-video","list-alt"],
+        statusIcons:["asterisk","dashboard",""],
+        groupType:{"0":"图文格式","1":"图片格式","2":"视频格式"},
+        handleAfter:{"0":"添加新的同类型文章","1":"编辑新添加的文章","2":"返回栏目文章列表"}
+    };
+    
+    /*显示名称*/
+    local.name_app="应用";
+    local.name_section="栏目";
+    local.name_section_sub="子栏目";
+    local.name_article="文章";
+    local.name_operate="操作";
+    local.name_super="高级";
+    local.name_batch="批量";
+    local.name_belong="所属";
+    local.name_publish="发布";
+    local.name_increase="增强";
+    local.name_other="其他";
+    local.name_picture="图片";
+    local.name_link="链接";
+    local.name_file="文件";
+    local.name_content="内容";
+    local.name_group="分组";
+    
+    /*空白提示信息*/
+    local.placeholder={
+        "articleTitle":"输入文章标题，不能多于40个汉字",
+        "nullHttp":"未生成静态文件",
+        "articleSummary":"不填写时默认使用文章内容第一段",
+        "keywords":"用于搜索的内容关键字，多个关键字间以空格分隔",
+        "author":"未填写时默认使用登录用户名",
+        "source":"未填写时默认使用应用名称",
+        "releaseTime":"未填写时默认使用发布时间",
+        "albumCreate":"创建图集后才可以对图集内容进行编辑；创建时文章状态只能为草稿。",
+        "albumTitle":"输入图片的显示标题",
+        "albumSummary":"输入图片的简介内容",
+        "subTitle":"输入文章的副标题内容"
+    };
+    /*提示信息*/
+    local.tips={
+        "albumCreate":"提示：创建图集后才可以对图集内容进行编辑；创建时文章状态只能为草稿。",
+        "videoCreate":"提示：创建视频后才可以对视频内容进行编辑；创建时文章状态只能为草稿。",
+        "topicCreate":"提示：创建专题后才可以对专题内容进行编辑；创建时文章状态只能为草稿。",
+        "lastUpdate":"最后修改"
+    };
+    
+})(local);

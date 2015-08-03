@@ -1,0 +1,8 @@
+{
+    "success":true,
+    "list":[
+        {"src":"include/images/login_back_1.jpg"},
+        {"src":"include/images/login_back_2.jpg"},
+        {"src":"include/images/login_back_3.jpg"}
+    ]
+}

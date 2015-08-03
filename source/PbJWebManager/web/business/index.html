@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ProteanBear-应用系统</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../include/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/proteanbear/css/proteanbear-0.1.css" rel="stylesheet" media="screen">
+        <link href="../include/lib/ztree/css/zTreeStyle.css" rel="stylesheet" media="screen">
+        <link href="include/css/index.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <!--顶部信息栏-->
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"></div>
+        <!--主视图区域-->
+        <div class="container-fluid">
+            <div class="row">
+                <!--左侧菜单栏-->
+                <div class="col-sm-3 col-md-2 sidebar"></div>
+                <!--中心内容-->
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
+            </div>
+        </div>
+        
+        <!--模板：中心内容-->
+        <script id="template_main" type="text/html">
+            <!--载入内容iframe,用于动态载入中心内容-->
+            <iframe id="contentFrame" name="contentFrame" frameborder="0" src="<!--[=link]-->" style="display:none;"></iframe>
+            <!--显示内容-->
+            <div id="sub-content"></div>
+        </script>
+        
+        <!--模板：树形自定义按钮-->
+        <script id="template_treebutton" type="text/html">
+            <div id="treebutton-<!--[=id]-->" class="btn-group treebutton">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <img src="../include/images/action_add.png">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><button type="button" action-mode="data-display" name="BUSI_MANAGE_SECTION" form-name="busiSection" form-to="#sub-content" title="<!--[=local.action['insert']+'【'+name+'】'+local.name_section_sub]-->" data-extra="{upCode:'<!--[=id]-->',sectionApp:'<!--[=appCode]-->'}" class="btn btn-link btn-sm"><!--[=local.name_section_sub]--></button></li>
+                        <!--[if(type==0){]-->
+                        <li><a href="#" load="sub_article_create_text.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" title="<!--[=local.action['insert']+local.articleType['0']]-->" class="btn btn-link btn-sm"><!--[=local.articleType['0']]--></a></li>
+                        <li><a href="#" load="sub_article_create_album.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" title="<!--[=local.action['insert']+local.articleType['1']]-->" class="btn btn-link btn-sm"><!--[=local.articleType['1']]--></a></li>
+                        <li><a href="#" load="sub_article_create_video.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" title="<!--[=local.action['insert']+local.articleType['2']]-->" class="btn btn-link btn-sm"><!--[=local.articleType['2']]--></a></li>
+                        <li><a href="#" load="sub_article_create_topic.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" title="<!--[=local.action['insert']+local.articleType['3']]-->" class="btn btn-link btn-sm"><!--[=local.articleType['3']]--></a></li>
+                        <!--[}if(type==1){]-->
+                        <!--[}]-->
+                    </ul>
+                </div>
+                <button type="button" action-mode="section-edit" name="BUSI_MANAGE_SECTION" title="<!--[=local.action['edit']+local.name_section+'（'+name+'）']-->" data-extra="{upCode:'<!--[=id]-->',sectionApp:'<!--[=appCode]-->'}" class="btn btn-default btn-xs"><img src="../include/images/action_edit.png"></button>
+                <button type="button" class="btn btn-default btn-xs"><img src="../include/images/action_remove.png"></button>
+            </div>
+        </script>
+
+        <!--相关JS脚本-->
+        <script src="../include/lib/jquery-1.11.1.min.js"></script>
+        <script src="../include/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../include/lib/bootstrap/js/holder.js"></script>
+        <script src="../include/lib/template.min.js"></script>
+        <script src="../include/js/template.js"></script>
+        <script src="include/config/template.js"></script>
+        <script src="../include/lib/ztree/js/jquery.ztree.all-3.5.min.js"></script>
+        <script src="include/config/busi_section.js"></script>
+        <script src="../include/js/index.js"></script>
+    </body>
+</html>

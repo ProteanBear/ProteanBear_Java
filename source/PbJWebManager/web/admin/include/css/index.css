@@ -1,0 +1,273 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    padding-top: 44px;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar{
+    min-height:44px;
+}
+.navbar-fixed-top {
+    border: 0;
+}
+.navbar-brand{
+    height:44px;
+    padding:12px 15px;
+}
+@media (min-width: 768px)
+{
+    .navbar-nav>li>a{
+        padding-top:12px;
+        padding-bottom:12px;
+    }
+}
+.navbar-clear {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+    display: none;
+}
+.sidebar .glyphicon{
+    margin-right: 10px;
+}
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 45px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 5px 10px;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        background-color: #f5f5f5;
+        border-right: 1px solid #eee;
+    }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+    margin-right: -21px; /* 20px padding + 1px border */
+    margin-bottom: 5px;
+    margin-left: -20px;
+}
+.nav-sidebar > li > a {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    color: #fff;
+    background-color: #428bca;
+}
+
+/* panel reset*/
+.panel{
+    margin-bottom:15px;
+}
+.panel-heading{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.panel-title{
+    font-size: 14px;
+}
+.panel-body{
+    padding-top:8px;
+    padding-bottom:8px;
+}
+.panel-over{overflow:auto;}
+.checkbox .radio-inline{padding-top:0px;}
+.panel-body .panel{
+    padding-left:0px;
+    padding-right:0px;
+    margin:4px 15px 4px 0px;
+}
+.panel-body .panel .panel-heading{
+    padding: 6px 10px;
+}
+.panel-body .panel .panel-title{
+    font-size: 12px;
+}
+.panel-body .panel .panel-body{
+    padding: 6px 10px;
+}
+.panel .btn-group{
+    margin-bottom:5px;
+    margin-right:8px;
+}
+.panel-title .btn-group{
+    margin-bottom:0px;
+    margin-left:10px;
+}
+.btn .glyphicon{
+    margin-right:2px;
+}
+.panel-title .btn-group-right{
+    float: right;
+    margin-right: -10px;
+    margin-top: -4px;
+}
+
+/*
+ * form Reset
+ */
+.form-group:first-of-type{
+    margin-top:8px;
+}
+.form-group:only-of-type{
+    margin-bottom:0px;
+}
+.form-group:last-of-type{
+    margin-bottom:8px;
+}
+.form-group .radio-inline,.form-group .checkbox-inline{
+    margin-left: 10px;
+}
+.form-group .form{
+    padding-left:25px;
+}
+.form-group .form .form-group{
+    padding-top:2px;
+    padding-bottom:6px;
+    margin-bottom:0px;
+}
+.form-group .form .form-group:first-of-type{
+    margin-top: 6px;
+}
+.form-group .form .title{
+    border-bottom:1px solid #eee;
+    margin-top:6px;
+    padding-bottom:8px;
+}
+.form-group .display{
+    padding-top:7px;
+}
+.form-group img.icon{
+    width:16px;
+    height:16px;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+    padding: 5px;
+}
+.main .navbar{
+
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+    margin-bottom: 30px;
+    text-align: center;
+}
+.placeholders h4 {
+    margin-bottom: 0;
+}
+.placeholder {
+    margin-bottom: 20px;
+}
+.placeholder img {
+    display: inline-block;
+    border-radius: 50%;
+}
+
+/*
+ * zTree Reset
+ */
+.ztree li span{
+    line-height:24px;
+}
+.ztree *{
+    font-size:15px;
+}
+.ztree li span.button{
+    margin-top:4px;
+    margin-bottom:4px;
+}
+.ztree li span[treenode_ico]{
+    background-size:16px 16px;
+    background-position:0 0;
+}
+.ztree li a.curSelectedNode{
+    height:24px;
+}
+.ztree li a:hover{
+    text-decoration:no-underline;
+}
+.ztree .btn{
+    padding:0px 4px;
+}
+.ztree .btn img{
+    margin-top:-4px;
+    width:16px;
+}
+.ztree .dropdown-menu{
+    min-width:60px;
+    padding:5px;
+}
+.ztree .btn-group{
+    margin-bottom:0px;
+    margin-right:0px;
+}
+.treebutton{
+    position:absolute;
+    display:block;
+    z-index:1001;
+    top:300px;
+    margin-bottom:0px;
+    margin-right:0px;
+}
+.treebutton .btn{
+    padding:0px 4px;
+}
+.treebutton button.btn img{
+    margin-top:-4px;
+    width:16px;
+}
+.treebutton .dropdown-menu{
+    min-width:60px;
+    padding:5px;
+}
+.treebutton a,.btn{
+    min-height:24px;
+}
+.treebutton a.btn img{
+    margin-top:2px;
+    margin-left:2px;
+    width:16px;
+}

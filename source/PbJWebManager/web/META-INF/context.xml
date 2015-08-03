@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/pbweb">
+  <Resource driverClassName="com.mysql.jdbc.Driver" maxActive="10" maxIdle="2" maxWait="5000" name="jdbc/pbms" password="admin147258" type="javax.sql.DataSource" url="jdbc:mysql://127.0.0.1:3306/ProteanBear?characterEncoding=UTF-8" username="pbadmin">
+    </Resource>
+</Context>
