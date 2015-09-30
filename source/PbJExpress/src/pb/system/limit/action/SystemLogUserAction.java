@@ -71,7 +71,7 @@ public class SystemLogUserAction
      * @throws ServletException - 抛出处理错误
      */
     @Override
-    public void create(HttpServletRequest request)
+    public Object create(HttpServletRequest request)
             throws ServletException
     {
         throw new UnsupportedOperationException("告警记录无法手动添加，平台不支持此方法！");

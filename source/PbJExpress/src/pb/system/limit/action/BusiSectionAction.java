@@ -60,7 +60,7 @@ public class BusiSectionAction extends AbstractAction<BusiSection> implements Da
      * @param request - HTTP请求对象
      */
     @Override
-    public void create(HttpServletRequest request)
+    public Object create(HttpServletRequest request)
             throws ServletException
     {
         try
@@ -99,6 +99,8 @@ public class BusiSectionAction extends AbstractAction<BusiSection> implements Da
             {
                 this.afterCreate(request,this.sectionManager.getLastGenerator());
             }
+
+            return this.sectionManager.getLastGenerator();
         }
         catch(IllegalAccessException
                 |IllegalArgumentException

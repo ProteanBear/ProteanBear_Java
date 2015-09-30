@@ -114,7 +114,7 @@ public class SystemAreaTreeAction extends AbstractAction<SystemArea>
      * 描述:    创建数据<br>
      * @param request - HTTP请求对象
      */
-    @Override public void create(HttpServletRequest request) 
+    @Override public Object create(HttpServletRequest request)
              throws ServletException
     {
         try
@@ -156,6 +156,8 @@ public class SystemAreaTreeAction extends AbstractAction<SystemArea>
             {
                 this.afterCreate(request,this.areaManager.getLastGenerator());
             }
+
+            return this.areaManager.getLastGenerator();
         }
         catch (IllegalAccessException 
                 | IllegalArgumentException 

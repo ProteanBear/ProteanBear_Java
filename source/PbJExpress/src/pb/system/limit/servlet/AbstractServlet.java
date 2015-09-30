@@ -2,6 +2,8 @@ package pb.system.limit.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -503,9 +505,11 @@ public abstract class AbstractServlet extends HttpServlet
         {
             if(canCreate)
             {
-                this.dataAction.create(request);
+                Object newId=this.dataAction.create(request);
                 String str=this.stringForReturn(mode);
-                this.generateResult(out,str!=null?str:"成功插入新的数据信息");
+                this.generateResult(out,str!=null?str:"成功插入新的数据信息",new HashMap<String,Object>(){{
+                    put("newId",newId);
+                }});
                 this.recordUserLog(user,mode);
             }
             else
@@ -738,6 +742,24 @@ public abstract class AbstractServlet extends HttpServlet
             //输出到数据接口页面
             out.println(infor);
         }
+    }
+
+    /**
+     * 方法（受保护）<br>
+     * 名称:    generateResult<br>
+     * 描述:    根据当前要求的输出格式，生成相应的增删改的结果<br>
+     *
+     * @param out
+     * @param infor - 成功的相关信息
+     * @param valueMap - 输出的其他值
+     * @throws java.io.IOException
+     */
+    protected void generateResult(PrintWriter out,String infor,Map<String,Object> valueMap) throws IOException
+    {
+        out.print(
+                (this.isXml)?XMLProductor.toInforXml(true,infor,valueMap):
+                        JsonProductor.createInformation(true,infor,valueMap)
+        );
     }
 
     /**

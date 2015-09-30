@@ -122,10 +122,11 @@ public abstract class AbstractAction<T> implements DataAction
      * 描述:    创建数据<br>
      *
      * @param request - HTTP请求对象
+     * @return 返回新建数据的主键值
      * @throws javax.servlet.ServletException - 抛出处理错误
      */
     @Override
-    public void create(HttpServletRequest request)
+    public Object create(HttpServletRequest request)
             throws ServletException
     {
         try
@@ -175,6 +176,8 @@ public abstract class AbstractAction<T> implements DataAction
                     this.manager.transactionCommit();
                 }
             }
+
+            return this.manager.getLastGenerator();
         }
         catch(IllegalAccessException
                 |IllegalArgumentException

@@ -16,9 +16,10 @@ public interface DataAction
      * 描述:    创建数据<br>
      *
      * @param request - HTTP请求对象
+     * @return 返回新建数据的主键值
      * @throws javax.servlet.ServletException - 抛出处理错误
      */
-    void create(HttpServletRequest request) throws ServletException;
+    Object create(HttpServletRequest request) throws ServletException;
 
     /**
      * 描述:    删除数据<br>

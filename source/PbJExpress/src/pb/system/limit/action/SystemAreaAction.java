@@ -69,7 +69,7 @@ public class SystemAreaAction extends AbstractAction<SystemArea>
      * @param request - HTTP请求对象
      */
     @Override
-    public void create(HttpServletRequest request)
+    public Object create(HttpServletRequest request)
             throws ServletException
     {
         try
@@ -112,6 +112,8 @@ public class SystemAreaAction extends AbstractAction<SystemArea>
             {
                 this.afterCreate(request,this.areaManager.getLastGenerator());
             }
+
+            return this.areaManager.getLastGenerator();
         }
         catch(IllegalAccessException
                 |IllegalArgumentException

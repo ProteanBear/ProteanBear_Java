@@ -57,7 +57,7 @@ public class SystemPluginAction extends AbstractAction<SystemPlugin> implements 
      * 名称：   create
      * 描述:    创建数据<br>
      * @param request - HTTP请求对象
-     */@Override public void create(HttpServletRequest request) 
+     */@Override public Object create(HttpServletRequest request)
              throws ServletException
      {
          try
@@ -107,6 +107,8 @@ public class SystemPluginAction extends AbstractAction<SystemPlugin> implements 
              {
                  this.afterCreate(request,this.pluginManager.getLastGenerator());
              }
+
+             return this.pluginManager.getLastGenerator();
          }
          catch (IllegalAccessException 
                  | IllegalArgumentException 
