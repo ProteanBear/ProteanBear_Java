@@ -935,12 +935,12 @@ var urlconfig = urlconfig || {};
         $("input[action-mode='data-search']").each(function(){
             $(this).attr("onkeyup")||(
                 $(this).attr("onkeyup","true"),
-                $(this).keyup(function(){
+                $(this).keyup(function(e){
                     if(e.keyCode===13)
                     {
                         urlconfig.customSearch?
                             (urlconfig.customSearch($(this).val(),curData))
-                            :(requestData(urlconfig,$(this).attr("name")));
+                            :(requestData(urlconfig,$(this).attr("action-name")));
                     }
                 }));
         });
