@@ -168,6 +168,29 @@ public class JsonProductor
 
     /**
      * 静态方法（公共）<br>
+     * 名称:    createInformation<br>
+     * 描述:    显示错误信息<br>
+     *
+     * @param bool  - 是否成功
+     * @param infor - 信息
+     * @param valueMap - 输出值Map
+     * @return String - 包装后的信息
+     */
+    public static String createInformation(boolean bool,String infor,Map<String,Object> valueMap)
+    {
+        String result="{\""+success+"\":"+bool+",\"infor\":\""+infor.trim().replaceAll("\"","'")+"\"";
+
+        for(String key:valueMap.keySet())
+        {
+            result+=",\""+key+"\":\""+valueMap.get(key)+"\"";
+        }
+
+        result+="}";
+        return result;
+    }
+
+    /**
+     * 静态方法（公共）<br>
      * 名称:    toJsonByObjectList<br>
      * 描述:    生成对象列表的一般格式字符串<br>
      *

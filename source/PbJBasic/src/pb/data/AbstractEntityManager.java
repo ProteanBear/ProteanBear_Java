@@ -178,6 +178,32 @@ public abstract class AbstractEntityManager<T> implements AbstractFacadeLocal<T>
     }
 
     /**
+     * 方法（受保护、抽象）<br>
+     * 名称:    setPrimaryKeyValue<br>
+     * 描述:    设置指定实体对象主键字段值<br>
+     *
+     * @param entity 实体类
+     * @return Object - 获取主键值
+     * @throws NoSuchMethodException 异常：没有指定的方法
+     * @throws IllegalAccessException 异常：
+     * @throws java.lang.reflect.InvocationTargetException 异常：
+     */
+    protected Object setPrimaryKeyValue(T entity,Object value)
+            throws NoSuchMethodException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException
+    {
+        String primaryKeyName=this.getPrimaryKeyName();
+        Object result=null;
+        if(primaryKeyName!=null)
+        {
+            String setMethodName=EntityTransformer.generateSetMethodName(primaryKeyName);
+            Method method=this.entityClass.getMethod(setMethodName);
+            result=method.invoke(entity,value);
+        }
+        return result;
+    }
+
+    /**
      * 方法（公共）
      * 名称：   create
      * 描述:    添加一条新的记录到数据库中<br>
@@ -192,6 +218,7 @@ public abstract class AbstractEntityManager<T> implements AbstractFacadeLocal<T>
         try
         {
             String generator=this.getKeyGenerator();
+            Object newId=null;
             this.dataManager.setAttribute(
                     EntityTransformer
                             .generateInsertSqlFromEntity(
@@ -199,20 +226,36 @@ public abstract class AbstractEntityManager<T> implements AbstractFacadeLocal<T>
                                     this.getPrimaryKeyName(),generator
                             )
             );
-            success=this.dataManager.insert(
-                    EntityTransformer
-                            .generateInsertParamsFromEntity(
-                                    entityClass,entity,
-                                    this.getPrimaryKeyName(),generator
-                            )
-            );
+
+            //自增主键类型
+            if(generator==null)
+            {
+                success=this.dataManager.insert(newId,
+                        EntityTransformer
+                                .generateInsertParamsFromEntity(
+                                        entityClass,entity,
+                                        this.getPrimaryKeyName(),generator
+                                )
+                );
+            }
+            //自己生成主键
+            else
+            {
+                success=this.dataManager.insert(
+                        EntityTransformer
+                                .generateInsertParamsFromEntity(
+                                        entityClass,entity,
+                                        this.getPrimaryKeyName(),generator
+                                )
+                );
+            }
 
             if(success)
             {
-                if(generator==null)
+                if(generator==null&&newId!=null)
                 {
-                    Object tmp=this.getPrimaryKeyValue(entity);
-                    this.lastGenerator=(tmp==null)?null:(tmp+"");
+                    this.setPrimaryKeyValue(entity,newId);
+                    this.lastGenerator=(newId==null)?null:(newId+"");
                 }
                 else
                 {

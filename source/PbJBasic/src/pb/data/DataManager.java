@@ -400,6 +400,20 @@ public class DataManager
 
     /**
      * 方法（公共）<br>
+     * 名称:    insert<br>
+     * 描述:    插入数据<br>
+     *
+     * @param newId - 使用自增主键时使用，用于返回新生成的主键
+     * @param params - 语句中的替换参数
+     * @return boolean - 是否成功
+     */
+    public boolean insert(Object newId,Object... params)
+    {
+        return executeUpdate("insert",newId,params);
+    }
+
+    /**
+     * 方法（公共）<br>
      * 名称:    update<br>
      * 描述:    更新数据<br>
      *
@@ -822,6 +836,22 @@ public class DataManager
     {
         if(!this.connecter.isConnected()) this.connect();
         return this.query.executeUpdate(this.generateSQL(sqlname),params);
+    }
+
+    /**
+     * 方法（私有）<br>
+     * 名称:    executeUpdate<br>
+     * 描述:    执行语句<br>
+     *
+     * @param newId - 使用自增主键时使用，用于返回新生成的主键
+     * @param sqlname - sql语句索引值
+     * @param params  - 语句中的替换参数
+     * @return boolean
+     */
+    private boolean executeUpdate(String sqlname,Object newId,Object... params)
+    {
+        if(!this.connecter.isConnected()) this.connect();
+        return this.query.executeUpdate(this.generateSQL(sqlname),newId,params);
     }
 
     /**

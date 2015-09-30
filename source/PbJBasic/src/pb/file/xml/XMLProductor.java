@@ -41,6 +41,35 @@ public class XMLProductor
 
     /**
      * 静态方法（公共）<br>
+     * 名称:    toInforXml<br>
+     * 描述:    获得信息的xml格式<br>
+     *
+     * @param success - 是否成功
+     * @param infor   - 显示信息
+     * @param valueMap - 输出值Map
+     * @return String - xml格式的信息
+     * @throws java.io.IOException - 文档生成错误
+     */
+    public static String toInforXml(boolean success,String infor,Map<String,Object> valueMap)
+            throws IOException
+    {
+        XMLProcessor proc=new XMLProcessor();
+        Document doc=DocumentHelper.createDocument();
+        Element root=doc.addElement("RETURN");
+        root.addElement("SUCCESS").addText(success+"");
+        root.addElement("INFOR").addText(infor);
+
+        //生成结果信息
+        for(String key:valueMap.keySet())
+        {
+            root.addElement(key).addText(valueMap.get(key)+"");
+        }
+
+        return proc.getDocumentString(doc);
+    }
+
+    /**
+     * 静态方法（公共）<br>
      * 名称:    toXmlString<br>
      * 描述:    获得列表的xml字符串（针对对象数组）<br>
      *

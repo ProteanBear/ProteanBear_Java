@@ -340,6 +340,50 @@ public class QueryManager
 
     /**
      * 方法（公共）<br>
+     * 名称:    executeUpdate<br>
+     * 描述:    用于INSERT语句,支持sql中的参数设置并返回新自动生成的ID<br>
+     *
+     * @param sql    - SQL语句
+     * @param params - 使用java可变参数，用于替换的sql中的参数
+     * @return boolean - 是否成功
+     */
+    public boolean executeUpdate(String sql,Object newId,Object... params)
+    {
+        boolean success=false;
+
+        //关闭上一条sql语句对象
+        this.close();
+        //检查数据库是否连接
+        if(!this.connecter.isConnected()) this.connecter.connect();
+
+        //执行语句并生成结果
+        try
+        {
+            //创建可滚动并只读的prepareStatement对象
+            this.prepstmt=this.connecter.getConnection().prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            if(this.prepstmt==null) return success;
+            //遍历可变参数params,设置sql中的参数替换
+            this.connecter.getConnection().setAutoCommit(false);
+            this.setPreparedStatementParams(params);
+            this.prepstmt.executeUpdate();
+            //获取新自动生成的主键
+            ResultSet rs = this.prepstmt.getGeneratedKeys();
+            if(rs.next())   newId=rs.getObject(1);
+            success=(newId!=null);
+            this.connecter.getConnection().commit();
+            this.connecter.getConnection().setAutoCommit(true);
+        }
+        catch(SQLException ex)
+        {
+            this.setError(ex.getMessage());
+            success=false;
+        }
+
+        return success;
+    }
+
+    /**
+     * 方法（公共）<br>
      * 名称:    addBatch<br>
      * 描述:    用于添加INSERT、UPDATE、DELETE修改语句的批量操作<br>
      *
