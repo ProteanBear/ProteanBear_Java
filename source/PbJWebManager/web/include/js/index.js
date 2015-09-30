@@ -597,7 +597,7 @@ var urlconfig = urlconfig || {};
                     data.success?(
                             alertMessage("success",""),
                             //更新列表
-                            config.noUpdate||requestData(urlconfig,active),
+                            config.noUpdate||requestData(urlconfig,name),
                             //自定义更新
                             !config.customUpdate||config.customUpdate(params,data)
                         )
@@ -674,7 +674,7 @@ var urlconfig = urlconfig || {};
                         data.success?alertMessage("success","")
                             :alertMessage("danger",data.infor);
                         //更新列表
-                        requestData(urlconfig,active);
+                        requestData(urlconfig,name);
                     }
                     else
                     {
