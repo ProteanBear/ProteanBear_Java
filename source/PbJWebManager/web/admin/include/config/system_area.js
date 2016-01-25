@@ -199,7 +199,7 @@ var urlconfig = urlconfig || {};
         displayForm(
                 configNames[treeNode.type],
                 local.action["edit"]+local.areaClass[treeNode.type]+"（"+treeNode.areaName+"）",
-                1,null,treeNode);
+                treeNode.areaIndex,null,treeNode);
     }
     
     //属性显示事件
@@ -234,6 +234,7 @@ var urlconfig = urlconfig || {};
         success: function(local,data,limit){
             //记录数据
             list=data;
+            for(var i=0;i<list.length;i++) list[i].areaIndex=i;
             //关闭指示器
             $(".property").html("");
             //显示树
@@ -279,14 +280,16 @@ var urlconfig = urlconfig || {};
         url: "../systemArea",
         key:"areaId",
         extra:{areaClass:"0"},
+        title:"目录",
+        keyTitle:"areaName",
         buttons:[
             {id:"",action:"data-display",name:"category",title:local.action["insert"]+local.areaClass["0"],style:"info",icon:"glyphicon-plus",display:local.areaClass["0"]},
             {id:"",action:"data-display",name:"company",title:local.action["insert"]+local.areaClass["1"],style:"info",icon:"glyphicon-plus",display:local.areaClass["1"]}
         ],
         bind:{
             "form":function(){
-                $("action-mode=['data-display']").unbind();
-                $("action-mode=['data-display']").click(function(){
+                $("[action-mode='data-display']").unbind();
+                $("[action-mode='data-display']").click(function(){
                     displayForm($(this).attr("name"),$(this).attr("title"),$(this).attr("data-index"),$(this).attr("data-extra"));
                 });
             }
