@@ -394,14 +394,16 @@ public class BusiSectionFacade
      * 名称:    findBySectionCode<br>
      * 描述:    根据指定编码获取栏目数据<br>
      *
+     * @param appCode - 指定的应用标识
      * @param code - 指定的数据编码
      * @return List - 下一级数据列表
      */
     @Override
-    public BusiSection findBySectionCode(String code)
+    public BusiSection findBySectionCode(String appCode,String code)
     {
         Map<String,Object> condition=new HashMap<>();
         condition.put("sectionCode=?",code);
+        condition.put("sectionApp=?",appCode);
 
         List<BusiSection> list=this.find(condition);
         return (list!=null && !list.isEmpty())?list.get(0):null;

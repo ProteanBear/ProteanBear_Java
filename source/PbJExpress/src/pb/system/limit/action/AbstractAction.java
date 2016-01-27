@@ -671,7 +671,7 @@ public abstract class AbstractAction<T> implements DataAction
                 }
                 //获取APP属性
                 BusiSectionFacadeLocal secManager=new BusiSectionFacade(this.connector);
-                BusiSection section=secManager.findBySectionCode(fromApp);
+                BusiSection section=secManager.findBySectionCode(fromApp,"0000");
                 condition.put(sqlName+" like ?",section.getSectionCode());
             }
             else

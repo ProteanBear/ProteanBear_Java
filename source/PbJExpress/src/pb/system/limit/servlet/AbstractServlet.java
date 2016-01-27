@@ -505,7 +505,7 @@ public abstract class AbstractServlet extends HttpServlet
         {
             if(canCreate)
             {
-                Object newId=this.dataAction.create(request);
+                final Object newId=this.dataAction.create(request);
                 String str=this.stringForReturn(mode);
                 this.generateResult(out,str!=null?str:"成功插入新的数据信息",new HashMap<String,Object>(){{
                     put("newId",newId);

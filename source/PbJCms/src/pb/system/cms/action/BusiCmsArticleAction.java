@@ -754,7 +754,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                 throw new ServletException("未指定数据所属的应用标识！");
             }
             //获取应用的相关信息
-            BusiSection section=this.secManager.findBySectionCode(sectionCode);
+            BusiSection section=this.secManager.findBySectionCode(sectionApp,sectionCode);
 
             //获取应用的属性信息
             SystemApplication app=this.getAppByUserRound(request,sectionApp);
@@ -769,6 +769,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
             {
                 throw new ServletException("指定应用与栏目标识不匹配！");
             }
+            condition.put("appCode like ?",sectionApp);
         }
         //外部接口
         else
