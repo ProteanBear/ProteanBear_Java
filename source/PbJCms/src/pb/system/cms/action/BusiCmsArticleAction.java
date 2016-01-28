@@ -774,6 +774,13 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         //外部接口
         else
         {
+            //必须指定所属应用
+            String app=request.getParameter(AbstractServlet.PARAM_FROMAPP);
+            if(this.paramNullCheck(app))
+            {
+                throw new ServletException("未指定数据所属的应用标识！");
+            }
+            condition.put("appCode like ?",app);
             if(this.paramNullCheck(priKey)) condition.put("sectionCode=?",sectionCode);
             //增加已发布限制
             condition.put("articleStatus=?",2);
