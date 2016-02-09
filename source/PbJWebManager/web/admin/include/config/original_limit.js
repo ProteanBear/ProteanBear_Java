@@ -72,7 +72,7 @@ var urlconfig = urlconfig || {};
         title:parent.local.name_limit,
         property:{
             priKey:{type:"hidden",from:"limitId"},
-            limitId:{type:"custom",custemInput:"number",must:true},
+            limitId:{type:"custom",custemInput:"number",must:true,only:"create"},
             limitName:{type:"input",must:true},
             limitInit:{type:"radio",source:parent.local.source["yesOrNo"],default:"1"}
         }
