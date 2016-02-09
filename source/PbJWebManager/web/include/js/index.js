@@ -653,7 +653,7 @@ var urlconfig = urlconfig || {};
             //操作参数
             curOperate=2;
             curOperate===-1||(params[operateMode]=operate[curOperate]);
-            params[primaryKey]=data[config.key];
+            params[primaryKey]=(config.property[config.key]&&config.property[config.key].from)?data[config.property[config.key].from]:data[config.key];
 
             //Ajax访问服务器
             $.ajax({

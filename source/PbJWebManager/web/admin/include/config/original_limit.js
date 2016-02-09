@@ -46,6 +46,7 @@ var urlconfig = urlconfig || {};
         success: function(local,data,limit){
             //记录数据
             list=data;
+            activeId=parent.console.storage.getValue("limitId")||"";
             
             //显示数据
             $(".property").html("");

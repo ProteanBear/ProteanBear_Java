@@ -36,4 +36,16 @@ public class OriginalLimitFacade
     {
         return "limitId";
     }
+
+    /**
+     * 方法（受保护、抽象）<br>
+     * 名称:    getKeyGenerator<br>
+     * 描述:    返回自增主键的生成器，非生成的主键返回""<br>
+     *
+     * @return String - 主键生成值
+     */
+    protected String getKeyGenerator()
+    {
+        return "";
+    }
 }
