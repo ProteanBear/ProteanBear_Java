@@ -42,11 +42,13 @@ var urlconfig = urlconfig || {};
      * alertMessage:弹出显示提示信息
      * @param mode danger|success|info|warning
      * @param message - 错误信息
+     * @param second - 自动消失的秒数
      */
-    function alertMessage(mode,message)
+    function alertMessage(mode,message,second)
     {
         //元素存在，清除元素
         if ($(".alert").length !== 0) $(".alert").remove();
+        second=second||4;
 
         //添加元素
         $(urlconfig.messageBefore||urlconfig.to||".property").before(mt.messageAlert({
@@ -57,6 +59,9 @@ var urlconfig = urlconfig || {};
 
         //弹出元素
         $(".alert").fadeIn("fast", function() {$(".alert").addClass("in");});
+
+        //自动消失
+        !second||(setTimeout(function(){$(".alert").fadeOut("fast");},second*1000));
     }
     index.alertMessage=alertMessage;
 

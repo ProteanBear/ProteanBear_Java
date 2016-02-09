@@ -176,9 +176,15 @@ body {
 }
 
 /*
+ * alert reset
+ */
+.alert {
+    padding: 10px;
+}
+
+/*
  * Main content
  */
-
 .main {
     padding: 5px;
 }
