@@ -425,9 +425,12 @@ var urlconfig = urlconfig || {};
                         recordDataInfor(data,config.save);
                         //空数据提示
                         !curData||curData.length>0||(alertMessage("warning",local.warning_infor["001"]));
+                        //获取缓存的激活标识
+                        var activeId=null;
+                        !config.keyStorage||(activeId=(parent.console.storage.getValue(config.keyStorage)||""));
                         //显示数据内容
                         !config.success||((typeof(config.success)==="function")?
-                                   (config.success(local,data.list,limit,access))
+                                   (config.success(local,data.list,limit,access,activeId))
                                    :($(config.to).html(template(config.success,{local:local,data:data.list,limit:limit}))));
                         //绑定事件
                         bindCommonEvent();
@@ -601,6 +604,8 @@ var urlconfig = urlconfig || {};
                     //显示信息
                     data.success?(
                             alertMessage("success",""),
+                            //记录新增的主键
+                            !config.keyStorage||!data.newId||(parent.console.storage.setValue(config.keyStorage,data.newId)),
                             //更新列表
                             config.noUpdate||requestData(urlconfig,name),
                             //自定义更新
@@ -654,6 +659,7 @@ var urlconfig = urlconfig || {};
             curOperate=2;
             curOperate===-1||(params[operateMode]=operate[curOperate]);
             params[primaryKey]=(config.property[config.key]&&config.property[config.key].from)?data[config.property[config.key].from]:data[config.key];
+            !config.keyStorage||(parent.console.storage.setValue(config.keyStorage,""));
 
             //Ajax访问服务器
             $.ajax({
