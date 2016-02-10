@@ -560,7 +560,7 @@ var urlconfig = urlconfig || {};
                 }
                 else if(prop.type==="template")
                 {
-                    params=prop.paramGenerate(params);
+                    params=prop.paramGenerate(params,curOperate);
                 }
                 else
                 {
