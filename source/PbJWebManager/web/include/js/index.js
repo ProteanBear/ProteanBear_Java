@@ -685,7 +685,9 @@ var urlconfig = urlconfig || {};
                         data.success?alertMessage("success","")
                             :alertMessage("danger",data.infor);
                         //更新列表
-                        requestData(urlconfig,name);
+                        config.noUpdate||requestData(urlconfig,name);
+                        //自定义更新
+                        !config.customUpdate||config.customUpdate(params,data);
                     }
                     else
                     {
@@ -939,7 +941,7 @@ var urlconfig = urlconfig || {};
                 $(this).attr("onclick","true"),
                 $(this).click(function(){
                     urlconfig.customSearch?
-                        (urlconfig.customSearch($(this).val(),curData))
+                        (urlconfig.customSearch($("#"+$(this).attr("name")).val(),curData))
                         :(requestData(urlconfig,$(this).attr("name")));
                 }));
         });
