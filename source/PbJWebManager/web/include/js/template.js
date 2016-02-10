@@ -250,7 +250,7 @@ var mt=mt||{};
                             +'<!--[prop.source=(typeof(prop.source)=="function")?prop.source():prop.source]-->'
                             +'<label for="<!--[=key]-->" class="col-sm-2 control-label"><!--[=local.property[key]]--></label>'
                             +'<div class="col-sm-<!--[=col]-->">'
-                                +'<input type="hidden" id="<!--[=key]-->" name="<!--[=key]-->" value="<!--[=data?data[key]:""]-->" />'
+                                +'<input type="hidden" id="<!--[=key]-->" name="<!--[=key]-->" value="<!--[=data?data[key]:""]-->" data-extra="<!--[=prop.extra||"{}"]-->" />'
                                 +'<input type="file" id="<!--[=key]-->_file" name="<!--[=key]-->_file" to="<!--[=key]-->" style="display:none;" />'
                                 +'<a href="#" class="thumbnail" action-mode="upload" to="<!--[=key]-->">'
                                     +'<!--[var holder="holder.js/"+prop.size+""]-->'

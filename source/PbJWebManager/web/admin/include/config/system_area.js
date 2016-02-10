@@ -14,8 +14,6 @@ var urlconfig = urlconfig || {};
 (function(urlconfig) {
     //记录当前的数据
     var list;
-    //记录当前的数据索引
-    var activeId=parent.console.storage.getValue("areaId")||"";
     //记录企业类型列表
     var areaTypeList={};
     //记录用户角色列表
@@ -325,7 +323,7 @@ var urlconfig = urlconfig || {};
             areaName:{type:"input",must:true},
             areaContact:{type:"input",inline:"start",col:3},
             areaTel:{type:"input",inline:"end",col:4},
-            areaIcon:{type:"uploadIcon",inline:"start",col:3,size:"64x64"},
+            areaIcon:{type:"uploadIcon",inline:"start",col:3,size:"64x64",extra:"{resource:0}"},
             areaAddress:{type:"text",inline:"end",col:4},
             dataRemark:{type:"text"}
         }
@@ -338,8 +336,8 @@ var urlconfig = urlconfig || {};
             appId:{type:"hidden"},
             appCode:{type:"input",must:true,inline:"start",col:3},
             appName:{type:"input",must:true,inline:"end",col:4},
-            appIcon:{type:"uploadIcon",inline:"start",col:3,size:"1024x1024",width:128,height:128},
-            appThumbnail:{type:"uploadIcon",inline:"end",col:2,size:"64x64",width:64,height:64},
+            appIcon:{type:"uploadIcon",inline:"start",col:3,size:"1024x1024",width:128,height:128,extra:"{resource:0}"},
+            appThumbnail:{type:"uploadIcon",inline:"end",col:2,size:"64x64",width:64,height:64,extra:"{resource:0}"},
             appPlat:{
                 type:"template",
                 source:function(data,limit,operate){return tempPlat({data:data,limit:limit,operate:operate,platList:platList,local:local});},
