@@ -279,7 +279,7 @@ var urlconfig = urlconfig || {};
         url: "../systemArea",
         key:"areaId",
         extra:{areaClass:"0"},
-        title:"目录",
+        title:local.areaClass[0],
         keyTitle:"areaName",
         buttons:[
             {id:"",action:"data-display",name:"category",title:local.action["insert"]+local.areaClass["0"],style:"info",icon:"glyphicon-plus",display:local.areaClass["0"]},
@@ -363,6 +363,8 @@ var urlconfig = urlconfig || {};
     urlconfig["user"] = {
         url: "../systemUser",
         key:"custId",
+        title:local.areaClass[3],
+        keyTitle:"userNick",
         property:{
             custId:{type:"hidden",auto:true},
             userIcon:{type:"images",source:local.source.images["userIcon"]},
