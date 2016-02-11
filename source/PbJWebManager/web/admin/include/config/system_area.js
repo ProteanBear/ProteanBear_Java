@@ -112,6 +112,7 @@ var urlconfig = urlconfig || {};
         childNodes=childNodes.list;
         for (var i=0, l=childNodes.length; i<l; i++) {
             var data=childNodes[i];
+            data.areaIndex=i;
             data.name = data.name.replace(/\.n/g, '.');
             //应用信息
             if(data.type===2)
@@ -236,7 +237,7 @@ var urlconfig = urlconfig || {};
             //关闭指示器
             $(".property").html("");
             //显示树
-            !data||!$.fn.zTree||$.fn.zTree.init($("#region-tree"),setting,data);
+            !list||!$.fn.zTree||$.fn.zTree.init($("#region-tree"),setting,list);
         },
         key:"areaId",
         keyTitle:"areaName",
