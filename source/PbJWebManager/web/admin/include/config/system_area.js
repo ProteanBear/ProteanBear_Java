@@ -22,6 +22,8 @@ var urlconfig = urlconfig || {};
     var platList={};
     //获取本地化语言支持
     var local=parent.local;
+    //记录树对象标识
+    var tId="region-tree";
     //树显示配置
     var setting = {
         data: {
@@ -237,7 +239,7 @@ var urlconfig = urlconfig || {};
             //关闭指示器
             $(".property").html("");
             //显示树
-            !list||!$.fn.zTree||$.fn.zTree.init($("#region-tree"),setting,list);
+            !list||!$.fn.zTree||$.fn.zTree.init($("#"+tId),setting,list);
         },
         key:"areaId",
         keyTitle:"areaName",
@@ -333,6 +335,14 @@ var urlconfig = urlconfig || {};
     urlconfig["application"] = {
         url: "../systemApplication",
         key:"appId",
+        title:local.areaClass[2],
+        keyTitle:"appName",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            if(treeNode==null) return;
+            $.fn.zTree.getZTreeObj(tId).reAsyncChildNodes(treeNode.getParentNode(),"refresh",false);
+            $("#application").length===0||($("#application").remove());
+        },
         property:{
             appId:{type:"hidden"},
             appCode:{type:"input",must:true,inline:"start",col:3},
@@ -365,6 +375,12 @@ var urlconfig = urlconfig || {};
         key:"custId",
         title:local.areaClass[3],
         keyTitle:"userNick",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            if(treeNode==null) return;
+            $.fn.zTree.getZTreeObj(tId).reAsyncChildNodes(treeNode.getParentNode(),"refresh",false);
+            $("#user").length===0||($("#user").remove());
+        },
         property:{
             custId:{type:"hidden",auto:true},
             userIcon:{type:"images",source:local.source.images["userIcon"]},

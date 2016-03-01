@@ -632,8 +632,9 @@ var urlconfig = urlconfig || {};
      * @param name 配置索引
      * @param button 提交点击按钮
      * @param batch 是否批量
+     * @param customData 自定义数据内容
      */
-    function removeData(config,name,button,batch)
+    function removeData(config,name,button,batch,customData)
     {
         //非空判断
         if (!config) return;
@@ -643,7 +644,7 @@ var urlconfig = urlconfig || {};
         //非空判断
         if (!config) return;
         if (!button.attr("data-index")) return;
-        var data=curData[button.attr("data-index")];
+        var data=curData[button.attr("data-index")]||customData;
         if (!data) return;
 
         //弹出询问对话框
@@ -660,6 +661,7 @@ var urlconfig = urlconfig || {};
             curOperate===-1||(params[operateMode]=operate[curOperate]);
             params[primaryKey]=(config.property[config.key]&&config.property[config.key].from)?data[config.property[config.key].from]:data[config.key];
             !config.keyStorage||(parent.console.storage.setValue(config.keyStorage,""));
+            customData=data;
 
             //Ajax访问服务器
             $.ajax({
@@ -687,7 +689,7 @@ var urlconfig = urlconfig || {};
                         //更新列表
                         config.noUpdate||requestData(urlconfig,name);
                         //自定义更新
-                        !config.customUpdate||config.customUpdate(params,data);
+                        !config.customUpdate||config.customUpdate(params,data,customData);
                     }
                     else
                     {
@@ -839,7 +841,7 @@ var urlconfig = urlconfig || {};
         });
         //绑定数据删除事件
         $("#"+form+"_remove").click(function(){
-            removeData(urlconfig,$(this).attr("name"),$(this),false);
+            removeData(urlconfig,$(this).attr("name"),$(this),false,customData);
         });
         //绑定输入框校验事件
         for (var key in config.property)
