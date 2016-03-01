@@ -625,6 +625,7 @@ var urlconfig = urlconfig || {};
             }
         });
     }
+    index.submitData=submitData;
 
     /**
      * removeData:数据删除请求
@@ -643,7 +644,7 @@ var urlconfig = urlconfig || {};
         config = (config.type === "multi") ? config[name] : config;
         //非空判断
         if (!config) return;
-        if (!button.attr("data-index")) return;
+        if (!button.attr("data-index")&&!customData) return;
         var data=curData[button.attr("data-index")]||customData;
         if (!data) return;
 
@@ -704,6 +705,7 @@ var urlconfig = urlconfig || {};
             });
         });
     }
+    index.removeData=removeData;
 
     /**
      * displayPropertyDialog:显示属性对话框

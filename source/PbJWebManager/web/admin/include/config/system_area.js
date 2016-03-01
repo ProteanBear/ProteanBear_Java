@@ -162,7 +162,7 @@ var urlconfig = urlconfig || {};
         //显示按钮
         if (treeNode.type > 1) return;
         if ($("#treebutton-" + treeNode.id).length > 0) return;
-        $("body").append(template("template_treebutton", {id: treeNode.id, type: treeNode.type,local: parent.local}));
+        $("body").append(template("template_treebutton", {id: treeNode.id, type: treeNode.type,name:treeNode.name,local: parent.local}));
         $("#treebutton-" + treeNode.id).css({
             top:$("#" + treeNode.tId + "_a").offset().top+"px",
             left:$("#" + treeNode.tId + "_a").offset().left+$("#" + treeNode.tId + "_a").width()+10+"px"
@@ -172,6 +172,13 @@ var urlconfig = urlconfig || {};
         $(".treebutton").find("[action-mode='data-display']").unbind();
         $(".treebutton").find("[action-mode='data-display']").click(function(){
             displayForm($(this).attr("name"),$(this).attr("title"),$(this).attr("data-index"),$(this).attr("data-extra"));
+        });
+        $(".treebutton").find("[action-mode='data-remove']").unbind();
+        $(".treebutton").find("[action-mode='data-remove']").click(function(){
+            var ztree=$.fn.zTree.getZTreeObj(tId);
+            var node=ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null;
+            if(!node) return;
+            index.removeData(urlconfig,$(this).attr("name"),$(this),false,node);
         });
     }
 
@@ -184,6 +191,24 @@ var urlconfig = urlconfig || {};
     {
         $(".treebutton").find("button").unbind();
         $(".treebutton").remove();
+    }
+
+    /**
+     * generateDataExtra:
+     */
+    function generateDataExtraUp()
+    {
+        var ztree=$.fn.zTree.getZTreeObj(tId);
+        var node=ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null;
+        if(!node) return "";
+        return "{upId:'"+node.id+"'}";
+    }
+    function generateDataExtraArea()
+    {
+        var ztree=$.fn.zTree.getZTreeObj(tId);
+        var node=ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null;
+        if(!node) return "";
+        return "{areaId:'"+node.id+"'}";
     }
 
     /**
@@ -289,8 +314,8 @@ var urlconfig = urlconfig || {};
         },
         extra:{areaClass:"0"},
         buttons:[
-            {id:"",action:"data-display",name:"category",title:local.action["insert"]+local.areaClass["0"],style:"info",icon:"glyphicon-plus",display:local.areaClass["0"]},
-            {id:"",action:"data-display",name:"company",title:local.action["insert"]+local.areaClass["1"],style:"info",icon:"glyphicon-plus",display:local.areaClass["1"]}
+            {id:"",action:"data-display",name:"category",title:local.action["insert"]+local.areaClass["0"],style:"info",icon:"glyphicon-plus",display:local.areaClass["0"],extra:generateDataExtraUp},
+            {id:"",action:"data-display",name:"company",title:local.action["insert"]+local.areaClass["1"],style:"info",icon:"glyphicon-plus",display:local.areaClass["1"],extra:generateDataExtraUp}
         ],
         bind:{
             "form":function(){
@@ -321,8 +346,8 @@ var urlconfig = urlconfig || {};
         },
         extra:{areaClass:"1"},
         buttons:[
-            {id:"",action:"data-display",name:"application",title:local.action["insert"]+local.areaClass["2"],style:"info",icon:"glyphicon-plus",display:local.areaClass["2"]},
-            {id:"",action:"data-display",name:"user",title:local.action["insert"]+local.areaClass["3"],style:"info",icon:"glyphicon-plus",display:local.areaClass["3"]}
+            {id:"",action:"data-display",name:"application",title:local.action["insert"]+local.areaClass["2"],style:"info",icon:"glyphicon-plus",display:local.areaClass["2"],extra:generateDataExtraArea},
+            {id:"",action:"data-display",name:"user",title:local.action["insert"]+local.areaClass["3"],style:"info",icon:"glyphicon-plus",display:local.areaClass["3"],extra:generateDataExtraArea}
         ],
         bind:{
             "form":function(){
@@ -346,6 +371,7 @@ var urlconfig = urlconfig || {};
     //应用
     urlconfig["application"] = {
         url: "../systemApplication",
+        to:".property",
         key:"appId",
         title:local.areaClass[2],
         keyTitle:"appName",
