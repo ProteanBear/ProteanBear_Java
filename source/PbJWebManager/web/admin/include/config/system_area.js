@@ -169,8 +169,8 @@ var urlconfig = urlconfig || {};
         });
         
         //绑定事件
-        $("[action-mode='data-display']").unbind();
-        $("[action-mode='data-display']").click(function(){
+        $(".treebutton").find("[action-mode='data-display']").unbind();
+        $(".treebutton").find("[action-mode='data-display']").click(function(){
             displayForm($(this).attr("name"),$(this).attr("title"),$(this).attr("data-index"),$(this).attr("data-extra"));
         });
     }
@@ -182,7 +182,7 @@ var urlconfig = urlconfig || {};
      */
     function removeHoverDom(treeId, treeNode)
     {
-        $(".treebutton").children("button").unbind();
+        $(".treebutton").find("button").unbind();
         $(".treebutton").remove();
     }
 
@@ -280,9 +280,14 @@ var urlconfig = urlconfig || {};
     urlconfig["category"] = {
         url: "../systemArea",
         key:"areaId",
-        extra:{areaClass:"0"},
         title:local.areaClass[0],
         keyTitle:"areaName",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            index.requestData(urlconfig,"SYSTEM_MANAGE_AREA");
+            removeHoverDom();
+        },
+        extra:{areaClass:"0"},
         buttons:[
             {id:"",action:"data-display",name:"category",title:local.action["insert"]+local.areaClass["0"],style:"info",icon:"glyphicon-plus",display:local.areaClass["0"]},
             {id:"",action:"data-display",name:"company",title:local.action["insert"]+local.areaClass["1"],style:"info",icon:"glyphicon-plus",display:local.areaClass["1"]}
@@ -307,6 +312,13 @@ var urlconfig = urlconfig || {};
     urlconfig["company"] = {
         url: "../systemArea",
         key:"areaId",
+        title:local.areaClass[1],
+        keyTitle:"areaName",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            index.requestData(urlconfig,"SYSTEM_MANAGE_AREA");
+            removeHoverDom();
+        },
         extra:{areaClass:"1"},
         buttons:[
             {id:"",action:"data-display",name:"application",title:local.action["insert"]+local.areaClass["2"],style:"info",icon:"glyphicon-plus",display:local.areaClass["2"]},
@@ -339,9 +351,12 @@ var urlconfig = urlconfig || {};
         keyTitle:"appName",
         noUpdate:true,
         customUpdate:function(params,data,treeNode){
+            var ztree=$.fn.zTree.getZTreeObj(tId);
+            treeNode=treeNode||(ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null);
             if(treeNode==null) return;
-            $.fn.zTree.getZTreeObj(tId).reAsyncChildNodes(treeNode.getParentNode(),"refresh",false);
+            ztree.reAsyncChildNodes(treeNode.type==2?treeNode.getParentNode():treeNode,"refresh",false);
             $("#application").length===0||($("#application").remove());
+            removeHoverDom();
         },
         property:{
             appId:{type:"hidden"},
@@ -377,9 +392,12 @@ var urlconfig = urlconfig || {};
         keyTitle:"userNick",
         noUpdate:true,
         customUpdate:function(params,data,treeNode){
+            var ztree=$.fn.zTree.getZTreeObj(tId);
+            treeNode=treeNode||(ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null);
             if(treeNode==null) return;
-            $.fn.zTree.getZTreeObj(tId).reAsyncChildNodes(treeNode.getParentNode(),"refresh",false);
+            ztree.reAsyncChildNodes(treeNode.type==3?treeNode.getParentNode():treeNode,"refresh",false);
             $("#user").length===0||($("#user").remove());
+            removeHoverDom();
         },
         property:{
             custId:{type:"hidden",auto:true},
