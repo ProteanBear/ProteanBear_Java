@@ -236,6 +236,7 @@ var plugins=plugins||{};
             articleIsFocus:{type:"checkbox"},
             articleCanCommit:{type:"checkbox"},
             articleSummary:{type:"text"},
+            articleKeywords:{type:"input"},
             handleAfter:{type:"radio"}
         }
     };
