@@ -266,8 +266,8 @@ public class BusiSectionFacade
         }
 
         //获取指定的栏目
-        BusiSection section=obj.getClass().isAssignableFrom(int.class)?
-                this.find(obj):((BusiSection)obj);
+        BusiSection section=obj.getClass().isAssignableFrom(BusiSection.class)?
+                ((BusiSection)obj):this.find(obj);
 
         //数据不存在
         if(section==null)

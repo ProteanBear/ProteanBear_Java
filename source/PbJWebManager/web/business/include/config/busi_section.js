@@ -92,6 +92,24 @@ var urlconfig = urlconfig || {};
                     );
                 }));
         });
+        $("[action-mode='section-remove']").each(function(){
+            $(this).attr("onclick")||(
+                $(this).attr("onclick","true"),
+                    $(this).click(function(){
+                        var tempUp=eval("("+$(this).attr("data-extra")+")");
+                        var customData=null;
+                        for(var i=0;i<curData[tempUp.sectionApp].length;i++)
+                        {
+                            if(curData[tempUp.sectionApp][i].sectionCode===tempUp.upCode)
+                            {
+                                customData=curData[tempUp.sectionApp][i];
+                                break;
+                            }
+                        }
+
+                        index.removeData(urlconfig,$(this).attr("name"),$(this),false,customData);
+                    }));
+        });
         index.bindCommonEvent();
     }
 
@@ -143,11 +161,8 @@ var urlconfig = urlconfig || {};
         save:false,
         noUpdate:true,
         customUpdate:function(extra){
-            //获取索引
-            var app;
-            for(var i=0;i<apps.length;i++){if(extra.sectionApp===apps[i].appCode){idx=i;app=apps[i];break;}}
             //更新树
-            index.requestData(urlconfig,"BUSI_MANAGE_SECTION",{sectionApp:app.appCode});
+            index.requestData(urlconfig,"BUSI_MANAGE_SECTION",{sectionApp:apps[0].appCode});
             //恢复输入
             $("[action-mode]").removeAttr("disabled");
             for (var key in urlconfig["BUSI_MANAGE_SECTION"].property)
@@ -156,13 +171,17 @@ var urlconfig = urlconfig || {};
                         $(this).removeAttr("disabled");
                     });
             }
+            //关闭树自定义控件
+            removeHoverDom();
+            //关闭已经打开的删除栏目的文章列表
+            index.loadSubContent("sub_welcome.html");
         },
         success:function(local,data,limit,access){
             //显示树
             !data||!$.fn.zTree||($.fn.zTree.init($("#"+access.sectionApp+"_ul"),setting,data),curData[apps[idx].appCode]=data);
             //获取下一个应用
             idx++;
-            idx>=apps.length||(index.requestData(urlconfig,"BUSI_MANAGE_SECTION",{sectionApp:apps[idx].appCode}));
+            idx>=apps.length?(idx=0):(index.requestData(urlconfig,"BUSI_MANAGE_SECTION",{sectionApp:apps[idx].appCode}));
         },
         afterHtml:function(){
             //显示预设图片
