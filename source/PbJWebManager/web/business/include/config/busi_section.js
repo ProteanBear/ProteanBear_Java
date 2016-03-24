@@ -179,7 +179,7 @@ var urlconfig = urlconfig || {};
             sectionTypeDisplay:{type:"radio-images",source:parent.local.source.type["display"],isIcon:false,default:"0"},
             sectionIconClose:{type:"images",source:parent.local.source.images["categoryClose"],default:pathIcon+"index_close.png"},
             sectionIconOpen:{type:"images",source:parent.local.source.images["categoryOpen"],default:pathIcon+"index_open.png"},
-            sectionIcon:{type:"uploadIcon",inline:"start",col:3,size:"128X128",width:64,height:64},
+            sectionIcon:{type:"uploadIcon",inline:"start",col:3,size:"128X128",width:64,height:64,extra:"{resource:0}"},
             dataRemark:{type:"text",inline:"end",col:3}
         }
     };
