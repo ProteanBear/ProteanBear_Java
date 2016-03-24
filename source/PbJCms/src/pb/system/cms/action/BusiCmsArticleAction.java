@@ -501,6 +501,21 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         json.put("total",this.manager.getTotalCount());
         json.put("totalPage",this.manager.getTotalPage());
 
+        //增加其他统计内容
+        if(!this.isCurrentUseNoLoginMode(request)&&this.currentPage==1)
+        {
+            Map<String,Object> condition=this.generateCondition(request);
+            Map<String,Object> result=new HashMap<>();
+            condition.remove("articleStatus=?");
+            result.put("-1",this.manager.count(condition));
+            for(int i=0;i<3;i++)
+            {
+                condition.put("articleStatus=?",i);
+                result.put(i+"",this.manager.count(condition));
+            }
+            json.put("statistics",result);
+        }
+
         //列表内容
         JSONArray array=new JSONArray();
         for(Object obj : list)
@@ -931,8 +946,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
      * @return SystemApplication -
      * @throws javax.servlet.ServletException
      */
-    protected SystemApplication getAppByUserRound
-    (HttpServletRequest request,String sectionApp)
+    protected SystemApplication getAppByUserRound(HttpServletRequest request,String sectionApp)
             throws ServletException
     {
         Map<String,Object> appCondition=new HashMap<>();

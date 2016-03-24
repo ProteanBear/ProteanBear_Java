@@ -71,7 +71,6 @@ var urlconfig = urlconfig || {};
         $(config.to).html(parent.parent.console.loading()||"");
 
         //获取提交数据
-        //获取提交数据
         var params = {},value="";
         if (config && config.searchs)
         {
@@ -113,7 +112,7 @@ var urlconfig = urlconfig || {};
                         !data.list||data.list.length>0||(parent.index.alertMessage("warning",local.warning_infor["001"]));
                         //显示数据内容
                         !config.success||((typeof(config.success)==="function")?
-                                   (config.success(local,data.list,limit,config.access))
+                                   (config.success(local,data.list,limit,config.access,null,data))
                                    :($(config.to).html(template(config.success,{local:local,data:data,limit:limit}))));
                         //结束载入
                         loadComplete(data);

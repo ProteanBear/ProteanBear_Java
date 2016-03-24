@@ -175,12 +175,18 @@ var plugins=plugins||{};
             "appCode":function(){return curIndex.getSubUrlParam("appCode");},
             "searchValue":function()
             {
+                var result="";
+                //增加id标识
                 var articleId=curIndex.getSubUrlParam("id");
-                return (articleId?("articleId=?;"+articleId):null);
+                !articleId||(result+="articleId=?;"+articleId);
+                //增加筛选获取
+                var articleStatus=curIndex.getSubUrlParam("articleStatus");
+                !articleStatus||articleStatus==-1||(result+="articleStatus=?;"+articleStatus);
+                return result;
             }
         },
         access:{"mode":function(){return curIndex.getSubUrlParam("mode");}},
-        success:function(local,data,limit,access){
+        success:function(local,data,limit,access,activeId,response){
             var mode=urlconfig["BUSI_CMS_ARTICLE"].access["mode"]()||"list";
             var sectionName=curIndex.getSubUrlParam("sectionName");
             var sectionCode=curIndex.getSubUrlParam("sectionCode");
@@ -209,7 +215,23 @@ var plugins=plugins||{};
                     editUrl:editUrl}))
                 ,
                 //显示页码
-                $(".pagination-right").html(mt.pagination({data: data, max: 5, dis: 2,name:"BUSI_CMS_ARTICLE"})));
+                $(".pagination-right").html(mt.pagination({data: data, max: 5, dis: 2,name:"BUSI_CMS_ARTICLE"}))
+            );
+            
+            //显示统计
+            if(mode!="edit"&&response&&response.statistics)
+            {
+                //当前状态
+                var articleStatus=curIndex.getSubUrlParam("articleStatus")||-1;
+                for(var status in local.checkType)
+                {
+                    $("#statusNumber-"+status).html(response.statistics[status]);
+                    !articleStatus||articleStatus!=status||(
+                        $("#statusNumber-"+status).parent().removeAttr("load"),
+                        $("#statusNumber-"+status).parent().addClass("disabled")
+                    );
+                }
+            }
         },
         customUpdate:function(params,data){
             var sectionName=curIndex.getSubUrlParam("sectionName");

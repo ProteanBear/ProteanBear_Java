@@ -430,7 +430,7 @@ var urlconfig = urlconfig || {};
                         !config.keyStorage||(activeId=(parent.console.storage.getValue(config.keyStorage)||""));
                         //显示数据内容
                         !config.success||((typeof(config.success)==="function")?
-                                   (config.success(local,data.list,limit,access,activeId))
+                                   (config.success(local,data.list,limit,access,activeId,data))
                                    :($(config.to).html(template(config.success,{local:local,data:data.list,limit:limit}))));
                         //绑定事件
                         bindCommonEvent();
