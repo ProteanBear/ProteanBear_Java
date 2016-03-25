@@ -30,7 +30,7 @@ var plugins=plugins||{};
                             //仅浏览模式下显示
                             +'<!--[if(mode===1&&!data[i].ariticleIsFocus){]-->'
                                 //标题图
-                                +'<!--[if(data[i].articleImageTitle!==""){]--><img class="img-title" src="<!--[=data[i].articleImageTitle]-->" />'
+                                +'<!--[if(data[i].articleImageTitle!==""){]--><img class="img-title" src="<!--[=data[i].articleImageTitleFull]-->" />'
                                     //播放按钮（视频类型）
                                     +'<!--[if(data[i].articleType===2){]-->'
                                         +'<p class="video-play">'
@@ -62,7 +62,7 @@ var plugins=plugins||{};
                             //焦点图（浏览模式下的焦点文章或图片模式下）
                             +'<!--[if((mode===2)||(mode===1&&data[i].ariticleIsFocus)){]-->'
                                 +'<p class="image-focus">'
-                                    +'<img class="img-title" src="<!--[=data[i].ariticleIsFocus?data[i].articleImageFocus:data[i].articleImageTitle]-->" />'
+                                    +'<img class="img-title" src="<!--[=data[i].ariticleIsFocus?data[i].articleImageFocusFull:data[i].articleImageTitleFull]-->" />'
                                 +'</p>'
                                 +'<!--[if(data[i].articleType===2){]-->'
                                     +'<p class="video-play-focus">'
@@ -259,6 +259,8 @@ var plugins=plugins||{};
             articleCanCommit:{type:"checkbox"},
             articleSummary:{type:"text"},
             articleKeywords:{type:"input"},
+            articleImageTitle:{type:"hidden"},
+            articleImageFocus:{type:"hidden"},
             handleAfter:{type:"radio"}
         }
     };

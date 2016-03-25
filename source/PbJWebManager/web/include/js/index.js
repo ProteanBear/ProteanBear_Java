@@ -330,7 +330,7 @@ var urlconfig = urlconfig || {};
                     {
                         (plugin&&plugins&&plugins[plugin]&&plugins[plugin].success)?
                             (plugins[plugin].success(data))
-                            :($("#"+id).val("../"+data.path),$("#"+id+"_img").attr("src","../"+data.path));
+                            :($("#"+id).val(data.path),$("#"+id+"_img").attr("src","../"+data.path));
                     }
                     else
                     {

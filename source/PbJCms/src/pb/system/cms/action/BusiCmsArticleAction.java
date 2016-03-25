@@ -528,8 +528,10 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
             artJson.put("sectionCode",article.getSectionCode());
             artJson.put("articleTitle",article.getArticleTitle());
             artJson.put("articleType",article.getArticleType());
-            artJson.put("articleImageTitle",this.getFullLink(request,article.getArticleImageTitle()));
-            artJson.put("articleImageFocus",this.getFullLink(request,article.getArticleImageFocus()));
+            artJson.put("articleImageTitle",article.getArticleImageTitle());
+            artJson.put("articleImageFocus",article.getArticleImageFocus());
+            artJson.put("articleImageTitleFull",this.getFullLink(request,article.getArticleImageTitle()));
+            artJson.put("articleImageFocusFull",this.getFullLink(request,article.getArticleImageFocus()));
             artJson.put("articleSummary",article.getArticleSummary());
             artJson.put("articleKeywords",article.getArticleKeywords());
             artJson.put("articleSource",article.getArticleSource());
