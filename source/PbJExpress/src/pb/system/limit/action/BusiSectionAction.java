@@ -176,8 +176,7 @@ public class BusiSectionAction extends AbstractAction<BusiSection> implements Da
      * @return List - 处理后的数据对象列表
      */
     @Override
-    protected List<Object> generateOutput
-    (HttpServletRequest request,List<BusiSection> list)
+    protected List<Object> generateOutput(HttpServletRequest request,List<BusiSection> list)
     {
         List<Object> result=null;
         if(list!=null)

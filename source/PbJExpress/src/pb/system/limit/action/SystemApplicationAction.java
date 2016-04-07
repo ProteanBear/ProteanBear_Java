@@ -149,8 +149,7 @@ public class SystemApplicationAction extends AbstractAction<SystemApplication> i
      * @return List - 处理后的数据对象列表
      */
     @Override
-    protected List<Object> generateOutput
-    (HttpServletRequest request,List<SystemApplication> list)
+    protected List<Object> generateOutput(HttpServletRequest request,List<SystemApplication> list)
     {
         List<Object> result=null;
         if(list!=null)
@@ -164,5 +163,18 @@ public class SystemApplicationAction extends AbstractAction<SystemApplication> i
             }
         }
         return result;
+    }
+
+    /**
+     * 方法（受保护）<br>
+     * 名称:    supportNoLoginFind<br>
+     * 描述:    是否支持非登录下查询处理<br>
+     *
+     * @return boolean - 如果参数值为null或""，返回true
+     */
+    @Override
+    public boolean supportNoLoginFind()
+    {
+        return true;
     }
 }
