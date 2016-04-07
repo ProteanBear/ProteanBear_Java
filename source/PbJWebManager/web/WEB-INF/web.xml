@@ -83,6 +83,14 @@
         <servlet-name>系统通用-应用更新检查数据接口</servlet-name>
         <servlet-class>pb.system.limit.servlet.SystemVersionLastestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>业务管理-内容标签管理数据接口</servlet-name>
+        <servlet-class>pb.system.cms.servlet.BusiCmsTagServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>业务管理-内容标签管理数据接口</servlet-name>
+        <url-pattern>/busiCmsTag</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>系统通用-应用更新检查数据接口</servlet-name>
         <url-pattern>/systemVersionLastest</url-pattern>
