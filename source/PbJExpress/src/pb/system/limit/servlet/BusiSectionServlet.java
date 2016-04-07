@@ -25,6 +25,13 @@ public class BusiSectionServlet extends AbstractServlet
      * 描述:    记录请求参数名称——所属应用<br>
      */
     public static final String PARAM_APP="sectionApp";
+
+    /**
+     * 静态常量(公共)<br>
+     * 名称:    PARAM_INUSE<br>
+     * 描述:    记录请求参数名称——开放使用<br>
+     */
+    public static final String PARAM_INUSE="sectionInUse";
     
     /*-----------------------------结束：静态内容------------------------------*/
 

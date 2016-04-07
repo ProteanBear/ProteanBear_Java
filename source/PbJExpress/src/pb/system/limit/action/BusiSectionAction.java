@@ -150,9 +150,17 @@ public class BusiSectionAction extends AbstractAction<BusiSection> implements Da
                 condition.put("sectionApp=?",app);
             }
 
-            String upId=request.getParameter(BusiSectionServlet.PARAM_UPID);
-            upId=(this.paramNullCheck(upId))?"":upId;
-            condition.put("sectionCode like ?",upId+"____");
+            String inUse=request.getParameter(BusiSectionServlet.PARAM_INUSE);
+            if(!this.paramNullCheck(inUse)&&"1".equals(inUse))
+            {
+                condition.put("sectionEnable=?",1);
+            }
+            else
+            {
+                String upId=request.getParameter(BusiSectionServlet.PARAM_UPID);
+                upId=(this.paramNullCheck(upId))?"":upId;
+                condition.put("sectionCode like ?",upId+"____");
+            }
         }
 
         return condition;
