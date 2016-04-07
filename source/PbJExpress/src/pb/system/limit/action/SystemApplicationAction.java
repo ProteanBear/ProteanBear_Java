@@ -2,6 +2,7 @@ package pb.system.limit.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,7 @@ import pb.system.limit.manager.SystemApplicationPlatformFacade;
 import pb.system.limit.manager.SystemApplicationPlatformFacadeLocal;
 import pb.system.limit.module.SystemApplicationOutput;
 import pb.system.limit.servlet.AbstractServlet;
+import pb.system.limit.servlet.BusiSectionServlet;
 import pb.system.limit.servlet.SystemApplicationServlet;
 
 /**
@@ -137,6 +139,35 @@ public class SystemApplicationAction extends AbstractAction<SystemApplication> i
 
         //重新创建企业类型对应的插件
         this.afterCreate(request,appId);
+    }
+
+    /**
+     * 方法（受保护）<br>
+     * 名称:    generateCondition<br>
+     * 描述:    通过请求参数生成相应查询条件。<br>
+     * 参数格式为：searchValue=con1,value1|con2,value2|.....
+     *
+     * @param request - HTTP请求对象
+     * @return Map<String,Object> - 查询条件集合
+     * @throws javax.servlet.ServletException
+     */
+    @Override
+    protected Map<String,Object> generateCondition(HttpServletRequest request)
+            throws ServletException
+    {
+        Map<String,Object> condition=super.generateCondition(request);
+
+        //外部接口
+        if(this.isCurrentUseNoLoginMode(request))
+        {
+            String app=request.getParameter(SystemApplicationServlet.PARAM_APPSEARCH);
+            if(!this.paramNullCheck(app))
+            {
+                condition.put("appName like ?","%"+app+"%");
+            }
+        }
+
+        return condition;
     }
 
     /**
