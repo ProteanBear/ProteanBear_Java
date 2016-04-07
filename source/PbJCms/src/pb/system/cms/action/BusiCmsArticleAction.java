@@ -455,7 +455,9 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
     }
 
     /**
-     * 方法（公共） 名称： findToXml 描述: 查询数据，返回Xml结果<br/>
+     * 方法（公共）
+     * 名称： findToXml
+     * 描述: 查询数据，返回Xml结果<br/>
      *
      * @param request - HTTP请求对象
      * @return String - 获取成功返回XML格式的列表结果
@@ -478,7 +480,9 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
     }
 
     /**
-     * 方法（公共） 名称： findToJson 描述: 查询数据，返回Json结果<br/>
+     * 方法（公共）
+     * 名称： findToJson
+     * 描述: 查询数据，返回Json结果<br/>
      *
      * @param request - HTTP请求对象
      * @return String - 获取成功返回JSON格式的列表结果
@@ -798,7 +802,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                 throw new ServletException("未指定数据所属的应用标识！");
             }
             condition.put("appCode like ?",app);
-            if(this.paramNullCheck(priKey)) condition.put("sectionCode=?",sectionCode);
+            if(this.paramNullCheck(sectionCode)) condition.put("sectionCode like ?",sectionCode+"%");
             //增加已发布限制
             condition.put("articleStatus=?",2);
         }
