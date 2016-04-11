@@ -2,6 +2,8 @@ package pb.system.limit.manager;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 import pb.code.MD5Productor;
 import pb.data.AbstractEntityManager;
@@ -95,7 +97,9 @@ public class SystemUserFacade
             return this.logAndReturnFalse("缺少必要的字段属性-用户标识");
         }
         //判断超级管理员标识
-        if(SuperAdminUser.superAdminId.equals(need) || this.exist(need))
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("userName=?",need);
+        if(SuperAdminUser.superAdminId.equals(need) || this.exist(condition))
         {
             return this.logAndReturnFalse("指定的用户名已经存在，请更换用户名再次添加");
         }

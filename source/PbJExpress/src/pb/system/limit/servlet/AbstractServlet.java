@@ -185,27 +185,6 @@ public abstract class AbstractServlet extends HttpServlet
 
     /**
      * 静态常量(公共)<br>
-     * 名称:    PARAM_MEMBER<br>
-     * 描述:    记录请求参数名称——会员登录名称\邮箱\手机号<br>
-     */
-    public static final String PARAM_MEMBER="member";
-
-    /**
-     * 静态常量(公共)<br>
-     * 名称:    PARAM_MEMBER_TYPE<br>
-     * 描述:    记录请求参数名称——会员登录类型,0-邮箱注册、1-手机注册、1-微信、2-QQ、3-微博<br>
-     */
-    public static final String PARAM_MEMBER_TYPE="memberType";
-
-    /**
-     * 静态常量(公共)<br>
-     * 名称:    PARAM_MEMBER_PASS<br>
-     * 描述:    记录请求参数名称——会员登录的密码，仅限平台注册用户<br>
-     */
-    public static final String PARAM_MEMBER_PASS="memberPass";
-
-    /**
-     * 静态常量(公共)<br>
      * 名称:    SESSION_LOGIN_USER<br>
      * 描述:    记录session属性名称——管理人员登录后记录的缓存数据索引，记录在Session中<br>
      */
