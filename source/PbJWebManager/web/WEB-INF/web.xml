@@ -87,6 +87,46 @@
         <servlet-name>业务管理-内容标签管理数据接口</servlet-name>
         <servlet-class>pb.system.cms.servlet.BusiCmsTagServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员登录接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员注册接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberRegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员注销接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberLogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员管理接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-文章评论数据接口</servlet-name>
+        <servlet-class>pb.system.cms.servlet.BusiCmsCommentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>业务管理-文章评论数据接口</servlet-name>
+        <url-pattern>/busiCmsComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员管理接口</servlet-name>
+        <url-pattern>/busiMember</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员注销接口</servlet-name>
+        <url-pattern>/busiMemberLogout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员注册接口</servlet-name>
+        <url-pattern>/busiMemberRegister</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员登录接口</servlet-name>
+        <url-pattern>/busiMemberLogin</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>业务管理-内容标签管理数据接口</servlet-name>
         <url-pattern>/busiCmsTag</url-pattern>
