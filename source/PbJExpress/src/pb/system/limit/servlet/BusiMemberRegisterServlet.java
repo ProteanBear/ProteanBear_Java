@@ -132,7 +132,7 @@ public class BusiMemberRegisterServlet extends AbstractServlet
         result.append("\"success\":true,");
 
         //设置用户基本信息
-        result.append("\"memberName\":").append(member.getMemberName()).append(",")
+        result.append("\"memberName\":\"").append(member.getMemberName()).append("\",")
                 .append("\"memberNick\":\"").append(member.getMemberNick()).append("\",")
                 .append("\"memberEmail\":\"").append(member.getMemberEmail()).append("\",")
                 .append("\"memberPhone\":\"").append(member.getMemberPhone()).append("\",")

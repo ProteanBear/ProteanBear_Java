@@ -751,22 +751,23 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         //参数判断
         String priKey=request.getParameter(AbstractServlet.PARAM_PRIMARYKEY);
         String sectionCode=request.getParameter(BusiCmsArticleServlet.PARAM_SECTION);
-        if(!this.paramNullCheck(priKey))
-        {
-            condition.put("articleId=?",priKey);
-        }
-        else
-        {
-            //必须指定栏目标识
-            if(this.paramNullCheck(sectionCode))
-            {
-                throw new ServletException("未指定文章所属的栏目标识！");
-            }
-        }
 
         //后台访问
         if(!this.isCurrentUseNoLoginMode(request))
         {
+            if(!this.paramNullCheck(priKey))
+            {
+                condition.put("articleId=?",priKey);
+            }
+            else
+            {
+                //必须指定栏目标识
+                if(this.paramNullCheck(sectionCode))
+                {
+                    throw new ServletException("未指定文章所属的栏目标识！");
+                }
+            }
+
             condition.put("sectionCode like ?",sectionCode+"%");
             //必须指定所属应用
             String sectionApp=request.getParameter(BusiCmsArticleServlet.PARAM_APP);
@@ -795,14 +796,22 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         //外部接口
         else
         {
-            //必须指定所属应用
-            String app=request.getParameter(AbstractServlet.PARAM_FROMAPP);
-            if(this.paramNullCheck(app))
+            String tagName=request.getParameter(BusiCmsArticleServlet.PARAM_TAGNAME);
+            if(!this.paramNullCheck(tagName))
             {
-                throw new ServletException("未指定数据所属的应用标识！");
+                condition.put("articleKeywords like ?","%"+tagName+"%");
             }
-            condition.put("appCode like ?",app);
-            if(this.paramNullCheck(sectionCode)) condition.put("sectionCode like ?",sectionCode+"%");
+            else
+            {
+                //必须指定所属应用
+                String app=request.getParameter(AbstractServlet.PARAM_FROMAPP);
+                if(this.paramNullCheck(app))
+                {
+                    throw new ServletException("未指定数据所属的应用标识！");
+                }
+                condition.put("appCode like ?",app);
+                if(this.paramNullCheck(sectionCode)) condition.put("sectionCode like ?",sectionCode+"%");
+            }
             //增加已发布限制
             condition.put("articleStatus=?",2);
         }

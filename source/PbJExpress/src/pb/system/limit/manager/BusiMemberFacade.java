@@ -102,7 +102,7 @@ public class BusiMemberFacade
 
         //判断重复名称
         Map<String,Object> condition=new HashMap<>();
-        condition.put("memberName=?",need);
+        condition.put("memberName=?",entity.getMemberName());
         if(this.exist(condition))
         {
             return this.logAndReturnFalse("指定的用户名已经存在，请更换用户名再次注册");
@@ -133,6 +133,7 @@ public class BusiMemberFacade
             if(GeneralHelper.isStrNumeric(phone)
                     &&phone.length()<13)
             {
+                condition.clear();
                 condition.put("memberPhone=?",phone);
                 if(this.exist(condition))
                 {
@@ -207,15 +208,15 @@ public class BusiMemberFacade
         //第三方登录
         if(memberType>1)
         {
-            sqlAttribute.addCondition("member_ext="+memberLogin)
-                    .addCondition("member_type="+memberType);
+            sqlAttribute.addCondition("member_ext='"+memberLogin+"'")
+                    .addCondition("member_type='"+memberType+"'");
         }
         //本地注册登录
         else
         {
-            sqlAttribute.addCondition("member_name="+memberLogin,false)
-                    .addCondition("member_email="+memberLogin,false)
-                    .addCondition("member_phone="+memberLogin,false);
+            sqlAttribute.addCondition("member_name='"+memberLogin+"'",false)
+                    .addCondition("member_email='"+memberLogin+"'",false)
+                    .addCondition("member_phone='"+memberLogin+"'",false);
             try
             {
                 List<BusiMember> list=this.generateObjectList(this.dataManager.setAttribute(sqlAttribute).select());

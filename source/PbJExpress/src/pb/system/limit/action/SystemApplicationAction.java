@@ -189,6 +189,7 @@ public class SystemApplicationAction extends AbstractAction<SystemApplication> i
             for(SystemApplication app : list)
             {
                 SystemApplicationOutput appOut=new SystemApplicationOutput(app);
+                appOut.setAppThumbnail(this.getFullLink(request,appOut.getAppThumbnail()));
                 appOut.setAppPlat(this.platManager.findByAppId(app.getAppId()));
                 result.add(appOut);
             }

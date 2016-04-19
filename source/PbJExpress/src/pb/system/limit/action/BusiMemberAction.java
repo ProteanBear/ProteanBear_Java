@@ -1,6 +1,7 @@
 package pb.system.limit.action;
 
 import pb.data.Connector;
+import pb.data.EntityTransformer;
 import pb.system.limit.entity.BusiMember;
 import pb.system.limit.manager.BusiMemberFacade;
 import pb.system.limit.manager.BusiMemberFacadeLocal;
@@ -10,6 +11,7 @@ import pb.text.DateProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * 数据应用层类——记录系统平台的会员信息
@@ -74,6 +76,85 @@ public class BusiMemberAction extends AbstractAction<BusiMember> implements Data
         entity.setUpdateTime(entity.getCreateTime());
 
         return entity;
+    }
+
+    /**
+     * 方法（公共）
+     * 名称：   create
+     * 描述:    创建数据<br>
+     *
+     * @param request - HTTP请求对象
+     * @return 返回新建数据的主键值
+     * @throws javax.servlet.ServletException - 抛出处理错误
+     */
+    @Override
+    public Object create(HttpServletRequest request)
+            throws ServletException
+    {
+        try
+        {
+            //判断数据管理器是否初始化
+            if(this.managerNullCheck())
+            {
+                throw new ServletException("数据库管理器未初始化！");
+            }
+
+            //创建数据实体对象
+            BusiMember entity=this.entityClass.newInstance();
+
+            //根据请求参数设置相应对象
+            entity=(BusiMember)EntityTransformer.updateEntityByHttpRequest(
+                    entityClass,
+                    entity,
+                    request,
+                    this.manager.getPrimaryKeyName(),
+                    !this.manager.isUseGenerator()
+            );
+
+            //是否使用事务机制
+            boolean useTransaction=this.isUseTransaction();
+            if(useTransaction)
+            {
+                this.manager.transactionBegin();
+            }
+
+            //调用创建前的处理
+            entity=this.beforeCreate(request,entity);
+
+            //插入数据
+            boolean success=this.manager.create(entity);
+
+            //处理结果
+            if(!success)
+            {
+                throw new ServletException(this.manager.getError());
+            }
+            //创建成功则调用创建后处理工作
+            else
+            {
+                this.afterCreate(request,this.manager.getLastGenerator());
+                if(useTransaction)
+                {
+                    this.manager.transactionCommit();
+                }
+            }
+
+            entity.setCustId(this.manager.getLastGenerator());
+            return entity;
+        }
+        catch(IllegalAccessException
+                |IllegalArgumentException
+                |InstantiationException
+                |NoSuchMethodException
+                |InvocationTargetException
+                |ServletException ex)
+        {
+            if(this.isUseTransaction())
+            {
+                this.manager.transactionRollBack();
+            }
+            throw new ServletException(ex.toString());
+        }
     }
 
     /**
