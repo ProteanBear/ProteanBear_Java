@@ -20,14 +20,7 @@ import pb.json.JSONObject;
 import pb.pool.CachingServiceLocator;
 import pb.system.cms.entity.BusiCmsArticle;
 import pb.system.cms.entity.BusiCmsArticleGroup;
-import pb.system.cms.manager.BusiCmsArticleFacade;
-import pb.system.cms.manager.BusiCmsArticleFacadeLocal;
-import pb.system.cms.manager.BusiCmsArticleGroupFacade;
-import pb.system.cms.manager.BusiCmsArticleGroupFacadeLocal;
-import pb.system.cms.manager.BusiCmsArticleGroupMapFacade;
-import pb.system.cms.manager.BusiCmsArticleGroupMapFacadeLocal;
-import pb.system.cms.manager.BusiCmsArticleResFacade;
-import pb.system.cms.manager.BusiCmsArticleResFacadeLocal;
+import pb.system.cms.manager.*;
 import pb.system.cms.module.BusiCmsArticleOutput;
 import pb.system.cms.servlet.BusiCmsArticleServlet;
 import pb.system.limit.action.AbstractAction;
@@ -547,6 +540,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
             if(!isOut) artJson.put("articleIsTop",article.getArticleIsTop());
             artJson.put("articleTitleSub",article.getArticleTitleSub());
             artJson.put("articleReleaseTime",article.getArticleReleaseTime());
+            artJson.put("articleCountComment",article.getArticleCountComment());
 
             //查询列表和内容时输出内容不同（即list数据量来判断）
             //查询内容时输出
@@ -565,7 +559,6 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                 if(!isOut) artJson.put("articleCountShare",article.getArticleCountShare());
                 if(!isOut) artJson.put("articleCountRead",article.getArticleCountRead());
                 if(!isOut) artJson.put("articleCountFavorite",article.getArticleCountFavorite());
-                if(!isOut) artJson.put("articleCountComment",article.getArticleCountComment());
             }
 
             //根据不同的文章类型输出相应的附件内容
@@ -766,9 +759,9 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                 {
                     throw new ServletException("未指定文章所属的栏目标识！");
                 }
+                condition.put("sectionCode=?",sectionCode);
             }
 
-            condition.put("sectionCode like ?",sectionCode+"%");
             //必须指定所属应用
             String sectionApp=request.getParameter(BusiCmsArticleServlet.PARAM_APP);
             if(this.paramNullCheck(sectionApp))
@@ -810,7 +803,15 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                     throw new ServletException("未指定数据所属的应用标识！");
                 }
                 condition.put("appCode like ?",app);
-                if(this.paramNullCheck(sectionCode)) condition.put("sectionCode like ?",sectionCode+"%");
+
+                if(!this.paramNullCheck(priKey))
+                {
+                    condition.put("articleId=?",priKey);
+                }
+                else
+                {
+                    if(!this.paramNullCheck(sectionCode)) condition.put("sectionCode like ?",sectionCode+"%");
+                }
             }
             //增加已发布限制
             condition.put("articleStatus=?",2);

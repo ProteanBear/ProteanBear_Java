@@ -3,14 +3,22 @@ package pb.system.cms.action;
 import pb.data.Connector;
 import pb.json.JSONArray;
 import pb.json.JSONObject;
+import pb.system.cms.entity.BusiCmsArticle;
 import pb.system.cms.entity.BusiCmsComment;
+import pb.system.cms.manager.BusiCmsArticleFacade;
+import pb.system.cms.manager.BusiCmsArticleFacadeLocal;
 import pb.system.cms.manager.BusiCmsCommentFacade;
 import pb.system.limit.action.AbstractAction;
+import pb.system.limit.action.BusiMemberAction;
 import pb.system.limit.action.DataAction;
+import pb.system.limit.entity.BusiMember;
+import pb.system.limit.servlet.AbstractServlet;
+import pb.system.limit.servlet.BusiMemberServlet;
 import pb.text.DateProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +29,13 @@ import java.util.Map;
  */
 public class BusiCmsCommentAction extends AbstractAction<BusiCmsComment> implements DataAction
 {
+    /**
+     * 域(受保护)<br/>
+     * 名称: resMapManager<br/>
+     * 描述: 文章对应资源的数据管理器对象<br/>
+     */
+    protected BusiCmsArticleFacadeLocal articleManager;
+
     /**
      * 域(受保护)<br/>
      * 名称: dp<br/>
@@ -43,6 +58,7 @@ public class BusiCmsCommentAction extends AbstractAction<BusiCmsComment> impleme
     @Override protected void initManager()
     {
         this.manager=new BusiCmsCommentFacade(this.connector);
+        this.articleManager=new BusiCmsArticleFacade(this.connector);
         this.dp=new DateProcessor("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -60,8 +76,33 @@ public class BusiCmsCommentAction extends AbstractAction<BusiCmsComment> impleme
     public BusiCmsComment beforeCreate(HttpServletRequest request,BusiCmsComment entity)
             throws ServletException
     {
+        //检查文章标识
+        String articleId=request.getParameter("commentArticle");
+        if(this.paramNullCheck(articleId))
+        {
+            throw new ServletException("未指定文章标识!");
+        }
+
+        //检查文章是否存在
+        if(this.articleManager.find(articleId)==null)
+        {
+            throw new ServletException("指定的文章不存在!");
+        }
+
+        //检查评论内容
+        String commentContent=request.getParameter("commentContent");
+        if(this.paramNullCheck(commentContent))
+        {
+            throw new ServletException("未指定评论内容!");
+        }
+
         //设置创建时间
         entity.setCreateTime(this.dp.getCurrent());
+
+        //设置发布者
+        BusiMember member=this.getMemberUserInSession(request);
+        entity.setPublishMember(member.getCustId());
+        entity.setPublishName(this.paramNullCheck(member.getMemberNick())?member.getMemberName():member.getMemberNick());
 
         //设置父类内容
         if(entity.getCommentParent()!=0)
@@ -76,6 +117,32 @@ public class BusiCmsCommentAction extends AbstractAction<BusiCmsComment> impleme
         }
 
         return entity;
+    }
+
+    /**
+     * 方法（受保护）<br/>
+     * 名称: afterCreate<br/>
+     * 描述: 处理创建数据成功后的处理工作（多用于多对多数据的创建）<br/>
+     *
+     * @param request   - HTTP请求对象
+     * @param primaryKey - 创建后的评论主键
+     * @throws javax.servlet.ServletException
+     */
+    @Override
+    protected void afterCreate(HttpServletRequest request,String primaryKey)
+            throws ServletException
+    {
+        String articleId=request.getParameter("commentArticle");
+        if(!this.paramNullCheck(articleId))
+        {
+            Map<String,Object> condition=new HashMap<>();
+            condition.put("commentArticle=?",articleId);
+            int count=this.manager.count(condition);
+
+            BusiCmsArticle article=this.articleManager.find(articleId);
+            article.setArticleCountComment(count);
+            this.articleManager.edit(article);
+        }
     }
 
     /**
@@ -191,5 +258,21 @@ public class BusiCmsCommentAction extends AbstractAction<BusiCmsComment> impleme
     public boolean supportNoLoginFind()
     {
         return true;
+    }
+
+    /**
+     * 方法（公共）<br>
+     * 名称:    getLoginUserInSession<br>
+     * 描述:    从Session中获取指定的登录用户对象<br>
+     *
+     * @param request - HTTP请求对象
+     * @return LoginUser - 登录用户相关属性
+     * @throws javax.servlet.ServletException - 抛出处理错误
+     */
+    public BusiMember getMemberUserInSession(HttpServletRequest request)
+            throws ServletException
+    {
+        return (BusiMember)AbstractServlet.getAttributeInSession
+                (request,BusiMemberServlet.SESSION_MEMBER_USER);
     }
 }

@@ -193,6 +193,100 @@ public class BusiMemberAction extends AbstractAction<BusiMember> implements Data
     }
 
     /**
+     * 方法（公共）
+     * 名称：   edit
+     * 描述:    编辑数据<br>
+     *
+     * @param request - HTTP请求对象
+     * @throws javax.servlet.ServletException - 抛出处理错误
+     */
+    @Override
+    public void edit(HttpServletRequest request)
+            throws ServletException
+    {
+        try
+        {
+            //判断数据管理器是否初始化
+            if(this.managerNullCheck())
+            {
+                throw new ServletException("数据库管理器未初始化！");
+            }
+
+            //获取指定的主键集
+            String primaryKey=request.getParameter(AbstractServlet.PARAM_PRIMARYKEY);
+            BusiMember member=this.getMemberUserInSession(request);
+            primaryKey=member.getCustId()+"";
+
+            //判断主键集是否为空
+            if(this.paramNullCheck(primaryKey))
+            {
+                throw new ServletException("未指定编辑的数据主键！");
+            }
+
+            //创建数据实体对象
+            BusiMember entity=this.manager.find(primaryKey);
+            if(entity==null)
+            {
+                throw new ServletException("未找到指定的数据，主键错误！");
+            }
+
+            //根据请求参数设置相应对象
+            entity=(BusiMember)EntityTransformer.updateEntityByHttpRequest(
+                    entityClass,
+                    entity,
+                    request,
+                    this.manager.getPrimaryKeyName(),
+                    false,this.manager.getCannotEditParams()
+            );
+
+            //是否使用事务机制
+            boolean useTransaction=this.isUseTransaction();
+            if(useTransaction)
+            {
+                this.manager.transactionBegin();
+            }
+
+            //调用创建前的处理
+            entity=this.beforeEdit(request,entity);
+
+            //插入数据
+            boolean success=this.manager.edit(entity);
+
+            //处理结果
+            if(!success)
+            {
+                if(useTransaction)
+                {
+                    this.manager.transactionRollBack();
+                }
+                throw new ServletException(this.manager.getError());
+            }
+            //调用编辑后处理方法
+            else
+            {
+                this.afterEdit(request);
+                if(useTransaction)
+                {
+                    this.manager.transactionCommit();
+                }
+            }
+        }
+        catch(IllegalAccessException
+                |IllegalArgumentException
+                |InstantiationException
+                |NoSuchMethodException
+                |InvocationTargetException
+                |ServletException ex)
+        {
+            if(this.isUseTransaction())
+            {
+                this.manager.transactionRollBack();
+            }
+            throw new ServletException(ex.toString());
+        }
+    }
+
+    /**
      * 方法（公共）<br>
      * 名称:    login<br>
      * 描述:    处理用户登录相关处理。<br>

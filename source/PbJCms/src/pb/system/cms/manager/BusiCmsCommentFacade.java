@@ -30,4 +30,18 @@ public class BusiCmsCommentFacade
     {
         return "custId";
     }
+
+    /**
+     * 方法（受保护）<br/>
+     * 名称:    getFindOrderBy<br/>
+     * 描述:    获取查询使用的排序方法
+     *
+     * @return String - 排序方法
+     */
+    @Override
+    protected String getFindOrderBy()
+    {
+        this.orderBy="cust_id desc";
+        return this.orderBy;
+    }
 }

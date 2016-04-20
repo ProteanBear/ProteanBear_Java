@@ -582,7 +582,7 @@ public abstract class AbstractServlet extends HttpServlet
     protected void recordUserLog(LoginUser user,String mode)
     {
         //如果需记录用户操作日志信息
-        if(this.userLogManager!=null)
+        if(this.userLogManager!=null&&user!=null)
         {
             //判断操作模式
             int operateType=(VALUE_MODE_CREATE.equals(mode))?1:

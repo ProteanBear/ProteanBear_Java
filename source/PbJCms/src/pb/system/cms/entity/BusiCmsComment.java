@@ -15,8 +15,9 @@ public class BusiCmsComment
     {
         StringBuilder result=new StringBuilder();
 
-        result.append(this.commentUpcontent!=null?(this.commentContent+","):"[");
+        result.append(this.commentUpcontent!=null&&!"".equals(this.commentUpcontent.trim())?(this.commentUpcontent+","):"[");
         result.append("{")
+                .append("custId:").append(this.getCustId()).append(",")
                 .append("commentParent:").append(this.getCommentParent()).append(",")
                 .append("commentContent:\"").append(this.getCommentContent()).append("\",")
                 .append("publishMember:").append(this.getPublishMember()).append(",")
@@ -46,6 +47,15 @@ public class BusiCmsComment
     public void setCustId(int custId)
     {
         this.custId=custId;
+    }
+
+    /**更改器
+     * 目标: custId
+     * @param custId - 自增主键
+     */
+    public void setCustId(Integer custId)
+    {
+        this.custId=custId.intValue();
     }
 
     /**更改器
