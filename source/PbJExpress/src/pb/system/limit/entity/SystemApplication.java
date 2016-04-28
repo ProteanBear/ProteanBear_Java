@@ -251,4 +251,57 @@ public class SystemApplication
         this.dataDelete=new Integer(dataDelete);
     }
 
+    /**
+     * 域(受保护)
+     * 名称: appAlias
+     * 描述: 记录应用的别名
+     */
+    protected String appAlias;
+
+    /**
+     * 访问器
+     * 目标: appAlias
+     * @return int - 记录应用的别名
+     */
+    public String getAppAlias()
+    {
+        return appAlias;
+    }
+
+    /**
+     * 更改器
+     * 目标: appAlias
+     * @param appAlias - 记录应用的别名
+     */
+    public void setAppAlias(String appAlias)
+    {
+        this.appAlias=appAlias;
+    }
+
+    /**
+     * 域(受保护)
+     * 名称: appWeb
+     * 描述: 记录应用的web说明地址
+     */
+    protected String appWeb;
+
+    /**
+     * 访问器
+     * 目标: appWeb
+     * @return int - 记录应用的web说明地址
+     */
+    public String getAppWeb()
+    {
+        return appWeb;
+    }
+
+    /**
+     * 更改器
+     * 目标: appWeb
+     * @param appWeb - 记录应用的web说明地址
+     */
+    public void setAppWeb(String appWeb)
+    {
+        this.appWeb=appWeb;
+    }
 }

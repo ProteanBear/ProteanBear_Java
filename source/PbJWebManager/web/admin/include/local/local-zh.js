@@ -44,6 +44,8 @@ var local=local||{};
         areaIcon:"企业图标",
         appCode:"应用标识",
         appName:"应用名称",
+        appAlias:"应用别名",
+        appWeb:"应用网站",
         userIcon:"用户头像",
         userName:"登录账户",
         userNick:"显示昵称",

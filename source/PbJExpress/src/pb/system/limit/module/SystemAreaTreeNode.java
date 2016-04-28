@@ -111,6 +111,8 @@ public class SystemAreaTreeNode extends SystemArea
         this.icon=app.getAppThumbnail();
         this.areaAddress=app.getAppIcon();
         this.dataRemark=app.getDataRemark();
+        this.areaContact=app.getAppAlias();
+        this.areaTel=app.getAppWeb();
     }
 
     /**
