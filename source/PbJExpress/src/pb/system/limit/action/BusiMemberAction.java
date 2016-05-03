@@ -371,4 +371,17 @@ public class BusiMemberAction extends AbstractAction<BusiMember> implements Data
         return (BusiMember)AbstractServlet.getAttributeInSession
                 (request,BusiMemberServlet.SESSION_MEMBER_USER);
     }
+
+    /**
+     * 方法（受保护）<br>
+     * 名称:    supportNoLoginFind<br>
+     * 描述:    是否支持非登录下查询处理<br>
+     *
+     * @return boolean - 如果参数值为null或""，返回true
+     */
+    @Override
+    public boolean supportNoLoginFind()
+    {
+        return true;
+    }
 }

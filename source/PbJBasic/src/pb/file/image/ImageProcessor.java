@@ -614,7 +614,7 @@ public class ImageProcessor
 
         //读取图片并判断文件格式
         BufferedImage image=ImageIO.read(this.file);
-        if(image==null&&image.getWidth(null)==-1)
+        if(image==null||image.getWidth(null)==-1)
         {
             throw new IOException("无法识别的图片文件格式！");
         }

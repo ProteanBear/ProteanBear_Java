@@ -22,6 +22,7 @@ public class BusiCmsComment
                 .append("commentContent:\"").append(this.getCommentContent()).append("\",")
                 .append("publishMember:").append(this.getPublishMember()).append(",")
                 .append("publishName:\"").append(this.getPublishName()).append("\",")
+                .append("publishHead:\"").append(this.getPublishHead()).append("\",")
                 .append("createTime:\"").append(this.getCreateTime()).append("\"")
                 .append("}");
 
@@ -209,6 +210,27 @@ public class BusiCmsComment
     public void setPublishName(String publishName)
     {
         this.publishName=publishName;
+    }
+
+    /**域(受保护)
+     * 名称: publishHead
+     * 描述: 发布者的显示头像
+     */
+    protected String publishHead;
+
+    /**访问器
+     * 目标: publishHead
+     * @return String - 发布者的显示头像
+     */
+    public String getPublishHead(){return publishHead;}
+
+    /**更改器
+     * 目标: publishHead
+     * @param publishHead - 发布者的显示头像
+     */
+    public void setPublishHead(String publishHead)
+    {
+        this.publishHead=publishHead;
     }
 
     /**域(受保护)

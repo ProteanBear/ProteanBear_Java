@@ -103,6 +103,7 @@ public class BusiCmsCommentAction extends AbstractAction<BusiCmsComment> impleme
         BusiMember member=this.getMemberUserInSession(request);
         entity.setPublishMember(member.getCustId());
         entity.setPublishName(this.paramNullCheck(member.getMemberNick())?member.getMemberName():member.getMemberNick());
+        entity.setPublishHead(member.getMemberHead());
 
         //设置父类内容
         if(entity.getCommentParent()!=0)
@@ -231,6 +232,7 @@ public class BusiCmsCommentAction extends AbstractAction<BusiCmsComment> impleme
             comJson.put("commentContent",comment.getCommentContent());
             comJson.put("publishMember",comment.getPublishMember());
             comJson.put("publishName",comment.getPublishName());
+            comJson.put("publishHead",comment.getPublishHead());
             comJson.put("createTime",comment.getCreateTime());
 
             //增加上级回复内容

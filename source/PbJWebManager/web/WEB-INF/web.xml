@@ -107,6 +107,14 @@
         <servlet-name>业务管理-文章评论数据接口</servlet-name>
         <servlet-class>pb.system.cms.servlet.BusiCmsCommentServlet</servlet-class>
     </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>业务管理-会员头像上传接口</servlet-name>-->
+        <!--<servlet-class>pb.system.limit.servlet.BusiMemberUpdateHeadServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>业务管理-会员头像上传接口</servlet-name>-->
+        <!--<url-pattern>/busiMemberHeadUpdate</url-pattern>-->
+    <!--</servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>业务管理-文章评论数据接口</servlet-name>
         <url-pattern>/busiCmsComment</url-pattern>
