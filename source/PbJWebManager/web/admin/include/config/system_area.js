@@ -128,6 +128,7 @@ var urlconfig = urlconfig || {};
                 data.appPlat=data.areaTypeMaps;
                 data.appAlias=data.areaContact;
                 data.appWeb=data.areaTel;
+                data.appOrder=data.areaClass;
             }
             //用户信息
             if(data.type===3)
@@ -391,7 +392,8 @@ var urlconfig = urlconfig || {};
             appCode:{type:"input",must:true,inline:"start",col:3},
             appName:{type:"input",must:true,inline:"end",col:4},
             appAlias:{type:"input",must:false,inline:"start",col:3},
-            appWeb:{type:"input",must:false,inline:"end",col:4},
+            appOrder:{type:"input",must:true,inline:"end",col:4},
+            appWeb:{type:"input",must:false},
             appIcon:{type:"uploadIcon",inline:"start",col:3,size:"1024x1024",width:128,height:128,extra:"{resource:0}"},
             appThumbnail:{type:"uploadIcon",inline:"end",col:2,size:"64x64",width:64,height:64,extra:"{resource:0}"},
             appPlat:{

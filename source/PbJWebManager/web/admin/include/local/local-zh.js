@@ -46,6 +46,7 @@ var local=local||{};
         appName:"应用名称",
         appAlias:"应用别名",
         appWeb:"应用网站",
+        appOrder:"应用排序",
         userIcon:"用户头像",
         userName:"登录账户",
         userNick:"显示昵称",

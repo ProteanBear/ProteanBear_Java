@@ -717,6 +717,7 @@ public abstract class AbstractServlet extends HttpServlet
      */
     protected void errorHandle(PrintWriter out,String error) throws IOException
     {
+        System.out.println(error);
         out.print(
                 (this.isXml)?XMLProductor.toInforXml(false,error):
                         JsonProductor.createInformation(false,error)

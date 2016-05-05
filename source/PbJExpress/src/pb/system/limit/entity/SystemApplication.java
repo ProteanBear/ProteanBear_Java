@@ -304,4 +304,51 @@ public class SystemApplication
     {
         this.appWeb=appWeb;
     }
+
+    /**
+     * 域(受保护)
+     * 名称: appOrder
+     * 描述: 处理app输出时的排序
+     */
+    protected int appOrder;
+
+    /**
+     * 访问器
+     * 目标: appOrder
+     * @return int - 处理app输出时的排序
+     */
+    public int getAppOrder()
+    {
+        return appOrder;
+    }
+
+    /**
+     * 更改器
+     * 目标: appOrder
+     * @param appOrder - 处理app输出时的排序
+     */
+    public void setAppOrder(int appOrder)
+    {
+        this.appOrder=appOrder;
+    }
+
+    /**
+     * 更改器
+     * 目标: appOrder
+     * @param appOrder - 处理app输出时的排序
+     */
+    public void setAppOrder(Integer appOrder)
+    {
+        this.appOrder=appOrder.intValue();
+    }
+
+    /**
+     * 更改器
+     * 目标: appOrder
+     * @param appOrder - 处理app输出时的排序
+     */
+    public void setAppOrder(String appOrder)
+    {
+        this.appOrder=new Integer(appOrder).intValue();
+    }
 }

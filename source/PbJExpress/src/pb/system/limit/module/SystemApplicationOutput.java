@@ -37,6 +37,7 @@ public class SystemApplicationOutput extends SystemApplication
         this.dataRemark=app.getDataRemark();
         this.appAlias=app.getAppAlias();
         this.appWeb=app.getAppWeb();
+        this.appOrder=app.getAppOrder();
         //this.roleDescription=role.getRoleDescription();
     }
 

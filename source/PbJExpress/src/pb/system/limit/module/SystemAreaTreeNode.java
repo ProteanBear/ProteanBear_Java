@@ -113,6 +113,7 @@ public class SystemAreaTreeNode extends SystemArea
         this.dataRemark=app.getDataRemark();
         this.areaContact=app.getAppAlias();
         this.areaTel=app.getAppWeb();
+        this.areaClass=app.getAppOrder();
     }
 
     /**
