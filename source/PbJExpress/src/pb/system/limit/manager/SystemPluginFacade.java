@@ -472,10 +472,10 @@ public class SystemPluginFacade extends AbstractEntityManager<SystemPlugin>
             SqlAttribute sqlAttri=new SqlAttribute()
                     .setColumnNames("distinct(satp.cust_id) as type_plugin_id,sp.*")
                     .setTable("system_area_type_map satm,system_area_type_plugin satp,system_plugin sp")
-                    .addCondition("substr(?,0,length(satm.area_id))=satm.area_id")
+                    .addCondition("substr(?,1,length(satm.area_id))=satm.area_id")
                     .addCondition("satm.type_id=satp.type_id")
                     .addCondition("satp.plugin_cust_id=sp.cust_id")
-                    .addCondition("sp.plugin_hidden=0");
+                    .addCondition("sp.plugin_enable=1");
 
             //读取数据库;
             result=this.generateObjectList(
@@ -601,7 +601,7 @@ public class SystemPluginFacade extends AbstractEntityManager<SystemPlugin>
                             .setAttribute(sqlAttri)
                             .setPageSize(0)
                             .setOrderBy("srp.cust_id asc")
-                            .select(userId)
+                            .select(userId+"")
             );
         }
         catch(IllegalAccessException

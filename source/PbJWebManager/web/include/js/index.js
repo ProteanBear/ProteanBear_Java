@@ -28,7 +28,7 @@ var urlconfig = urlconfig || {};
     //记录当前获取到的数据信息
     var curData=null;
     //记录当前页面插件的标识
-    var active=parent.console.getUrlParam("active")?parent.console.getUrlParam("active"):"welcome";
+    var active=parent.console.getUrlParam("active")?parent.console.getUrlParam("active"):"BUSI_MANAGE_SECTION";
     //记录当前页面插件的权限
     var limit={
             insert:parent.console.haveLimit(active,"01"),
@@ -1102,7 +1102,7 @@ var urlconfig = urlconfig || {};
             }
         }
         //无查询权限
-        if(!limit.list){alertMessage("warning","003");}
+        if(!limit.list){alertMessage("warning",local.error_infor["003"]);}
 
         /*测试*/
     });

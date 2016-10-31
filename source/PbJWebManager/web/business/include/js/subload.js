@@ -10,7 +10,7 @@ var urlconfig = urlconfig || {};
     /*获取本地语言设置*/
     var local=parent.parent.local||{};
     //记录当前页面插件的标识
-    var active=parent.parent.console.getUrlParam("active")?parent.parent.console.getUrlParam("active"):"welcome";
+    var active=parent.index.getSubUrlParam("active")?parent.index.getSubUrlParam("active"):"welcome";
     //记录当前页面插件的权限
     var limit={
             insert:parent.parent.console.haveLimit(active,"01"),

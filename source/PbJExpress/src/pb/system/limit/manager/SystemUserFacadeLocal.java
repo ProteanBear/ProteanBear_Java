@@ -14,11 +14,11 @@ public interface SystemUserFacadeLocal extends AbstractFacadeLocal<SystemUser>
     /**
      * 描述:    处理用户登录<br>
      *
-     * @param userId   - 管理人员标识
+     * @param userName   - 管理人员登录名称
      * @param password - 用户登录密码
      * @return SystemUser - 登录成功返回管理人员对象，否则返回Null
      */
-    SystemUser login(String userId,String password);
+    SystemUser login(String userName,String password);
 
     /**
      * 描述:    清除指定的行政区域对应的管理人员数据<br>
