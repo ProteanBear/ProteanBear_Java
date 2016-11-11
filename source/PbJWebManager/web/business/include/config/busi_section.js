@@ -164,7 +164,7 @@ var urlconfig = urlconfig || {};
         key:"custId",
         keyTitle:"sectionName",
         title:parent.local.name_section,
-        limitId:"BUSI_LIMIT",
+        limitId:"BUSI_MANAGE_SECTION",
         noSearch:true,
         save:false,
         noUpdate:true,
