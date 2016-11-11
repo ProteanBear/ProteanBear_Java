@@ -56,7 +56,11 @@
         <servlet-class>pb.system.cms.servlet.BusiCmsResourceUploadServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>基础信息-基本权限数据接口</servlet-name>
+        <servlet-name>系统通用-CKEditor图片上传数据接口</servlet-name>
+        <servlet-class>pb.system.cms.servlet.CKEditorImageUploadsServlet</servlet-class>
+    </servlet>
+    <servlet>
+    <servlet-name>基础信息-基本权限数据接口</servlet-name>
         <servlet-class>pb.system.limit.servlet.OriginalLimitServlet</servlet-class>
     </servlet>
     <servlet>
@@ -214,6 +218,10 @@
     <servlet-mapping>
         <servlet-name>系统通用-文件上传数据接口</servlet-name>
         <url-pattern>/fileUpload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>系统通用-CKEditor图片上传数据接口</servlet-name>
+        <url-pattern>/editorImageUpload</url-pattern>
     </servlet-mapping>
     <env-entry>
         <description>数据源名称</description>

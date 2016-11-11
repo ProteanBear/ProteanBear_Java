@@ -33,5 +33,5 @@ CKEDITOR.editorConfig = function( config ) {
 	config.startupFocus = true;
 	
 	//upload
-	config.filebrowserUploadUrl="fileUpload";
+	config.filebrowserUploadUrl="../editorImageUpload";
 };
