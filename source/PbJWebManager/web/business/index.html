@@ -39,7 +39,9 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
+                        <!--[if(limit.insert){]-->
                         <li><button type="button" action-mode="data-display" name="BUSI_MANAGE_SECTION" form-name="busiSection" form-to="#sub-content" title="<!--[=local.action['insert']+'【'+name+'】'+local.name_section_sub]-->" data-extra="{upCode:'<!--[=id]-->',sectionApp:'<!--[=appCode]-->'}" class="btn btn-link btn-sm"><!--[=local.name_section_sub]--></button></li>
+                        <!--[}]-->
                         <!--[if(type==0){]-->
                         <li><a href="#" load="sub_article_create_text.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" title="<!--[=local.action['insert']+local.articleType['0']]-->" class="btn btn-link btn-sm"><!--[=local.articleType['0']]--></a></li>
                         <li><a href="#" load="sub_article_create_album.html?mode=create&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->" title="<!--[=local.action['insert']+local.articleType['1']]-->" class="btn btn-link btn-sm"><!--[=local.articleType['1']]--></a></li>
@@ -49,8 +51,12 @@
                         <!--[}]-->
                     </ul>
                 </div>
+                <!--[if(limit.edit){]-->
                 <button type="button" action-mode="section-edit" name="BUSI_MANAGE_SECTION" title="<!--[=local.action['edit']+local.name_section+'（'+name+'）']-->" data-extra="{upCode:'<!--[=id]-->',sectionApp:'<!--[=appCode]-->'}" class="btn btn-default btn-xs"><img src="../include/images/action_edit.png"></button>
+                <!--[}]-->
+                <!--[if(limit.remove){]-->
                 <button type="button" action-mode="section-remove" name="BUSI_MANAGE_SECTION" title="<!--[=local.alert_infor['confirm']+local.name_section+'【'+name+'】'+local.alert_infor['firmend']]-->" data-extra="{upCode:'<!--[=id]-->',sectionApp:'<!--[=appCode]-->'}" class="btn btn-default btn-xs"><img src="../include/images/action_remove.png"></button>
+                <!--[}]-->
             </div>
         </script>
 

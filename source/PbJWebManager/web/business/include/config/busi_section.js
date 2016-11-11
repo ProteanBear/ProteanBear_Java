@@ -21,7 +21,14 @@ var urlconfig = urlconfig || {};
     var idx=0;
     var local=parent.local;
     var curData={};
-    
+    var active="BUSI_MANAGE_SECTION";
+    //获取权限
+    var limit={
+        insert:parent.console.haveLimit(active,"01"),
+        remove:parent.console.haveLimit(active,"02"),
+        edit:parent.console.haveLimit(active,"03")
+    };
+
     //树显示配置
     var setting = {
         data: {
@@ -56,7 +63,8 @@ var urlconfig = urlconfig || {};
             appCode:treeNode.sectionApp,
             sectionName:treeNode.sectionName,
             sectionCode:treeNode.sectionCode,
-            local: parent.local
+            local: parent.local,
+            limit:limit
         }));
         $("#treebutton-" + treeNode.id).css({
             top:$("#" + treeNode.tId + "_a").offset().top+"px",

@@ -1050,7 +1050,8 @@ var urlconfig = urlconfig || {};
             local:local,
             active:active,
             modules:parent.console.pluginsForModule(active),
-            apps:parent.console.loginUser.apps
+            apps:parent.console.loginUser.apps,
+            limit:limit
         }));
         $("#template_navbar").remove();
         //中心内容
