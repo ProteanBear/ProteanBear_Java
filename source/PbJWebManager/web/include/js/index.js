@@ -751,9 +751,11 @@ var urlconfig = urlconfig || {};
         $("#"+dialog).modal({});
 
         //绑定数据提交事件
-        $("#"+dialog+"_submit").click(function(){
-            submitData(urlconfig,$(this).attr("name"),$(this),dialog,extra);
-        });
+        $("#"+dialog+"_submit").attr("onclick")||(
+            $("#"+dialog+"_submit").attr("onclick","true"),
+                $("#"+dialog+"_submit").click(function(){
+                    submitData(urlconfig,$(this).attr("name"),$(this),dialog,extra);
+                }));
         //绑定输入框校验事件
         for (var key in config.property)
         {
