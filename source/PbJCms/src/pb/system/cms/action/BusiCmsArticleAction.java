@@ -540,7 +540,14 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
             //查询内容时输出
             if(list.size()<2)
             {
-                artJson.put("articleContent",article.getArticleContent());
+                //手机端接口返回内容中替换其中图片路径为绝对路径
+                String content=article.getArticleContent();
+                if(!this.paramNullCheck(content)&&this.isCurrentUseNoLoginMode(request))
+                {
+                    content=content.replaceAll("src=\"../upload","src=\""+this.getServerRootPath(request)+"upload");
+                }
+                artJson.put("articleContent",content);
+
                 if(!isOut) artJson.put("articleSourceType",article.getArticleSourceType());
                 artJson.put("articleHtml",article.getArticleHtml());
                 if(!isOut) artJson.put("articleCreateTime",article.getArticleCreateTime());
