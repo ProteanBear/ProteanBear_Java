@@ -45,16 +45,16 @@
                             <a load="sub_articles.html?active=BUSI_CMS_ARTICLE&sectionName=<!--[=sectionName]-->&sectionCode=<!--[=sectionCode]-->&appCode=<!--[=appCode]-->&articleStatus=<!--[=status]-->" class="btn btn-link"><!--[=local.checkType[status]]-->(<span id="statusNumber-<!--[=status]-->">...</span>)</a>
                             <!--[}]-->
                         </div>
-                        <form class="navbar-form navbar-right" role="search">
+                        <div class="navbar-form navbar-right" role="search">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" placeholder="<!--[=local.search_input]-->">
+                                <input id="searchValue" type="text" class="form-control" placeholder="<!--[=local.search_input]-->" action-mode="data-search" action-name="BUSI_CMS_ARTICLE">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
+                                    <button class="btn btn-default" type="button" action-mode="data-search" name="BUSI_CMS_ARTICLE">
                                         <span class="glyphicon glyphicon-search"></span>
                                     </button>
                                 </span>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </nav>

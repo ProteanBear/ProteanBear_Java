@@ -181,7 +181,10 @@ var plugins=plugins||{};
                 !articleId||(result+="articleId=?;"+articleId);
                 //增加筛选获取
                 var articleStatus=curIndex.getSubUrlParam("articleStatus");
-                !articleStatus||articleStatus==-1||(result+="articleStatus=?;"+articleStatus);
+                !articleStatus||articleStatus==-1||(result+=((result==""?"":"|")+"articleStatus=?;"+articleStatus));
+                //增加搜索关键字
+                var articleSearch=$("#searchValue").val();
+                !articleSearch||articleSearch==""||(result+=((result==""?"":"|")+"article_title like ?;"+"%"+articleSearch+"%"));
                 return result;
             }
         },
