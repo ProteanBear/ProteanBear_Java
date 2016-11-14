@@ -218,7 +218,7 @@ var plugins=plugins||{};
                     editUrl:editUrl}))
                 ,
                 //显示页码
-                $(".pagination-right").html(mt.pagination({data: data, max: 5, dis: 2,name:"BUSI_CMS_ARTICLE"}))
+                $(".pagination-right").html(mt.pagination({data: response, max: 5, dis: 2,name:"BUSI_CMS_ARTICLE"}))
             );
             
             //显示统计
