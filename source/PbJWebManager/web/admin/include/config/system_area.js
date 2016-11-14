@@ -14,8 +14,6 @@ var urlconfig = urlconfig || {};
 (function(urlconfig) {
     //记录当前的数据
     var list;
-    //记录当前的数据索引
-    var activeId=parent.console.storage.getValue("areaId")||"";
     //记录企业类型列表
     var areaTypeList={};
     //记录用户角色列表
@@ -24,6 +22,8 @@ var urlconfig = urlconfig || {};
     var platList={};
     //获取本地化语言支持
     var local=parent.local;
+    //记录树对象标识
+    var tId="region-tree";
     //树显示配置
     var setting = {
         data: {
@@ -114,6 +114,7 @@ var urlconfig = urlconfig || {};
         childNodes=childNodes.list;
         for (var i=0, l=childNodes.length; i<l; i++) {
             var data=childNodes[i];
+            data.areaIndex=i;
             data.name = data.name.replace(/\.n/g, '.');
             //应用信息
             if(data.type===2)
@@ -125,6 +126,9 @@ var urlconfig = urlconfig || {};
                 data.appCode=data.areaName;
                 data.appIcon=data.areaAddress;
                 data.appPlat=data.areaTypeMaps;
+                data.appAlias=data.areaContact;
+                data.appWeb=data.areaTel;
+                data.appOrder=data.areaClass;
             }
             //用户信息
             if(data.type===3)
@@ -161,16 +165,23 @@ var urlconfig = urlconfig || {};
         //显示按钮
         if (treeNode.type > 1) return;
         if ($("#treebutton-" + treeNode.id).length > 0) return;
-        $("body").append(template("template_treebutton", {id: treeNode.id, type: treeNode.type,local: parent.local}));
+        $("body").append(template("template_treebutton", {id: treeNode.id, type: treeNode.type,name:treeNode.name,local: parent.local}));
         $("#treebutton-" + treeNode.id).css({
             top:$("#" + treeNode.tId + "_a").offset().top+"px",
             left:$("#" + treeNode.tId + "_a").offset().left+$("#" + treeNode.tId + "_a").width()+10+"px"
         });
         
         //绑定事件
-        $("[action-mode='data-display']").unbind();
-        $("[action-mode='data-display']").click(function(){
+        $(".treebutton").find("[action-mode='data-display']").unbind();
+        $(".treebutton").find("[action-mode='data-display']").click(function(){
             displayForm($(this).attr("name"),$(this).attr("title"),$(this).attr("data-index"),$(this).attr("data-extra"));
+        });
+        $(".treebutton").find("[action-mode='data-remove']").unbind();
+        $(".treebutton").find("[action-mode='data-remove']").click(function(){
+            var ztree=$.fn.zTree.getZTreeObj(tId);
+            var node=ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null;
+            if(!node) return;
+            index.removeData(urlconfig,$(this).attr("name"),$(this),false,node);
         });
     }
 
@@ -181,8 +192,26 @@ var urlconfig = urlconfig || {};
      */
     function removeHoverDom(treeId, treeNode)
     {
-        $(".treebutton").children("button").unbind();
+        $(".treebutton").find("button").unbind();
         $(".treebutton").remove();
+    }
+
+    /**
+     * generateDataExtra:
+     */
+    function generateDataExtraUp()
+    {
+        var ztree=$.fn.zTree.getZTreeObj(tId);
+        var node=ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null;
+        if(!node) return "";
+        return "{upId:'"+node.id+"'}";
+    }
+    function generateDataExtraArea()
+    {
+        var ztree=$.fn.zTree.getZTreeObj(tId);
+        var node=ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null;
+        if(!node) return "";
+        return "{areaId:'"+node.id+"'}";
     }
 
     /**
@@ -238,7 +267,7 @@ var urlconfig = urlconfig || {};
             //关闭指示器
             $(".property").html("");
             //显示树
-            !data||!$.fn.zTree||$.fn.zTree.init($("#region-tree"),setting,data);
+            !list||!$.fn.zTree||$.fn.zTree.init($("#"+tId),setting,list);
         },
         key:"areaId",
         keyTitle:"areaName",
@@ -279,12 +308,17 @@ var urlconfig = urlconfig || {};
     urlconfig["category"] = {
         url: "../systemArea",
         key:"areaId",
-        extra:{areaClass:"0"},
-        title:"目录",
+        title:local.areaClass[0],
         keyTitle:"areaName",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            index.requestData(urlconfig,"SYSTEM_MANAGE_AREA");
+            removeHoverDom();
+        },
+        extra:{areaClass:"0"},
         buttons:[
-            {id:"",action:"data-display",name:"category",title:local.action["insert"]+local.areaClass["0"],style:"info",icon:"glyphicon-plus",display:local.areaClass["0"]},
-            {id:"",action:"data-display",name:"company",title:local.action["insert"]+local.areaClass["1"],style:"info",icon:"glyphicon-plus",display:local.areaClass["1"]}
+            {id:"",action:"data-display",name:"category",title:local.action["insert"]+local.areaClass["0"],style:"info",icon:"glyphicon-plus",display:local.areaClass["0"],extra:generateDataExtraUp},
+            {id:"",action:"data-display",name:"company",title:local.action["insert"]+local.areaClass["1"],style:"info",icon:"glyphicon-plus",display:local.areaClass["1"],extra:generateDataExtraUp}
         ],
         bind:{
             "form":function(){
@@ -306,10 +340,17 @@ var urlconfig = urlconfig || {};
     urlconfig["company"] = {
         url: "../systemArea",
         key:"areaId",
+        title:local.areaClass[1],
+        keyTitle:"areaName",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            index.requestData(urlconfig,"SYSTEM_MANAGE_AREA");
+            removeHoverDom();
+        },
         extra:{areaClass:"1"},
         buttons:[
-            {id:"",action:"data-display",name:"application",title:local.action["insert"]+local.areaClass["2"],style:"info",icon:"glyphicon-plus",display:local.areaClass["2"]},
-            {id:"",action:"data-display",name:"user",title:local.action["insert"]+local.areaClass["3"],style:"info",icon:"glyphicon-plus",display:local.areaClass["3"]}
+            {id:"",action:"data-display",name:"application",title:local.action["insert"]+local.areaClass["2"],style:"info",icon:"glyphicon-plus",display:local.areaClass["2"],extra:generateDataExtraArea},
+            {id:"",action:"data-display",name:"user",title:local.action["insert"]+local.areaClass["3"],style:"info",icon:"glyphicon-plus",display:local.areaClass["3"],extra:generateDataExtraArea}
         ],
         bind:{
             "form":function(){
@@ -325,7 +366,7 @@ var urlconfig = urlconfig || {};
             areaName:{type:"input",must:true},
             areaContact:{type:"input",inline:"start",col:3},
             areaTel:{type:"input",inline:"end",col:4},
-            areaIcon:{type:"uploadIcon",inline:"start",col:3,size:"64x64"},
+            areaIcon:{type:"uploadIcon",inline:"start",col:3,size:"64x64",extra:"{resource:0}"},
             areaAddress:{type:"text",inline:"end",col:4},
             dataRemark:{type:"text"}
         }
@@ -333,13 +374,28 @@ var urlconfig = urlconfig || {};
     //应用
     urlconfig["application"] = {
         url: "../systemApplication",
+        to:".property",
         key:"appId",
+        title:local.areaClass[2],
+        keyTitle:"appName",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            var ztree=$.fn.zTree.getZTreeObj(tId);
+            treeNode=treeNode||(ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null);
+            if(treeNode==null) return;
+            ztree.reAsyncChildNodes(treeNode.type==2?treeNode.getParentNode():treeNode,"refresh",false);
+            $("#application").length===0||($("#application").remove());
+            removeHoverDom();
+        },
         property:{
             appId:{type:"hidden"},
             appCode:{type:"input",must:true,inline:"start",col:3},
             appName:{type:"input",must:true,inline:"end",col:4},
-            appIcon:{type:"uploadIcon",inline:"start",col:3,size:"1024x1024",width:128,height:128},
-            appThumbnail:{type:"uploadIcon",inline:"end",col:2,size:"64x64",width:64,height:64},
+            appAlias:{type:"input",must:false,inline:"start",col:3},
+            appOrder:{type:"input",must:true,inline:"end",col:4},
+            appWeb:{type:"input",must:false},
+            appIcon:{type:"uploadIcon",inline:"start",col:3,size:"1024x1024",width:128,height:128,extra:"{resource:0}"},
+            appThumbnail:{type:"uploadIcon",inline:"end",col:2,size:"64x64",width:64,height:64,extra:"{resource:0}"},
             appPlat:{
                 type:"template",
                 source:function(data,limit,operate){return tempPlat({data:data,limit:limit,operate:operate,platList:platList,local:local});},
@@ -364,6 +420,17 @@ var urlconfig = urlconfig || {};
     urlconfig["user"] = {
         url: "../systemUser",
         key:"custId",
+        title:local.areaClass[3],
+        keyTitle:"userNick",
+        noUpdate:true,
+        customUpdate:function(params,data,treeNode){
+            var ztree=$.fn.zTree.getZTreeObj(tId);
+            treeNode=treeNode||(ztree.getSelectedNodes()?ztree.getSelectedNodes()[0]:null);
+            if(treeNode==null) return;
+            ztree.reAsyncChildNodes(treeNode.type==3?treeNode.getParentNode():treeNode,"refresh",false);
+            $("#user").length===0||($("#user").remove());
+            removeHoverDom();
+        },
         property:{
             custId:{type:"hidden",auto:true},
             userIcon:{type:"images",source:local.source.images["userIcon"]},

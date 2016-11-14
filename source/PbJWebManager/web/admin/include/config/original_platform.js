@@ -14,12 +14,11 @@ var urlconfig = urlconfig || {};
 (function(urlconfig) {
     //记录当前的数据
     var list;
-    //记录当前的数据索引
-    var activeId=parent.console.storage.getValue("oriPlatCustId")||"";
+    var keyStorage="oriPlatCustId";
     
     //属性显示事件
     var displayData=function(title,i,extra){
-        parent.console.storage.setValue("oriPlatCustId",list[i].custId);
+        parent.console.storage.setValue(keyStorage,list[i].custId);
         index.displayPropertyForm(
                 urlconfig,
                 "ORIGINAL_PLATFORM",
@@ -43,7 +42,7 @@ var urlconfig = urlconfig || {};
     urlconfig["ORIGINAL_PLATFORM"] = {
         url: "../originalPlatform",
         to:".property",
-        success: function(local,data,limit){
+        success: function(local,data,limit,access,activeId){
             //记录数据
             list=data;
             
@@ -64,11 +63,12 @@ var urlconfig = urlconfig || {};
                 list[i].custId!=activeId||(activeIndex=i,click=true);
                 if(click) break;
             }
-            click||(parent.console.storage.setValue("oriPlatCustId",""));
+            click||(parent.console.storage.setValue(keyStorage,""));
             $("[action-mode='data-display']:eq("+activeIndex+")").click();
         },
         key:"custId",
         keyTitle:"platName",
+        keyStorage:keyStorage,
         title:parent.local.name_plat,
         property:{
             custId:{type:"hidden"},

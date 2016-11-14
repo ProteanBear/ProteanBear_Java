@@ -43,6 +43,17 @@ public class SystemUserRole
      *
      * @param custId - 自增主键
      */
+    public void setCustId(Integer custId)
+    {
+        this.custId=custId.intValue();
+    }
+
+    /**
+     * 更改器
+     * 目标: custId
+     *
+     * @param custId - 自增主键
+     */
     public void setCustId(String custId)
     {
         this.custId=new Integer(custId);

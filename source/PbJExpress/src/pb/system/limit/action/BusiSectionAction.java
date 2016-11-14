@@ -13,6 +13,7 @@ import pb.system.limit.entity.BusiSection;
 import pb.system.limit.manager.BusiSectionFacade;
 import pb.system.limit.manager.BusiSectionFacadeLocal;
 import pb.system.limit.module.BusiSectionOutput;
+import pb.system.limit.servlet.AbstractServlet;
 import pb.system.limit.servlet.BusiSectionServlet;
 
 /**
@@ -141,11 +142,25 @@ public class BusiSectionAction extends AbstractAction<BusiSection> implements Da
             condition.put("sectionApp=?",app);
         }
         //外部接口
-        else
+        if(this.isCurrentUseNoLoginMode(request))
         {
-            String upId=request.getParameter(BusiSectionServlet.PARAM_UPID);
-            upId=(this.paramNullCheck(upId))?"":upId;
-            condition.put("sectionCode like ?",upId+"____");
+            String app=request.getParameter(AbstractServlet.PARAM_FROMAPP);
+            if(!this.paramNullCheck(app))
+            {
+                condition.put("sectionApp=?",app);
+            }
+
+            String inUse=request.getParameter(BusiSectionServlet.PARAM_INUSE);
+            if(!this.paramNullCheck(inUse)&&"1".equals(inUse))
+            {
+                condition.put("sectionEnable=?",1);
+            }
+            else
+            {
+                String upId=request.getParameter(BusiSectionServlet.PARAM_UPID);
+                upId=(this.paramNullCheck(upId))?"":upId;
+                condition.put("sectionCode like ?",upId+"____");
+            }
         }
 
         return condition;
@@ -161,8 +176,7 @@ public class BusiSectionAction extends AbstractAction<BusiSection> implements Da
      * @return List - 处理后的数据对象列表
      */
     @Override
-    protected List<Object> generateOutput
-    (HttpServletRequest request,List<BusiSection> list)
+    protected List<Object> generateOutput(HttpServletRequest request,List<BusiSection> list)
     {
         List<Object> result=null;
         if(list!=null)

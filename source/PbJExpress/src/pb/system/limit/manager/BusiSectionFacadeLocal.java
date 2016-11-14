@@ -78,8 +78,9 @@ public interface BusiSectionFacadeLocal extends AbstractFacadeLocal<BusiSection>
     /**
      * 描述:    根据指定编码获取栏目数据<br>
      *
+     * @param appCode - 指定的应用标识
      * @param code - 指定的数据编码
      * @return BusiSection - 应用数据
      */
-    BusiSection findBySectionCode(String code);
+    BusiSection findBySectionCode(String appCode,String code);
 }

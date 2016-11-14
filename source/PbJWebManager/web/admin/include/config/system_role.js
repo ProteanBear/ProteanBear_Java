@@ -14,8 +14,7 @@ var urlconfig = urlconfig || {};
 (function(urlconfig) {
     //记录当前的数据
     var list;
-    //记录当前的数据索引
-    var activeId=parent.console.storage.getValue("systemRoleId")||"";
+    var keyStorage="systemRoleId";
     //记录当前的权限数据
     var limits;
     
@@ -61,7 +60,7 @@ var urlconfig = urlconfig || {};
     
     //属性显示事件
     var displayData=function(title,i,extra){
-        parent.console.storage.setValue("systemRoleId",list[i].roleId);
+        parent.console.storage.setValue(keyStorage,list[i].roleId);
         var roleLimits=list[i].roleLimits;
         index.displayPropertyForm(
                 urlconfig,
@@ -99,7 +98,7 @@ var urlconfig = urlconfig || {};
     urlconfig["SYSTEM_CONFIG_ROLE"] = {
         url: "../systemRole",
         to:".property",
-        success: function(local,data,limit){
+        success: function(local,data,limit,access,activeId){
             //记录数据
             list=data;
             
@@ -120,11 +119,12 @@ var urlconfig = urlconfig || {};
                 list[i].roleId!==activeId||(activeIndex=i,click=true);
                 if(click) break;
             }
-            click||(parent.console.storage.setValue("systemRoleId",""));
+            click||(parent.console.storage.setValue(keyStorage,""));
             $("[action-mode='data-display']:eq("+activeIndex+")").click();
         },
         key:"roleId",
         keyTitle:"roleName",
+        keyStorage:keyStorage,
         title:parent.local.name_role,
         property:{
             roleId:{type:"hidden"},
@@ -156,8 +156,8 @@ var urlconfig = urlconfig || {};
                     $("[action-mode='check-all']").unbind();
                     $("[action-mode='check-only']").unbind();
                 },
-                paramGenerate:function(params){
-                    $("#systemRole").find("[name='roleLimits']").each(function(){
+                paramGenerate:function(params,curOperate){
+                    $(((curOperate==1)?"#roleDialog":"#systemRole")).find("[name='roleLimits']").each(function(){
                         if(this.checked)
                         {
                             params[this.name]=(params[this.name])?params[this.name]:[];

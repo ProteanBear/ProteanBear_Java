@@ -56,7 +56,11 @@
         <servlet-class>pb.system.cms.servlet.BusiCmsResourceUploadServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>基础信息-基本权限数据接口</servlet-name>
+        <servlet-name>系统通用-CKEditor图片上传数据接口</servlet-name>
+        <servlet-class>pb.system.cms.servlet.CKEditorImageUploadsServlet</servlet-class>
+    </servlet>
+    <servlet>
+    <servlet-name>基础信息-基本权限数据接口</servlet-name>
         <servlet-class>pb.system.limit.servlet.OriginalLimitServlet</servlet-class>
     </servlet>
     <servlet>
@@ -83,6 +87,62 @@
         <servlet-name>系统通用-应用更新检查数据接口</servlet-name>
         <servlet-class>pb.system.limit.servlet.SystemVersionLastestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>业务管理-内容标签管理数据接口</servlet-name>
+        <servlet-class>pb.system.cms.servlet.BusiCmsTagServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员登录接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员注册接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberRegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员注销接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberLogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-平台会员管理接口</servlet-name>
+        <servlet-class>pb.system.limit.servlet.BusiMemberServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>业务管理-文章评论数据接口</servlet-name>
+        <servlet-class>pb.system.cms.servlet.BusiCmsCommentServlet</servlet-class>
+    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>业务管理-会员头像上传接口</servlet-name>-->
+        <!--<servlet-class>pb.system.limit.servlet.BusiMemberUpdateHeadServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>业务管理-会员头像上传接口</servlet-name>-->
+        <!--<url-pattern>/busiMemberHeadUpdate</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>业务管理-文章评论数据接口</servlet-name>
+        <url-pattern>/busiCmsComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员管理接口</servlet-name>
+        <url-pattern>/busiMember</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员注销接口</servlet-name>
+        <url-pattern>/busiMemberLogout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员注册接口</servlet-name>
+        <url-pattern>/busiMemberRegister</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-平台会员登录接口</servlet-name>
+        <url-pattern>/busiMemberLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>业务管理-内容标签管理数据接口</servlet-name>
+        <url-pattern>/busiCmsTag</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>系统通用-应用更新检查数据接口</servlet-name>
         <url-pattern>/systemVersionLastest</url-pattern>
@@ -158,6 +218,10 @@
     <servlet-mapping>
         <servlet-name>系统通用-文件上传数据接口</servlet-name>
         <url-pattern>/fileUpload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>系统通用-CKEditor图片上传数据接口</servlet-name>
+        <url-pattern>/editorImageUpload</url-pattern>
     </servlet-mapping>
     <env-entry>
         <description>数据源名称</description>

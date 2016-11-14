@@ -505,7 +505,7 @@ public abstract class AbstractServlet extends HttpServlet
         {
             if(canCreate)
             {
-                Object newId=this.dataAction.create(request);
+                final Object newId=this.dataAction.create(request);
                 String str=this.stringForReturn(mode);
                 this.generateResult(out,str!=null?str:"成功插入新的数据信息",new HashMap<String,Object>(){{
                     put("newId",newId);
@@ -582,7 +582,7 @@ public abstract class AbstractServlet extends HttpServlet
     protected void recordUserLog(LoginUser user,String mode)
     {
         //如果需记录用户操作日志信息
-        if(this.userLogManager!=null)
+        if(this.userLogManager!=null&&user!=null)
         {
             //判断操作模式
             int operateType=(VALUE_MODE_CREATE.equals(mode))?1:
@@ -717,6 +717,7 @@ public abstract class AbstractServlet extends HttpServlet
      */
     protected void errorHandle(PrintWriter out,String error) throws IOException
     {
+        System.out.println(error);
         out.print(
                 (this.isXml)?XMLProductor.toInforXml(false,error):
                         JsonProductor.createInformation(false,error)

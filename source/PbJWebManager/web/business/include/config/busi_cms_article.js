@@ -30,7 +30,7 @@ var plugins=plugins||{};
                             //仅浏览模式下显示
                             +'<!--[if(mode===1&&!data[i].ariticleIsFocus){]-->'
                                 //标题图
-                                +'<!--[if(data[i].articleImageTitle!==""){]--><img class="img-title" src="<!--[=data[i].articleImageTitle]-->" />'
+                                +'<!--[if(data[i].articleImageTitle!==""){]--><img class="img-title" src="<!--[=data[i].articleImageTitleFull]-->" />'
                                     //播放按钮（视频类型）
                                     +'<!--[if(data[i].articleType===2){]-->'
                                         +'<p class="video-play">'
@@ -62,7 +62,7 @@ var plugins=plugins||{};
                             //焦点图（浏览模式下的焦点文章或图片模式下）
                             +'<!--[if((mode===2)||(mode===1&&data[i].ariticleIsFocus)){]-->'
                                 +'<p class="image-focus">'
-                                    +'<img class="img-title" src="<!--[=data[i].ariticleIsFocus?data[i].articleImageFocus:data[i].articleImageTitle]-->" />'
+                                    +'<img class="img-title" src="<!--[=data[i].ariticleIsFocus?data[i].articleImageFocusFull:data[i].articleImageTitleFull]-->" />'
                                 +'</p>'
                                 +'<!--[if(data[i].articleType===2){]-->'
                                     +'<p class="video-play-focus">'
@@ -175,12 +175,21 @@ var plugins=plugins||{};
             "appCode":function(){return curIndex.getSubUrlParam("appCode");},
             "searchValue":function()
             {
+                var result="";
+                //增加id标识
                 var articleId=curIndex.getSubUrlParam("id");
-                return (articleId?("articleId=?;"+articleId):null);
+                !articleId||(result+="articleId=?;"+articleId);
+                //增加筛选获取
+                var articleStatus=curIndex.getSubUrlParam("articleStatus");
+                !articleStatus||articleStatus==-1||(result+=((result==""?"":"|")+"articleStatus=?;"+articleStatus));
+                //增加搜索关键字
+                var articleSearch=$("#searchValue").val();
+                !articleSearch||articleSearch==""||(result+=((result==""?"":"|")+"article_title like ?;"+"%"+articleSearch+"%"));
+                return result;
             }
         },
         access:{"mode":function(){return curIndex.getSubUrlParam("mode");}},
-        success:function(local,data,limit,access){
+        success:function(local,data,limit,access,activeId,response){
             var mode=urlconfig["BUSI_CMS_ARTICLE"].access["mode"]()||"list";
             var sectionName=curIndex.getSubUrlParam("sectionName");
             var sectionCode=curIndex.getSubUrlParam("sectionCode");
@@ -209,9 +218,27 @@ var plugins=plugins||{};
                     editUrl:editUrl}))
                 ,
                 //显示页码
-                $(".pagination-right").html(mt.pagination({data: data, max: 5, dis: 2,name:"BUSI_CMS_ARTICLE"})));
+                $(".pagination-right").html(mt.pagination({data: response, max: 5, dis: 2,name:"BUSI_CMS_ARTICLE"}))
+            );
+            
+            //显示统计
+            if(mode!="edit"&&response&&response.statistics)
+            {
+                //当前状态
+                var articleStatus=curIndex.getSubUrlParam("articleStatus")||-1;
+                for(var status in local.checkType)
+                {
+                    $("#statusNumber-"+status).html(response.statistics[status]);
+                    !articleStatus||articleStatus!=status||(
+                        $("#statusNumber-"+status).parent().removeAttr("load"),
+                        $("#statusNumber-"+status).parent().addClass("disabled")
+                    );
+                }
+            }
         },
         customUpdate:function(params,data){
+            //滤掉状态更改模式
+            if(params["changeMode"]) return;
             var sectionName=curIndex.getSubUrlParam("sectionName");
             var sectionCode=curIndex.getSubUrlParam("sectionCode");
             var appCode=curIndex.getSubUrlParam("appCode");
@@ -221,8 +248,7 @@ var plugins=plugins||{};
                     //1：编辑新创建的文章
                     :(params["handleAfter"]==="1"?("sub_article_edit_"+editUrl[params.articleType]+".html?active=BUSI_CMS_ARTICLE&mode=edit&sectionName="+sectionName+"&sectionCode="+sectionCode+"&appCode="+appCode+"&id="+data.infor)
                     //2：返回文章列表
-                    :"sub_articles.html?sectionName="+sectionName+"&sectionCode="+sectionCode+"&appCode="+appCode);
-            index.loadSubContent(url);
+                    :"sub_articles.html?active=BUSI_CMS_ARTICLE&sectionName="+sectionName+"&sectionCode="+sectionCode+"&appCode="+appCode);
         },
         property:{
             articleId:{type:"hidden"},
@@ -236,6 +262,11 @@ var plugins=plugins||{};
             articleIsFocus:{type:"checkbox"},
             articleCanCommit:{type:"checkbox"},
             articleSummary:{type:"text"},
+            articleKeywords:{type:"input"},
+            articleImageTitle:{type:"hidden"},
+            articleImageFocus:{type:"hidden"},
+            articleAuthor:{type:"input"},
+            articleSource:{type:"input"},
             handleAfter:{type:"radio"}
         }
     };

@@ -28,7 +28,7 @@ var urlconfig = urlconfig || {};
     //记录当前获取到的数据信息
     var curData=null;
     //记录当前页面插件的标识
-    var active=parent.console.getUrlParam("active")?parent.console.getUrlParam("active"):"welcome";
+    var active=parent.console.getUrlParam("active")?parent.console.getUrlParam("active"):"BUSI_MANAGE_SECTION";
     //记录当前页面插件的权限
     var limit={
             insert:parent.console.haveLimit(active,"01"),
@@ -42,11 +42,13 @@ var urlconfig = urlconfig || {};
      * alertMessage:弹出显示提示信息
      * @param mode danger|success|info|warning
      * @param message - 错误信息
+     * @param second - 自动消失的秒数
      */
-    function alertMessage(mode,message)
+    function alertMessage(mode,message,second)
     {
         //元素存在，清除元素
         if ($(".alert").length !== 0) $(".alert").remove();
+        second=second||4;
 
         //添加元素
         $(urlconfig.messageBefore||urlconfig.to||".property").before(mt.messageAlert({
@@ -57,6 +59,9 @@ var urlconfig = urlconfig || {};
 
         //弹出元素
         $(".alert").fadeIn("fast", function() {$(".alert").addClass("in");});
+
+        //自动消失
+        !second||(setTimeout(function(){$(".alert").fadeOut("fast");},second*1000));
     }
     index.alertMessage=alertMessage;
 
@@ -325,7 +330,7 @@ var urlconfig = urlconfig || {};
                     {
                         (plugin&&plugins&&plugins[plugin]&&plugins[plugin].success)?
                             (plugins[plugin].success(data))
-                            :($("#"+id).val("../"+data.path),$("#"+id+"_img").attr("src","../"+data.path));
+                            :($("#"+id).val(data.path),$("#"+id+"_img").attr("src","../"+data.path));
                     }
                     else
                     {
@@ -420,9 +425,12 @@ var urlconfig = urlconfig || {};
                         recordDataInfor(data,config.save);
                         //空数据提示
                         !curData||curData.length>0||(alertMessage("warning",local.warning_infor["001"]));
+                        //获取缓存的激活标识
+                        var activeId=null;
+                        !config.keyStorage||(activeId=(parent.console.storage.getValue(config.keyStorage)||""));
                         //显示数据内容
                         !config.success||((typeof(config.success)==="function")?
-                                   (config.success(local,data.list,limit,access))
+                                   (config.success(local,data.list,limit,access,activeId,data))
                                    :($(config.to).html(template(config.success,{local:local,data:data.list,limit:limit}))));
                         //绑定事件
                         bindCommonEvent();
@@ -484,6 +492,7 @@ var urlconfig = urlconfig || {};
         //锁定按钮
         $("[action-mode]").attr("disabled","disabled");
         //显示载入指示器
+        var btnHtml=button.html();
         button.html(parent.console.loading(16)||parent.local.operating||"");
 
         //获取提交数据
@@ -552,7 +561,7 @@ var urlconfig = urlconfig || {};
                 }
                 else if(prop.type==="template")
                 {
-                    params=prop.paramGenerate(params);
+                    params=prop.paramGenerate(params,curOperate);
                 }
                 else
                 {
@@ -577,8 +586,7 @@ var urlconfig = urlconfig || {};
             complete: function(XHR, TS)
             {
                 //关闭指示器
-                button.html('<span class="glyphicon glyphicon-save"></span>'
-                        +(parent.local.action["submit"]||"保存"));
+                button.html(btnHtml);
                 //解除锁定
                 $("[action-mode]").removeAttr("disabled");
                 $(".modal").modal('hide');
@@ -596,6 +604,8 @@ var urlconfig = urlconfig || {};
                     //显示信息
                     data.success?(
                             alertMessage("success",""),
+                            //记录新增的主键
+                            !config.keyStorage||!data.newId||(parent.console.storage.setValue(config.keyStorage,data.newId)),
                             //更新列表
                             config.noUpdate||requestData(urlconfig,name),
                             //自定义更新
@@ -615,6 +625,7 @@ var urlconfig = urlconfig || {};
             }
         });
     }
+    index.submitData=submitData;
 
     /**
      * removeData:数据删除请求
@@ -622,8 +633,9 @@ var urlconfig = urlconfig || {};
      * @param name 配置索引
      * @param button 提交点击按钮
      * @param batch 是否批量
+     * @param customData 自定义数据内容
      */
-    function removeData(config,name,button,batch)
+    function removeData(config,name,button,batch,customData)
     {
         //非空判断
         if (!config) return;
@@ -632,8 +644,8 @@ var urlconfig = urlconfig || {};
         config = (config.type === "multi") ? config[name] : config;
         //非空判断
         if (!config) return;
-        if (!button.attr("data-index")) return;
-        var data=curData[button.attr("data-index")];
+        if (!button.attr("data-index")&&!customData) return;
+        var data=curData[button.attr("data-index")]||customData;
         if (!data) return;
 
         //弹出询问对话框
@@ -648,7 +660,9 @@ var urlconfig = urlconfig || {};
             //操作参数
             curOperate=2;
             curOperate===-1||(params[operateMode]=operate[curOperate]);
-            params[primaryKey]=data[config.key];
+            params[primaryKey]=(config.property[config.key]&&config.property[config.key].from)?data[config.property[config.key].from]:data[config.key];
+            !config.keyStorage||(parent.console.storage.setValue(config.keyStorage,""));
+            customData=data;
 
             //Ajax访问服务器
             $.ajax({
@@ -674,7 +688,9 @@ var urlconfig = urlconfig || {};
                         data.success?alertMessage("success","")
                             :alertMessage("danger",data.infor);
                         //更新列表
-                        requestData(urlconfig,name);
+                        !data.success||config.noUpdate||requestData(urlconfig,name);
+                        //自定义更新
+                        !data.success||!config.customUpdate||config.customUpdate(params,data,customData);
                     }
                     else
                     {
@@ -689,6 +705,7 @@ var urlconfig = urlconfig || {};
             });
         });
     }
+    index.removeData=removeData;
 
     /**
      * displayPropertyDialog:显示属性对话框
@@ -734,9 +751,11 @@ var urlconfig = urlconfig || {};
         $("#"+dialog).modal({});
 
         //绑定数据提交事件
-        $("#"+dialog+"_submit").click(function(){
-            submitData(urlconfig,$(this).attr("name"),$(this),dialog,extra);
-        });
+        $("#"+dialog+"_submit").attr("onclick")||(
+            $("#"+dialog+"_submit").attr("onclick","true"),
+                $("#"+dialog+"_submit").click(function(){
+                    submitData(urlconfig,$(this).attr("name"),$(this),dialog,extra);
+                }));
         //绑定输入框校验事件
         for (var key in config.property)
         {
@@ -826,7 +845,7 @@ var urlconfig = urlconfig || {};
         });
         //绑定数据删除事件
         $("#"+form+"_remove").click(function(){
-            removeData(urlconfig,$(this).attr("name"),$(this),false);
+            removeData(urlconfig,$(this).attr("name"),$(this),false,customData);
         });
         //绑定输入框校验事件
         for (var key in config.property)
@@ -928,7 +947,7 @@ var urlconfig = urlconfig || {};
                 $(this).attr("onclick","true"),
                 $(this).click(function(){
                     urlconfig.customSearch?
-                        (urlconfig.customSearch($(this).val(),curData))
+                        (urlconfig.customSearch($("#"+$(this).attr("name")).val(),curData))
                         :(requestData(urlconfig,$(this).attr("name")));
                 }));
         });
@@ -966,17 +985,17 @@ var urlconfig = urlconfig || {};
                     $(this).attr("onclick","true"),
                     $(this).click(function(){
                         //读取链接设置
-                        var config = (urlconfig.type === "multi") ? urlconfig[$(this).attr("name")] : urlconfig;
+                        // var config = (urlconfig.type === "multi") ? urlconfig[$(this).attr("name")] : urlconfig;
                         var idx=$(this).attr("data-index");
                         //记录操作模式
                         curOperate=(idx!==null&&idx!==undefined)?3:1;
                         //确定当前权限值
-                        var curLimit=config.limitId?({
-                                insert:parent.console.haveLimit(config.limitId,"01"),
-                                remove:parent.console.haveLimit(config.limitId,"02"),
-                                edit:parent.console.haveLimit(config.limitId,"03"),
-                                list:parent.console.haveLimit(config.limitId,"00")
-                            }):limit;
+                        // var curLimit=config.limitId?({
+                        //         insert:parent.console.haveLimit(config.limitId,"01"),
+                        //         remove:parent.console.haveLimit(config.limitId,"02"),
+                        //         edit:parent.console.haveLimit(config.limitId,"03"),
+                        //         list:parent.console.haveLimit(config.limitId,"00")
+                        //     }):limit;
                         submitData(urlconfig,$(this).attr("name"),$(this),$(this).attr("data-to"),$(this).attr("data-extra"),idx);
                     }));
         });
@@ -1033,7 +1052,8 @@ var urlconfig = urlconfig || {};
             local:local,
             active:active,
             modules:parent.console.pluginsForModule(active),
-            apps:parent.console.loginUser.apps
+            apps:parent.console.loginUser.apps,
+            limit:limit
         }));
         $("#template_navbar").remove();
         //中心内容
@@ -1085,7 +1105,7 @@ var urlconfig = urlconfig || {};
             }
         }
         //无查询权限
-        if(!limit.list){alertMessage("warning","003");}
+        if(!limit.list){alertMessage("warning",local.error_infor["003"]);}
 
         /*测试*/
     });

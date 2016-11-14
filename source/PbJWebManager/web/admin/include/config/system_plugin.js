@@ -18,14 +18,22 @@ var urlconfig = urlconfig || {};
     //自定义搜索
     function search(keyword,data)
     {
-        /*for(var i=0;i<data.length;i++)
+        for(var i=0;i<data.length;i++)
         {
-            data[i].pluginName.indexOf(keyword)===-1||(
-                    $("#"+data[i].pluginCode).removeClass("panel-primary"),
-                    $("#"+data[i].pluginCode).removeClass("panel-info"),
-                    $("#"+data[i].pluginCode).addClass("panel-danger")
+            (keyword==""||data[i].pluginName.indexOf(keyword)===-1)
+                ?(
+                    $("#module_"+data[i].pluginCode).removeClass("panel-danger"),
+                    $("#plugin_"+data[i].pluginCode).removeClass("panel-danger"),
+                    $("#module_"+data[i].pluginCode).addClass("panel-primary"),
+                    $("#plugin_"+data[i].pluginCode).addClass("panel-info")
+                )
+                :(
+                    $("#module_"+data[i].pluginCode).removeClass("panel-primary"),
+                    $("#plugin_"+data[i].pluginCode).removeClass("panel-info"),
+                    $("#module_"+data[i].pluginCode).addClass("panel-danger"),
+                    $("#plugin_"+data[i].pluginCode).addClass("panel-danger")
                 );
-        }*/
+        }
     }
     
     //页面数据载入设置
@@ -68,6 +76,8 @@ var urlconfig = urlconfig || {};
         url: "../systemPlugin",
         key:"custId",
         extra:{pluginType:"0"},
+        noUpdate:true,
+        customUpdate:function(params,data){index.requestData(urlconfig,"SYSTEM_CONFIG_PLUGIN");},
         property:{
             custId:{type:"hidden"},
             pluginId:{type:"input",must:true,match:/[A-Z|_]{6,60}/,alert:"插件标识必须由大写英文字母或下划线组成，最少6个!"},
@@ -80,6 +90,8 @@ var urlconfig = urlconfig || {};
         url: "../systemPlugin",
         key:"custId",
         extra:{pluginType:"1"},
+        noUpdate:true,
+        customUpdate:function(params,data){index.requestData(urlconfig,"SYSTEM_CONFIG_PLUGIN");},
         property:{
             custId:{type:"hidden"},
             pluginIcon:{type:"glyphicon",source:parent.local.source.glyphicon,default:"glyphicon-file"},
@@ -95,6 +107,8 @@ var urlconfig = urlconfig || {};
         url: "../systemPlugin",
         key:"custId",
         extra:{pluginType:"2"},
+        noUpdate:true,
+        customUpdate:function(params,data){index.requestData(urlconfig,"SYSTEM_CONFIG_PLUGIN");},
         property:{
             custId:{type:"hidden"},
             pluginName:{type:"input",must:true},

@@ -56,6 +56,8 @@ public class BusiCmsResourceUploadServlet extends AbstractServlet
     private static final long     MAX_FILE_SIZE       =1024*1024*10;
     // 参数-来源
     private static final String   PARAM_FROM          ="from";
+    // 参数-是否创建资源
+    private static final String   PARAM_RESOURCE      ="resource";
     // 参数值 - CKEditor上传
     private static final String   PARAM_VALUE_CKEDITOR="ckeditor";
     
@@ -179,6 +181,12 @@ public class BusiCmsResourceUploadServlet extends AbstractServlet
             // 文件保存路径的列表
             String filePaths="";
             JSONArray resources=new JSONArray();
+
+            //获取是否指定要创建资源数据
+            Map<String,String[]> params=this.fileUploader.getParamFields();
+            String[] isResParams=params.get(PARAM_RESOURCE);
+            String isResStr=(isResParams!=null&&isResParams.length>0)?isResParams[0]:"1";
+            boolean isRes=("1".equals(isResStr));
             
             /* 轮询文件表单域，填充 files */
             Set<String> keys=this.fileUploader.getFileFields().keySet();
@@ -197,79 +205,83 @@ public class BusiCmsResourceUploadServlet extends AbstractServlet
                     String linkPath=String.format("%s%s",this.fileUploader.getSavePath(),File.separator);
                     filePaths+=link;
 
-                    //生成相关缩略图
-                    String preName=name.substring(0,name.lastIndexOf("."));
-                    String suffix=name.substring(name.lastIndexOf("."));
-                    String thumbName=preName+"@thumb";
-                    String middleName=preName+"@middle";
-                    this.processor.setFile(filePath,name)
-                            .setHandleMode(ImageProcessor.ImageHandleMode.COMPRESS_AND_SCALE)
-                            .setCompressMode(ImageProcessor.ImageCompressMode.CUSTEM)
-                                    //.setOutputQuality(1)
-                            .setOutputName(thumbName)
-                            .setOutputSize(320,320)
-                            .setScaleMode(ImageProcessor.ImageScaleMode.PROPORTION)
-                            .toImageFile().createNewFile();
-                    this.processor.setFile(filePath,name)
-                            .setHandleMode(ImageProcessor.ImageHandleMode.COMPRESS_AND_SCALE)
-                            .setCompressMode(ImageProcessor.ImageCompressMode.CUSTEM)
-                                    //.setOutputQuality(0.6f)
-                            .setOutputName(middleName)
-                            .setOutputSize(640,640)
-                            .setScaleMode(ImageProcessor.ImageScaleMode.PROPORTION)
-                            .toImageFile().createNewFile();
+                    //需创建资源时执行以下处理
+                    if(isRes)
+                    {
+                        //生成相关缩略图
+                        String preName=name.substring(0,name.lastIndexOf("."));
+                        String suffix=name.substring(name.lastIndexOf("."));
+                        String thumbName=preName+"@thumb";
+                        String middleName=preName+"@middle";
+                        this.processor.setFile(filePath,name)
+                                .setHandleMode(ImageProcessor.ImageHandleMode.COMPRESS_AND_SCALE)
+                                .setCompressMode(ImageProcessor.ImageCompressMode.CUSTEM)
+                                //.setOutputQuality(1)
+                                .setOutputName(thumbName)
+                                .setOutputSize(320,320)
+                                .setScaleMode(ImageProcessor.ImageScaleMode.PROPORTION)
+                                .toImageFile().createNewFile();
+                        this.processor.setFile(filePath,name)
+                                .setHandleMode(ImageProcessor.ImageHandleMode.COMPRESS_AND_SCALE)
+                                .setCompressMode(ImageProcessor.ImageCompressMode.CUSTEM)
+                                //.setOutputQuality(0.6f)
+                                .setOutputName(middleName)
+                                .setOutputSize(640,640)
+                                .setScaleMode(ImageProcessor.ImageScaleMode.PROPORTION)
+                                .toImageFile().createNewFile();
 
-                    //添加资源的数据信息到资源表中
-                    this.resManager.transactionBegin();
-                    BusiResource res=new BusiResource();
-                    res.setResourceTitle(
-                            ffs[i].getUploadFileName().substring(0,ffs[i].getUploadFileName().lastIndexOf("."))
-                    );
-                    res.setResourceThumb(thumbName);
-                    res.setResourceLink(linkPath);
-                    res.setResourceMiddle(middleName);
-                    res.setResourceFile(preName);
-                    res.setResourceSuffix(suffix);
-                    res.setResourcePath(filePath);
-                    String type=name.substring(name.lastIndexOf("."));
-                    res.setResourceType((TYPE_VIDEO.contains(type))?2:(TYPE_AUDIO.contains(type)?1:0));
-                    res.setResourceCreate(this.dp.setFormat("yyyy-MM-dd HH:mm:ss").getCurrent());
-                    res.setResourceDate(this.dp.setFormat("yyyy-MM-dd").getCurrent());
-                    res.setResourceSize(this.fileSize(ffs[i].getSaveFile()));
-                    res.setResourceCount(1);
-                    //创建资源数据失败时删除对应的文件
-                    if(!this.resManager.create(res))
-                    {
-                        (new File(filePath,thumbName+"."+this.processor.getOutputFormat())).delete();
-                        (new File(filePath,middleName+"."+this.processor.getOutputFormat())).delete();
-                        ffs[i].getSaveFile().delete();
-                        throw new ServletException("创建资源信息出现错误："+this.resManager.getError());
-                    }
-                    
-                    //指定文章标识，建立文章与图片的关联
-                    Map<String,String[]> params=this.fileUploader.getParamFields();
-                    String articleId=params.get(PARAM_ARTICLE).length>0?params.get(PARAM_ARTICLE)[0]:null;
-                    if(!this.paramNullCheck(articleId))
-                    {
-                        if(!this.artResManager.create(articleId,this.resManager.getLastGenerator()))
+                        //添加资源的数据信息到资源表中
+                        this.resManager.transactionBegin();
+                        BusiResource res=new BusiResource();
+                        res.setResourceTitle(
+                                ffs[i].getUploadFileName().substring(0,ffs[i].getUploadFileName().lastIndexOf("."))
+                        );
+                        res.setResourceThumb(thumbName);
+                        res.setResourceLink(linkPath);
+                        res.setResourceMiddle(middleName);
+                        res.setResourceFile(preName);
+                        res.setResourceSuffix(suffix);
+                        res.setResourcePath(filePath);
+                        String type=name.substring(name.lastIndexOf("."));
+                        res.setResourceType((TYPE_VIDEO.contains(type))?2:(TYPE_AUDIO.contains(type)?1:0));
+                        res.setResourceCreate(this.dp.setFormat("yyyy-MM-dd HH:mm:ss").getCurrent());
+                        res.setResourceDate(this.dp.setFormat("yyyy-MM-dd").getCurrent());
+                        res.setResourceSize(this.fileSize(ffs[i].getSaveFile()));
+                        res.setResourceCount(1);
+                        //创建资源数据失败时删除对应的文件
+                        if(!this.resManager.create(res))
                         {
                             (new File(filePath,thumbName+"."+this.processor.getOutputFormat())).delete();
                             (new File(filePath,middleName+"."+this.processor.getOutputFormat())).delete();
                             ffs[i].getSaveFile().delete();
-                            this.resManager.transactionRollBack();
-                            throw new ServletException("关联文章时出现错误："+this.resManager.getError());
+                            throw new ServletException("创建资源信息出现错误："+this.resManager.getError());
                         }
-                    }
-                    this.resManager.transactionCommit();
 
-                    //创建成功则添加输出JSON信息
-                    JSONObject resource=new JSONObject();
-                    resource.put("resourceId",this.resManager.getLastGenerator());
-                    resource.put("resourceTitle",res.getResourceTitle());
-                    resource.put("resourceThumb",res.getResourceThumb());
-                    resource.put("resourceLink",res.getResourceLink());
-                    resource.put("resourceType",res.getResourceType());
-                    resources.put(resource);
+                        //指定文章标识，建立文章与图片的关联
+                        String[] articleIds=params.get(PARAM_ARTICLE);
+                        String articleId=(articleIds!=null&&articleIds.length>0)?params.get(PARAM_ARTICLE)[0]:null;
+                        if(!this.paramNullCheck(articleId))
+                        {
+                            if(!this.artResManager.create(articleId,this.resManager.getLastGenerator()))
+                            {
+                                (new File(filePath,thumbName+"."+this.processor.getOutputFormat())).delete();
+                                (new File(filePath,middleName+"."+this.processor.getOutputFormat())).delete();
+                                ffs[i].getSaveFile().delete();
+                                this.resManager.transactionRollBack();
+                                throw new ServletException("关联文章时出现错误："+this.resManager.getError());
+                            }
+                        }
+                        this.resManager.transactionCommit();
+
+                        //创建成功则添加输出JSON信息
+                        JSONObject resource=new JSONObject();
+                        resource.put("resourceId",this.resManager.getLastGenerator());
+                        resource.put("resourceTitle",res.getResourceTitle());
+                        resource.put("resourceThumb",res.getResourceThumb());
+                        resource.put("resourceLink",res.getResourceLink());
+                        resource.put("resourceType",res.getResourceType());
+                        resources.put(resource);
+                    }
                 }
             }
 

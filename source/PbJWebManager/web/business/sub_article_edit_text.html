@@ -98,8 +98,8 @@
                                                 <!--[i++;}]-->
                                             <!--[}]-->
                                             <br/>
-                                            <button type="button" class="btn btn-primary navbar-btn btn-xs">
-                                                <span class="glyphicon glyphicon-edit"></span><!--[=local.action["change"]]-->
+                                            <button type="button" class="btn btn-primary navbar-btn btn-xs" action-mode="submit" name="BUSI_CMS_ARTICLE" data-to="article" data-index="<!--[=data.articleId]-->" data-extra="{articleType:0,changeMode:'changeMode'}">
+                                            <span class="glyphicon glyphicon-edit"></span><!--[=local.action["change"]]-->
                                             </button>
                                         </div>
                                     </div>
@@ -157,10 +157,14 @@
                                                     <button action-mode="" class="btn btn-xs btn-link" ><i class="glyphicon glyphicon-link"></i></button>
                                                     <br>(160x120)
                                                 </label>
-                                                <input type="hidden" id="articleImageTitle" name="articleImageTitle" value="<!--[=data.articleImageTitle]-->" />
+                                                <input type="hidden" id="articleImageTitle" name="articleImageTitle" value="<!--[=data.articleImageTitle]-->" data-extra="{resource:0}" />
                                                 <input type="file" id="articleImageTitle_file" name="articleImageTitle_file" to="articleImageTitle" style="display:none;" />
                                                 <a action-mode='upload' to='articleImageTitle' href="#articleImageTitle" class="thumbnail">
+                                                    <!--[if(data.articleImageTitle&&data.articleImageTitle!=""){]-->
+                                                    <img id="articleImageTitle_img" name="articleImageTitle_img" src="<!--[=data.articleImageTitleFull]-->" style="width:80px;height:80px;" alt="...">
+                                                    <!--[}else{]-->
                                                     <img id="articleImageTitle_img" name="articleImageTitle_img" data-src="holder.js/160x120" style="width:80px;height:80px;" alt="...">
+                                                    <!--[}]-->
                                                 </a>
                                             </div>
                                         </div>
@@ -171,10 +175,15 @@
                                                     <button action-mode="" class="btn btn-xs btn-link" ><i class="glyphicon glyphicon-link"></i></button>
                                                     <br>(640x360)
                                                 </label>
-                                                <input type="hidden" id="articleImageFocus" name="articleImageFocus" value="<!--[=data.articleImageFocus]-->" />
+                                                <input type="hidden" id="articleImageFocus" name="articleImageFocus" value="<!--[=data.articleImageFocus]-->" data-extra="{resource:0}" />
                                                 <input type="file" id="articleImageFocus_file" name="articleImageFocus_file" to="articleImageFocus" style="display:none;" />
                                                 <a action-mode='upload' to='articleImageFocus' href="#articleImageFocus" class="thumbnail">
+
+                                                    <!--[if(data.articleImageTitle&&data.articleImageTitle!=""){]-->
+                                                    <img id="articleImageFocus_img" name="articleImageFocus_img" src="<!--[=data.articleImageFocusFull]-->" style="width:80px;height:80px;" alt="...">
+                                                    <!--[}else{]-->
                                                     <img id="articleImageFocus_img" name="articleImageFocus_img" data-src="holder.js/640x360" style="width:80px;height:80px;" alt="...">
+                                                    <!--[}]-->
                                                 </a>
                                             </div>
                                         </div>

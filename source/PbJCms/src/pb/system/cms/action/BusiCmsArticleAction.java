@@ -20,14 +20,7 @@ import pb.json.JSONObject;
 import pb.pool.CachingServiceLocator;
 import pb.system.cms.entity.BusiCmsArticle;
 import pb.system.cms.entity.BusiCmsArticleGroup;
-import pb.system.cms.manager.BusiCmsArticleFacade;
-import pb.system.cms.manager.BusiCmsArticleFacadeLocal;
-import pb.system.cms.manager.BusiCmsArticleGroupFacade;
-import pb.system.cms.manager.BusiCmsArticleGroupFacadeLocal;
-import pb.system.cms.manager.BusiCmsArticleGroupMapFacade;
-import pb.system.cms.manager.BusiCmsArticleGroupMapFacadeLocal;
-import pb.system.cms.manager.BusiCmsArticleResFacade;
-import pb.system.cms.manager.BusiCmsArticleResFacadeLocal;
+import pb.system.cms.manager.*;
 import pb.system.cms.module.BusiCmsArticleOutput;
 import pb.system.cms.servlet.BusiCmsArticleServlet;
 import pb.system.limit.action.AbstractAction;
@@ -152,10 +145,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         if(!this.paramNullCheck(status))
         {
             LoginUser user=this.getLoginUserInSession(request);
-            if(!user.isHaveLimit("BUSI_CMS_ARTICLE",4))
-            {
-                entity.setArticleStatus(0);
-            }
+            entity.setArticleStatus(user.isHaveLimit("BUSI_CMS_ARTICLE",4)?status:"0");
         }
 
         //自动更新内容
@@ -372,10 +362,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         if(!this.paramNullCheck(status))
         {
             LoginUser user=this.getLoginUserInSession(request);
-            if(!user.isHaveLimit("BUSI_CMS_ARTICLE",4))
-            {
-                entity.setArticleStatus(article.getArticleStatus());
-            }
+            entity.setArticleStatus(user.isHaveLimit("BUSI_CMS_ARTICLE",4)?status:(article.getArticleStatus()+""));
         }
 
         //自动更新内容
@@ -455,7 +442,9 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
     }
 
     /**
-     * 方法（公共） 名称： findToXml 描述: 查询数据，返回Xml结果<br/>
+     * 方法（公共）
+     * 名称： findToXml
+     * 描述: 查询数据，返回Xml结果<br/>
      *
      * @param request - HTTP请求对象
      * @return String - 获取成功返回XML格式的列表结果
@@ -478,7 +467,9 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
     }
 
     /**
-     * 方法（公共） 名称： findToJson 描述: 查询数据，返回Json结果<br/>
+     * 方法（公共）
+     * 名称： findToJson
+     * 描述: 查询数据，返回Json结果<br/>
      *
      * @param request - HTTP请求对象
      * @return String - 获取成功返回JSON格式的列表结果
@@ -501,6 +492,21 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         json.put("total",this.manager.getTotalCount());
         json.put("totalPage",this.manager.getTotalPage());
 
+        //增加其他统计内容
+        if(!this.isCurrentUseNoLoginMode(request)&&this.currentPage==1)
+        {
+            Map<String,Object> condition=this.generateCondition(request);
+            Map<String,Object> result=new HashMap<>();
+            condition.remove("articleStatus=?");
+            result.put("-1",this.manager.count(condition));
+            for(int i=0;i<3;i++)
+            {
+                condition.put("articleStatus=?",i);
+                result.put(i+"",this.manager.count(condition));
+            }
+            json.put("statistics",result);
+        }
+
         //列表内容
         JSONArray array=new JSONArray();
         for(Object obj : list)
@@ -513,8 +519,10 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
             artJson.put("sectionCode",article.getSectionCode());
             artJson.put("articleTitle",article.getArticleTitle());
             artJson.put("articleType",article.getArticleType());
-            artJson.put("articleImageTitle",this.getFullLink(request,article.getArticleImageTitle()));
-            artJson.put("articleImageFocus",this.getFullLink(request,article.getArticleImageFocus()));
+            artJson.put("articleImageTitle",article.getArticleImageTitle());
+            artJson.put("articleImageFocus",article.getArticleImageFocus());
+            artJson.put("articleImageTitleFull",this.getFullLink(request,article.getArticleImageTitle()));
+            artJson.put("articleImageFocusFull",this.getFullLink(request,article.getArticleImageFocus()));
             artJson.put("articleSummary",article.getArticleSummary());
             artJson.put("articleKeywords",article.getArticleKeywords());
             artJson.put("articleSource",article.getArticleSource());
@@ -526,12 +534,20 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
             if(!isOut) artJson.put("articleIsTop",article.getArticleIsTop());
             artJson.put("articleTitleSub",article.getArticleTitleSub());
             artJson.put("articleReleaseTime",article.getArticleReleaseTime());
+            artJson.put("articleCountComment",article.getArticleCountComment());
 
             //查询列表和内容时输出内容不同（即list数据量来判断）
             //查询内容时输出
             if(list.size()<2)
             {
-                artJson.put("articleContent",article.getArticleContent());
+                //手机端接口返回内容中替换其中图片路径为绝对路径
+                String content=article.getArticleContent();
+                if(!this.paramNullCheck(content)&&this.isCurrentUseNoLoginMode(request))
+                {
+                    content=content.replaceAll("src=\"../upload","src=\""+this.getServerRootPath(request)+"upload");
+                }
+                artJson.put("articleContent",content);
+
                 if(!isOut) artJson.put("articleSourceType",article.getArticleSourceType());
                 artJson.put("articleHtml",article.getArticleHtml());
                 if(!isOut) artJson.put("articleCreateTime",article.getArticleCreateTime());
@@ -544,7 +560,6 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                 if(!isOut) artJson.put("articleCountShare",article.getArticleCountShare());
                 if(!isOut) artJson.put("articleCountRead",article.getArticleCountRead());
                 if(!isOut) artJson.put("articleCountFavorite",article.getArticleCountFavorite());
-                if(!isOut) artJson.put("articleCountComment",article.getArticleCountComment());
             }
 
             //根据不同的文章类型输出相应的附件内容
@@ -582,23 +597,20 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                             img.put(
                                     "resourceThumb",this.getFullLink(
                                             request,
-                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+res
-                                                    .getResourceSuffix())
+                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+".jpg")
                                     )
                             );
                             img.put(
                                     "resourceMiddle",this.getFullLink(
                                             request,
-                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceMiddle()+res
-                                                    .getResourceSuffix())
+                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+".jpg")
                                     )
                             );
                             img.put("resourceIsOut",res.getResourceIsOut());
                             img.put(
                                     "resourceLink",this.getFullLink(
                                             request,
-                                            res.getResourceLink()+(res.resourceIsOut()?"":(res.getResourceFile()+res
-                                                    .getResourceSuffix()))
+                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+".jpg")
                                     )
                             );
                             img.put("resourceType",res.getResourceType());
@@ -730,23 +742,24 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         //参数判断
         String priKey=request.getParameter(AbstractServlet.PARAM_PRIMARYKEY);
         String sectionCode=request.getParameter(BusiCmsArticleServlet.PARAM_SECTION);
-        if(!this.paramNullCheck(priKey))
-        {
-            condition.put("articleId=?",priKey);
-        }
-        else
-        {
-            //必须指定栏目标识
-            if(this.paramNullCheck(sectionCode))
-            {
-                throw new ServletException("未指定文章所属的栏目标识！");
-            }
-        }
 
         //后台访问
         if(!this.isCurrentUseNoLoginMode(request))
         {
-            condition.put("sectionCode like ?",sectionCode+"%");
+            if(!this.paramNullCheck(priKey))
+            {
+                condition.put("articleId=?",priKey);
+            }
+            else
+            {
+                //必须指定栏目标识
+                if(this.paramNullCheck(sectionCode))
+                {
+                    throw new ServletException("未指定文章所属的栏目标识！");
+                }
+                condition.put("sectionCode=?",sectionCode);
+            }
+
             //必须指定所属应用
             String sectionApp=request.getParameter(BusiCmsArticleServlet.PARAM_APP);
             if(this.paramNullCheck(sectionApp))
@@ -754,7 +767,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                 throw new ServletException("未指定数据所属的应用标识！");
             }
             //获取应用的相关信息
-            BusiSection section=this.secManager.findBySectionCode(sectionCode);
+            BusiSection section=this.secManager.findBySectionCode(sectionApp,sectionCode);
 
             //获取应用的属性信息
             SystemApplication app=this.getAppByUserRound(request,sectionApp);
@@ -769,11 +782,35 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
             {
                 throw new ServletException("指定应用与栏目标识不匹配！");
             }
+            condition.put("appCode like ?",sectionApp);
         }
         //外部接口
         else
         {
-            if(this.paramNullCheck(priKey)) condition.put("sectionCode=?",sectionCode);
+            String tagName=request.getParameter(BusiCmsArticleServlet.PARAM_TAGNAME);
+            if(!this.paramNullCheck(tagName))
+            {
+                condition.put("articleKeywords like ?","%"+tagName+"%");
+            }
+            else
+            {
+                //必须指定所属应用
+                String app=request.getParameter(AbstractServlet.PARAM_FROMAPP);
+                if(this.paramNullCheck(app))
+                {
+                    throw new ServletException("未指定数据所属的应用标识！");
+                }
+                condition.put("appCode like ?",app);
+
+                if(!this.paramNullCheck(priKey))
+                {
+                    condition.put("articleId=?",priKey);
+                }
+                else
+                {
+                    if(!this.paramNullCheck(sectionCode)) condition.put("sectionCode like ?",sectionCode+"%");
+                }
+            }
             //增加已发布限制
             condition.put("articleStatus=?",2);
         }
@@ -865,6 +902,12 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
     {
         //更新时间
         entity.setArticleUpdateTime(this.dp.getCurrent());
+        //自动生成发布时间(发布状态并且未设置发布时间，则使用更新时间)
+        if(this.paramNullCheck(entity.getArticleReleaseTime())
+                &&entity.getArticleStatus()==2)
+        {
+            entity.setArticleReleaseTime(entity.getArticleUpdateTime());
+        }
 
         //自动生成作者
         if(this.paramNullCheck(entity.getArticleAuthor()))
@@ -923,8 +966,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
      * @return SystemApplication -
      * @throws javax.servlet.ServletException
      */
-    protected SystemApplication getAppByUserRound
-    (HttpServletRequest request,String sectionApp)
+    protected SystemApplication getAppByUserRound(HttpServletRequest request,String sectionApp)
             throws ServletException
     {
         Map<String,Object> appCondition=new HashMap<>();

@@ -47,6 +47,13 @@ public class BusiCmsArticleServlet extends AbstractServlet
      * 描述:    记录请求参数名称——所属应用<br/>
      */
     public static final String PARAM_AUTO_IMAGE="autoImg";
+
+    /**
+     * 静态常量(公共)<br/>
+     * 名称:    PARAM_TAGNAME<br/>
+     * 描述:    记录请求参数名称——标签<br/>
+     */
+    public static final String PARAM_TAGNAME="articleTag";
     
     /*-----------------------------结束：静态内容------------------------------*/
 

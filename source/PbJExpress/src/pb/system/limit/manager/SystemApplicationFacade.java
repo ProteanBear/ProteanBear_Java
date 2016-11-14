@@ -38,6 +38,17 @@ public class SystemApplicationFacade
     }
 
     /**
+     * 返回排序字段
+     * @return
+     */
+    @Override
+    protected String getFindOrderBy()
+    {
+        this.orderBy="order by app_order asc";
+        return this.orderBy;
+    }
+
+    /**
      * 方法（受保护）
      * 名称:    getPrimaryKeyName
      * 描述:    获取数据表主键字段名称

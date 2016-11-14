@@ -14,10 +14,17 @@ public class SystemApplicationServlet extends AbstractServlet
 
     /**
      * 静态常量(公共)<br>
-     * 名称:    PARAM_AREATYPE<br>
+     * 名称:    PARAM_APPPLAT<br>
      * 描述:    记录请求参数名称——应用对应的平台信息<br>
      */
     public static final String PARAM_APPPLAT="appPlat[]";
+
+    /**
+     * 静态常量(公共)<br>
+     * 名称:    PARAM_APPSEARCH<br>
+     * 描述:    记录请求参数名称——应用对应的平台信息<br>
+     */
+    public static final String PARAM_APPSEARCH="appSearch";
     
     /*-----------------------------结束：静态内容------------------------------*/
 

@@ -57,6 +57,15 @@
                             </textarea>
                         </div>
                         <div class="form-group">
+                            <!--[for(var handle in local.source.handleAfter){]-->
+                            <!--[var checked=(handle==="0");]-->
+                            <label class="radio-inline">
+                                <input type="radio" id="handleAfter-<!--[=handle]-->" name="handleAfter" value="<!--[=handle]-->" <!--[=checked?"checked":""]-->>
+                                <!--[=local.source.handleAfter[handle]]-->
+                            </label>
+                            <!--[}]-->
+                        </div>
+                        <div class="form-group">
                             <button action-mode="submit" name="BUSI_CMS_ARTICLE" type="button" class="btn btn-primary navbar-btn" data-to="article" data-extra="{articleType:2}">
                                 <span class="glyphicon glyphicon-save"></span><!--[=local.action["submit"]]-->
                             </button>

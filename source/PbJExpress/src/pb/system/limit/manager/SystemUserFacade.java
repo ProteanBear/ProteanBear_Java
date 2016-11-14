@@ -2,6 +2,9 @@ package pb.system.limit.manager;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import pb.code.MD5Productor;
 import pb.data.AbstractEntityManager;
@@ -95,7 +98,9 @@ public class SystemUserFacade
             return this.logAndReturnFalse("缺少必要的字段属性-用户标识");
         }
         //判断超级管理员标识
-        if(SuperAdminUser.superAdminId.equals(need) || this.exist(need))
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("userName=?",need);
+        if(SuperAdminUser.superAdminId.equals(need) || this.exist(condition))
         {
             return this.logAndReturnFalse("指定的用户名已经存在，请更换用户名再次添加");
         }
@@ -194,28 +199,31 @@ public class SystemUserFacade
      * 名称:    login<br>
      * 描述:    处理用户登录<br>
      *
-     * @param userId   - 管理人员标识
+     * @param userName   - 管理人员标识
      * @param password - 用户登录密码
      * @return SystemUser - 登录成功返回管理人员对象，否则返回Null
      */
     @Override
-    public SystemUser login(String userId,String password)
+    public SystemUser login(String userName,String password)
     {
         SystemUser result=null;
         boolean success=false;
 
         //参数判断
-        if(userId==null || "".equals(userId.trim()))
+        if(userName==null || "".equals(userName.trim()))
         {
             return (SystemUser)this.logAndReturnNull("指定的用户标识为空");
         }
 
         //超级管理员登录处理
-        result=this.superAdminLogin(userId,password);
+        result=this.superAdminLogin(userName,password);
         if(result!=null) return result;
 
         //读取指定的用户数据
-        result=this.find(userId);
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("userName=?",userName);
+        List<SystemUser> list=this.find(condition);
+        result=(list!=null&&!list.isEmpty())?list.get(0):null;
 
         //如果结果不为空，对比用户数据的登录密码和指定的登录密码
         if(result!=null)

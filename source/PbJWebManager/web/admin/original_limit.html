@@ -39,7 +39,7 @@
                         <!--[}]-->
                         <div class="navbar-form navbar-right" role="search">
                             <div class="input-group input-group-sm">
-                                <input id="searchValue" name="limitName like ?" type="text" class="form-control" placeholder="<!--[=local.search_input]-->">
+                                <input id="searchValue" name="limitName like ?" type="text" class="form-control" placeholder="<!--[=local.search_input]-->"  action-mode="data-search" action-name="<!--[=active]-->">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" action-mode="data-search" name="<!--[=active]-->">
                                         <span class="glyphicon glyphicon-search"></span>
@@ -65,7 +65,7 @@
                     <ul class="nav nav-pills nav-stacked">
                         <!--[for(var i=0;i<data.length;i++){]-->
                         <li class="<!--[=(i==0)?'active':'']-->">
-                            <a href="#" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_limit]-->（<!--[=data[i].limitName]-->）" action-mode="data-display" data-index="<!--[=i]-->">
+                            <a href="javascript:void(0)" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_limit]-->（<!--[=data[i].limitName]-->）" action-mode="data-display" data-index="<!--[=i]-->">
                                 <!--[=data[i].limitName]-->
                             </a>
                         </li>

@@ -39,6 +39,35 @@ public class BusiCmsArticle
 
     /**
      * 域(受保护)
+     * 名称: appCode
+     * 描述: 文章所属的应用标识
+     */
+    protected String appCode;
+
+    /**
+     * 访问器
+     * 目标: appCode
+     *
+     * @return String - 文章所属的应用标识
+     */
+    public String getAppCode()
+    {
+        return appCode;
+    }
+
+    /**
+     * 更改器
+     * 目标: appCode
+     *
+     * @param appCode - 文章所属的应用标识
+     */
+    public void setAppCode(String appCode)
+    {
+        this.appCode=appCode;
+    }
+
+    /**
+     * 域(受保护)
      * 名称: sectionCode
      * 描述: 文章所属的栏目标识
      */

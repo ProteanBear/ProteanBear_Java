@@ -541,6 +541,8 @@ public class ImageProcessor
         FileOutputStream fos=new FileOutputStream(result);
         BufferedOutputStream bos=new BufferedOutputStream(fos);
         bos.write(bytes);
+        fos.close();
+        bos.close();
 
         return result;
     }
@@ -572,7 +574,7 @@ public class ImageProcessor
         byte[] result=null;
         if(this.handleMode!=ImageHandleMode.SCALE)
         {
-            result=this.compressImageToBytes(image);
+            result=this.compressImageToBytes(out,image);
         }
         else
         {
@@ -586,6 +588,7 @@ public class ImageProcessor
             throw new IOException("处理图片时出现错误！");
         }
 
+        out.close();
         return result;
     }
 
@@ -611,7 +614,7 @@ public class ImageProcessor
 
         //读取图片并判断文件格式
         BufferedImage image=ImageIO.read(this.file);
-        if(image.getWidth(null)==-1)
+        if(image==null||image.getWidth(null)==-1)
         {
             throw new IOException("无法识别的图片文件格式！");
         }
@@ -627,10 +630,8 @@ public class ImageProcessor
      * @return byte[] - 图片字节数组
      * @throws java.io.IOException
      */
-    private byte[] compressImageToBytes(BufferedImage image) throws IOException
+    private byte[] compressImageToBytes(ByteArrayOutputStream out,BufferedImage image) throws IOException
     {
-        ByteArrayOutputStream out=new ByteArrayOutputStream();
-
         //根据生成的图片格式进行压缩处理
         //gif:只能使用转换方式压缩
         //转换方式：用Format对应格式中ImageIO默认参数把IMAGE打包成BYTE[]
@@ -686,14 +687,14 @@ public class ImageProcessor
     private ByteArrayOutputStream compressImageForCustem(ByteArrayOutputStream out,BufferedImage image)
             throws IOException
     {
-        // 得到指定Format图片的writer  
+        // 得到指定Format图片的writer
         Iterator<ImageWriter> iter=ImageIO
-                .getImageWritersByFormatName("jpeg");// 得到迭代器  
+                .getImageWritersByFormatName("jpeg");// 得到迭代器
         ImageWriter writer=(ImageWriter)iter.next(); // 得到writer
 
-        // 得到指定writer的输出参数设置(ImageWriteParam )  
+        // 得到指定writer的输出参数设置(ImageWriteParam )
         ImageWriteParam iwp=writer.getDefaultWriteParam();
-        iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT); // 设置可否压缩  
+        iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT); // 设置可否压缩
         iwp.setCompressionQuality(this.outputQuality); // 设置压缩质量参数
         iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
 
@@ -707,8 +708,8 @@ public class ImageProcessor
         );
 
         IIOImage iIamge=new IIOImage(image,null,null);
-        // 此处因为ImageWriter中用来接收write信息的output要求必须是ImageOutput  
-        // 通过ImageIo中的静态方法，得到byteArrayOutputStream的ImageOutput  
+        // 此处因为ImageWriter中用来接收write信息的output要求必须是ImageOutput
+        // 通过ImageIo中的静态方法，得到byteArrayOutputStream的ImageOutput
         writer.setOutput(ImageIO.createImageOutputStream(out));
         writer.write(null,iIamge,iwp);
 
@@ -743,22 +744,35 @@ public class ImageProcessor
     (ByteArrayOutputStream out,BufferedImage image)
             throws IOException
     {
-        //根据指定的缩放方式进行图片处理
-        //等比例缩放方式（按图片比例缩小）
         int width=0, height=0;
         boolean isWidth=true;
+
+        //图片小于指定的输出大小
         if(this.scaleMode==ImageScaleMode.PROPORTION
-                || this.scaleMode==ImageScaleMode.CROP)
+                &&image.getWidth()<outputWidth
+                &&image.getHeight()<outputHeight)
         {
-            //为等比缩放计算输出的图片宽度及高度   
-            double rateWidth=((double)image.getWidth())/(double)outputWidth;
-            double rateHeight=((double)image.getHeight())/(double)outputHeight;
-            //找到适合缩放的边
-            isWidth=(rateWidth<rateHeight);
-            double rate=isWidth?rateWidth:rateHeight;
-            width=(int)(isWidth?this.outputWidth:image.getWidth()/rate);
-            height=(int)(isWidth?image.getHeight()/rate:this.outputHeight);
+            width=image.getWidth();
+            height=image.getHeight();
         }
+        //根据指定的缩放方式进行图片处理
+        //等比例缩放方式（按图片比例缩小）
+        else
+        {
+            if(this.scaleMode==ImageScaleMode.PROPORTION
+                    || this.scaleMode==ImageScaleMode.CROP)
+            {
+                //为等比缩放计算输出的图片宽度及高度
+                double rateWidth=((double)image.getWidth())/(double)outputWidth;
+                double rateHeight=((double)image.getHeight())/(double)outputHeight;
+                //找到适合缩放的边
+                isWidth=(rateWidth<rateHeight);
+                double rate=isWidth?rateWidth:rateHeight;
+                width=(int)(isWidth?this.outputWidth:image.getWidth()/rate);
+                height=(int)(isWidth?image.getHeight()/rate:this.outputHeight);
+            }
+        }
+
         //自定义方式（生成指定比例）
         if(this.scaleMode==ImageScaleMode.CUSTEM)
         {
@@ -799,25 +813,25 @@ public class ImageProcessor
         Image resizedImage=null;
         resizedImage=i.getScaledInstance(width,height,Image.SCALE_SMOOTH);
 
-        // This code ensures that all the pixels in the image are loaded.  
+        // This code ensures that all the pixels in the image are loaded.
         Image temp=new ImageIcon(resizedImage).getImage();
 
-        // Create the buffered image.  
+        // Create the buffered image.
         BufferedImage bufferedImage=new BufferedImage(
                 temp.getWidth(null),
                 temp.getHeight(null),BufferedImage.TYPE_INT_RGB
         );
 
-        // Copy image to buffered image.  
+        // Copy image to buffered image.
         Graphics g=bufferedImage.createGraphics();
 
-        // Clear background and paint the image.  
+        // Clear background and paint the image.
         g.setColor(Color.white);
         g.fillRect(0,0,temp.getWidth(null),temp.getHeight(null));
         g.drawImage(temp,0,0,null);
         g.dispose();
 
-        // Soften.  
+        // Soften.
         float softenFactor=0.05f;
         float[] softenArray={0,softenFactor,0,softenFactor,
                              1-(softenFactor*4),softenFactor,0,softenFactor,0};

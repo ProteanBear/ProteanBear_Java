@@ -35,6 +35,9 @@ public class SystemApplicationOutput extends SystemApplication
         this.appId=app.getAppId();
         this.dataDelete=app.getDataDelete();
         this.dataRemark=app.getDataRemark();
+        this.appAlias=app.getAppAlias();
+        this.appWeb=app.getAppWeb();
+        this.appOrder=app.getAppOrder();
         //this.roleDescription=role.getRoleDescription();
     }
 

@@ -109,12 +109,12 @@ var login=login||{};
         //判断空输入
         if(username===""||password==="")
         {
-            alertMessage("warning","000");
+            alertMessage("warning",local.warning_infor["000"]);
             return;
         }
         if(verycode==="")
         {
-            alertMessage("warning","002");
+            alertMessage("warning",local.warning_infor["002"]);
             return;
         }
         

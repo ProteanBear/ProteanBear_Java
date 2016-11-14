@@ -121,8 +121,8 @@
                                             <!--[i++;}]-->
                                             <!--[}]-->
                                             <br/>
-                                            <button type="button" class="btn btn-primary navbar-btn btn-xs">
-                                                <span class="glyphicon glyphicon-edit"></span><!--[=local.action["change"]]-->
+                                            <button type="button" class="btn btn-primary navbar-btn btn-xs" action-mode="submit" name="BUSI_CMS_ARTICLE" data-to="article" data-index="<!--[=data.articleId]-->" data-extra="{articleType:2,changeMode:'changeMode'}">
+                                            <span class="glyphicon glyphicon-edit"></span><!--[=local.action["change"]]-->
                                             </button>
                                         </div>
                                     </div>
@@ -150,11 +150,11 @@
                             </div>
                             <div class="panel-footer">
                                 <div class="form-group">
-                                    <button action-mode="submit" name="BUSI_CMS_ARTICLE" type="button" class="btn btn-primary navbar-btn" data-to="article" data-extra="{articleType:0}">
-                                        <span class="glyphicon glyphicon-save"></span><!--[=local.action["submit"]]-->
+                                    <button action-mode="submit" name="BUSI_CMS_ARTICLE" type="button" class="btn btn-primary navbar-btn" data-to="article"  data-index="<!--[=data.articleId]-->" data-extra="{articleType:2}">
+                                    <span class="glyphicon glyphicon-save"></span><!--[=local.action["submit"]]-->
                                     </button>
-                                    <button type="button" class="btn btn-danger navbar-btn btn-sm">
-                                        <span class="glyphicon glyphicon-trash"></span><!--[=local.action["remove"]]-->
+                                    <button action-mode="data-remove" name="BUSI_CMS_ARTICLE"  data-index="0" title="<!--[=local.alert_infor['confirm']+local.name_article+'【'+data.articleTitle+'】'+local.alert_infor['firmend']]-->" type="button" class="btn btn-danger navbar-btn btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span><!--[=local.action["remove"]]-->
                                     </button>
                                     <button type="button" class="btn btn-info navbar-btn">
                                         <span class="glyphicon glyphicon-eye-open"></span><!--[=local.action["preview"]]-->

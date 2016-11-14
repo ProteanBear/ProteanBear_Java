@@ -39,9 +39,9 @@
                         <!--[}]-->
                         <div class="navbar-form navbar-right" role="search">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" action-mode="data-search" placeholder="<!--[=local.search_input]-->">
+                                <input id="searchCode" type="text" class="form-control" action-mode="data-search" placeholder="<!--[=local.search_input]-->">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" action-mode="data-search" name="">
+                                    <button class="btn btn-default" type="button" action-mode="data-search" name="searchCode">
                                         <span class="glyphicon glyphicon-search"></span>
                                     </button>
                                 </span>
@@ -59,10 +59,10 @@
             <!--[for(var i=0;i<data.length;i++){]-->
             <!--[var module=data[i];]-->
             <!--[if(module.pluginType==0){]-->
-            <div id="<!--[=module.pluginCode]-->" class="panel panel-primary">
+            <div id="module_<!--[=module.pluginCode]-->" class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <a href="#" action-mode="data-dialog" name="module" name-dialog="moduleDialog" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_module]-->（<!--[=module.pluginName]-->）" data-index="<!--[=i]-->">
+                        <a href="javascript:void(0)" action-mode="data-dialog" name="module" name-dialog="moduleDialog" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_module]-->（<!--[=module.pluginName]-->）" data-index="<!--[=i]-->">
                             <!--[=module.pluginName]-->
                         </a>
                         <div class="btn-group btn-group-right">
@@ -75,10 +75,10 @@
                     <!--[for(var j=0;j<data.length;j++){]-->
                     <!--[var plugin=data[j];]-->
                     <!--[if(plugin.pluginType==1&&plugin.pluginCode.indexOf(module.pluginCode)===0){]-->
-                    <div id="<!--[=module.pluginCode]-->" class="panel panel-info col-sm-2 col-md-3">
+                    <div id="plugin_<!--[=plugin.pluginCode]-->" class="panel panel-info col-sm-2 col-md-3">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                <a href="#" action-mode="data-dialog" name="plugin" name-dialog="pluginDialog" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_plugin]-->（<!--[=plugin.pluginName]-->）" data-index="<!--[=j]-->">
+                                <a href="javascript:void(0)" action-mode="data-dialog" name="plugin" name-dialog="pluginDialog" title="<!--[=local.action[limit.edit?'edit':'look']+local.name_plugin]-->（<!--[=plugin.pluginName]-->）" data-index="<!--[=j]-->">
                                     <!--[=plugin.pluginName]-->
                                 </a>
                                 <div class="btn-group btn-group-right">

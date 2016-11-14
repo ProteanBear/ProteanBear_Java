@@ -2,6 +2,7 @@ package pb.system.limit.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,7 @@ import pb.system.limit.manager.SystemApplicationPlatformFacade;
 import pb.system.limit.manager.SystemApplicationPlatformFacadeLocal;
 import pb.system.limit.module.SystemApplicationOutput;
 import pb.system.limit.servlet.AbstractServlet;
+import pb.system.limit.servlet.BusiSectionServlet;
 import pb.system.limit.servlet.SystemApplicationServlet;
 
 /**
@@ -141,6 +143,35 @@ public class SystemApplicationAction extends AbstractAction<SystemApplication> i
 
     /**
      * 方法（受保护）<br>
+     * 名称:    generateCondition<br>
+     * 描述:    通过请求参数生成相应查询条件。<br>
+     * 参数格式为：searchValue=con1,value1|con2,value2|.....
+     *
+     * @param request - HTTP请求对象
+     * @return Map<String,Object> - 查询条件集合
+     * @throws javax.servlet.ServletException
+     */
+    @Override
+    protected Map<String,Object> generateCondition(HttpServletRequest request)
+            throws ServletException
+    {
+        Map<String,Object> condition=super.generateCondition(request);
+
+        //外部接口
+        if(this.isCurrentUseNoLoginMode(request))
+        {
+            String app=request.getParameter(SystemApplicationServlet.PARAM_APPSEARCH);
+            if(!this.paramNullCheck(app))
+            {
+                condition.put("appName like ?","%"+app+"%");
+            }
+        }
+
+        return condition;
+    }
+
+    /**
+     * 方法（受保护）<br>
      * 名称:    generateOutput<br>
      * 描述:    用于对查询的数据进行处理，增加新的字段内容（多用于多对多数据的输出）<br>
      *
@@ -149,8 +180,7 @@ public class SystemApplicationAction extends AbstractAction<SystemApplication> i
      * @return List - 处理后的数据对象列表
      */
     @Override
-    protected List<Object> generateOutput
-    (HttpServletRequest request,List<SystemApplication> list)
+    protected List<Object> generateOutput(HttpServletRequest request,List<SystemApplication> list)
     {
         List<Object> result=null;
         if(list!=null)
@@ -159,10 +189,24 @@ public class SystemApplicationAction extends AbstractAction<SystemApplication> i
             for(SystemApplication app : list)
             {
                 SystemApplicationOutput appOut=new SystemApplicationOutput(app);
+                appOut.setAppThumbnail(this.getFullLink(request,appOut.getAppThumbnail()));
                 appOut.setAppPlat(this.platManager.findByAppId(app.getAppId()));
                 result.add(appOut);
             }
         }
         return result;
+    }
+
+    /**
+     * 方法（受保护）<br>
+     * 名称:    supportNoLoginFind<br>
+     * 描述:    是否支持非登录下查询处理<br>
+     *
+     * @return boolean - 如果参数值为null或""，返回true
+     */
+    @Override
+    public boolean supportNoLoginFind()
+    {
+        return true;
     }
 }

@@ -14,8 +14,7 @@ var urlconfig = urlconfig || {};
 (function(urlconfig) {
     //记录当前的数据
     var list;
-    //记录当前的数据索引
-    var activeId=parent.console.storage.getValue("areaTypeId")||"";
+    var keyStorage="areaTypeId";
     
     //自定义模板-插件选择
     var tempPlugin=template.compile(''
@@ -48,7 +47,7 @@ var urlconfig = urlconfig || {};
     
     //属性显示事件
     var displayData=function(title,i,extra){
-        parent.console.storage.setValue("areaTypeId",list[i].typeId);
+        parent.console.storage.setValue(keyStorage,list[i].typeId);
         var typePlugins=list[i].typePlugins;
         index.displayPropertyForm(
                 urlconfig,
@@ -86,7 +85,7 @@ var urlconfig = urlconfig || {};
     urlconfig["SYSTEM_CONFIG_AREATYPE"] = {
         url: "../systemAreaType",
         to:".property",
-        success: function(local,data,limit){
+        success: function(local,data,limit,access,activeId){
             //记录数据
             list=data;
             
@@ -107,11 +106,12 @@ var urlconfig = urlconfig || {};
                 list[i].typeId!==activeId||(activeIndex=i,click=true);
                 if(click) break;
             }
-            click||(parent.console.storage.setValue("areaTypeId",""));
+            click||(parent.console.storage.setValue(keyStorage,""));
             $("[action-mode='data-display']:eq("+activeIndex+")").click();
         },
         key:"typeId",
         keyTitle:"typeName",
+        keyStorage:keyStorage,
         title:parent.local.name_comtype,
         property:{
             typeId:{type:"hidden"},
@@ -142,8 +142,8 @@ var urlconfig = urlconfig || {};
                     $("[action-mode='check-all']").unbind();
                     $("[action-mode='check-only']").unbind();
                 },
-                paramGenerate:function(params){
-                    $("#areaType").find("[name='typePlugins']").each(function(){
+                paramGenerate:function(params,curOperate){
+                    $(((curOperate==1)?"#typeDialog":"#areaType")).find("[name='typePlugins']").each(function(){
                         if(this.checked)
                         {
                             params[this.name]=(params[this.name])?params[this.name]:[];

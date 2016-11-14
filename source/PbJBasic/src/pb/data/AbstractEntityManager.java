@@ -1,5 +1,8 @@
 package pb.data;
 
+import pb.text.StringProductor;
+import pb.text.TextProducer;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -197,7 +200,7 @@ public abstract class AbstractEntityManager<T> implements AbstractFacadeLocal<T>
         if(primaryKeyName!=null)
         {
             String setMethodName=EntityTransformer.generateSetMethodName(primaryKeyName);
-            Method method=this.entityClass.getMethod(setMethodName);
+            Method method=this.entityClass.getMethod(setMethodName,value.getClass());
             result=method.invoke(entity,value);
         }
         return result;
@@ -218,7 +221,7 @@ public abstract class AbstractEntityManager<T> implements AbstractFacadeLocal<T>
         try
         {
             String generator=this.getKeyGenerator();
-            Object newId=null;
+            Integer newId=null;
             this.dataManager.setAttribute(
                     EntityTransformer
                             .generateInsertSqlFromEntity(
@@ -230,13 +233,14 @@ public abstract class AbstractEntityManager<T> implements AbstractFacadeLocal<T>
             //自增主键类型
             if(generator==null)
             {
-                success=this.dataManager.insert(newId,
+                newId=this.dataManager.insertAndReturn(
                         EntityTransformer
                                 .generateInsertParamsFromEntity(
                                         entityClass,entity,
                                         this.getPrimaryKeyName(),generator
                                 )
                 );
+                success=(newId!=null);
             }
             //自己生成主键
             else
@@ -259,7 +263,14 @@ public abstract class AbstractEntityManager<T> implements AbstractFacadeLocal<T>
                 }
                 else
                 {
-                    this.lastGenerator=generator;
+                    if(StringProductor.isBlank(generator))
+                    {
+                        this.lastGenerator=this.getPrimaryKeyValue(entity)+"";
+                    }
+                    else
+                    {
+                        this.lastGenerator=generator;
+                    }
                 }
             }
             else

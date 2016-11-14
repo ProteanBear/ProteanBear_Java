@@ -177,9 +177,13 @@ public class SystemRoleFacade
                     {
                         result=((BigDecimal)resultObj).intValue();
                     }
-                    if(resultObj.getClass().isAssignableFrom(Long.class))
+                    else if(resultObj.getClass().isAssignableFrom(Long.class))
                     {
                         result=((Long)resultObj).intValue();
+                    }
+                    else
+                    {
+                        result=(int)resultObj;
                     }
                 }
             }

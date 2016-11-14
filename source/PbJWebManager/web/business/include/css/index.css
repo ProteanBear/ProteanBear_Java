@@ -7,6 +7,12 @@ body {
     padding-top: 44px;
 }
 
+/*
+ * custom
+ */
+/*文章列表顶部状态选择*/
+#status-link-group a{}
+#status-link-group a.disabled{color:#a9a9a9;}
 
 /*
  * Global add-ons

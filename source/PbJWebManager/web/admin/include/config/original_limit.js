@@ -14,12 +14,11 @@ var urlconfig = urlconfig || {};
 (function(urlconfig) {
     //记录当前的数据
     var list;
-    //记录当前的数据索引
-    var activeId=parent.console.storage.getValue("limitId")||"";
+    var keyStorage="limitId";
     
     //属性显示事件
     var displayData=function(title,i,extra){
-        parent.console.storage.setValue("limitId",list[i].limitId);
+        parent.console.storage.setValue(keyStorage,list[i].limitId);
         index.displayPropertyForm(
                 urlconfig,
                 "ORIGINAL_LIMIT",
@@ -43,7 +42,7 @@ var urlconfig = urlconfig || {};
     urlconfig["ORIGINAL_LIMIT"] = {
         url: "../originalLimit",
         to:".property",
-        success: function(local,data,limit){
+        success: function(local,data,limit,access,activeId){
             //记录数据
             list=data;
             
@@ -64,15 +63,16 @@ var urlconfig = urlconfig || {};
                 list[i].limitId!=activeId||(activeIndex=i,click=true);
                 if(click) break;
             }
-            click||(parent.console.storage.setValue("limitId",""));
+            click||(parent.console.storage.setValue(keyStorage,""));
             $("[action-mode='data-display']:eq("+activeIndex+")").click();
         },
         key:"priKey",
         keyTitle:"limitName",
+        keyStorage:keyStorage,
         title:parent.local.name_limit,
         property:{
             priKey:{type:"hidden",from:"limitId"},
-            limitId:{type:"custom",custemInput:"number",must:true},
+            limitId:{type:"custom",custemInput:"number",must:true,only:"create"},
             limitName:{type:"input",must:true},
             limitInit:{type:"radio",source:parent.local.source["yesOrNo"],default:"1"}
         }

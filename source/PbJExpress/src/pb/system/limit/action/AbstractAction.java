@@ -546,6 +546,21 @@ public abstract class AbstractAction<T> implements DataAction
     }
 
     /**
+     * 方法（公共）<br>
+     * 名称:    getFullLink<br>
+     * 描述:    获取当前的服务器指定地址的全链接地址<br>
+     *
+     * @param request - HTTP请求对象
+     * @param link    - 链接地址
+     * @return String - 指定地址的全链接地址
+     */
+    public String getFullLink(HttpServletRequest request,String link)
+    {
+        if(link==null || "".equals(link.trim())) return link;
+        return link.startsWith("http:")?link:(this.getServerRootPath(request)+link);
+    }
+
+    /**
      * 方法（受保护）<br>
      * 名称:    findTo<br>
      * 描述:    查询数据，并返回List<br>
@@ -671,7 +686,7 @@ public abstract class AbstractAction<T> implements DataAction
                 }
                 //获取APP属性
                 BusiSectionFacadeLocal secManager=new BusiSectionFacade(this.connector);
-                BusiSection section=secManager.findBySectionCode(fromApp);
+                BusiSection section=secManager.findBySectionCode(fromApp,"0000");
                 condition.put(sqlName+" like ?",section.getSectionCode());
             }
             else
@@ -751,20 +766,5 @@ public abstract class AbstractAction<T> implements DataAction
     {
         String link=request.getRequestURL().toString();
         return link.substring(0,link.lastIndexOf("/")+1);
-    }
-
-    /**
-     * 方法（受保护）<br>
-     * 名称:    getFullLink<br>
-     * 描述:    获取当前的服务器指定地址的全链接地址<br>
-     *
-     * @param request - HTTP请求对象
-     * @param link    - 链接地址
-     * @return String - 指定地址的全链接地址
-     */
-    protected String getFullLink(HttpServletRequest request,String link)
-    {
-        if(link==null || "".equals(link.trim())) return link;
-        return link.startsWith("http:")?link:(this.getServerRootPath(request)+link);
     }
 }
