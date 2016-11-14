@@ -263,6 +263,8 @@ var plugins=plugins||{};
             articleKeywords:{type:"input"},
             articleImageTitle:{type:"hidden"},
             articleImageFocus:{type:"hidden"},
+            articleAuthor:{type:"input"},
+            articleSource:{type:"input"},
             handleAfter:{type:"radio"}
         }
     };
