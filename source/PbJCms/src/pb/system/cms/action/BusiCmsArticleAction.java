@@ -898,6 +898,12 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
     {
         //更新时间
         entity.setArticleUpdateTime(this.dp.getCurrent());
+        //自动生成发布时间(发布状态并且未设置发布时间，则使用更新时间)
+        if(this.paramNullCheck(entity.getArticleReleaseTime())
+                &&entity.getArticleStatus()==2)
+        {
+            entity.setArticleReleaseTime(entity.getArticleUpdateTime());
+        }
 
         //自动生成作者
         if(this.paramNullCheck(entity.getArticleAuthor()))
