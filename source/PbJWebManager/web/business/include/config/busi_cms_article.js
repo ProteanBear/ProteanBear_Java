@@ -237,6 +237,8 @@ var plugins=plugins||{};
             }
         },
         customUpdate:function(params,data){
+            //滤掉状态更改模式
+            if(params["changeMode"]) return;
             var sectionName=curIndex.getSubUrlParam("sectionName");
             var sectionCode=curIndex.getSubUrlParam("sectionCode");
             var appCode=curIndex.getSubUrlParam("appCode");

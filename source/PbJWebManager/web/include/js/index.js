@@ -492,6 +492,7 @@ var urlconfig = urlconfig || {};
         //锁定按钮
         $("[action-mode]").attr("disabled","disabled");
         //显示载入指示器
+        var btnHtml=button.html();
         button.html(parent.console.loading(16)||parent.local.operating||"");
 
         //获取提交数据
@@ -585,8 +586,7 @@ var urlconfig = urlconfig || {};
             complete: function(XHR, TS)
             {
                 //关闭指示器
-                button.html('<span class="glyphicon glyphicon-save"></span>'
-                        +(parent.local.action["submit"]||"保存"));
+                button.html(btnHtml);
                 //解除锁定
                 $("[action-mode]").removeAttr("disabled");
                 $(".modal").modal('hide');
@@ -983,17 +983,17 @@ var urlconfig = urlconfig || {};
                     $(this).attr("onclick","true"),
                     $(this).click(function(){
                         //读取链接设置
-                        var config = (urlconfig.type === "multi") ? urlconfig[$(this).attr("name")] : urlconfig;
+                        // var config = (urlconfig.type === "multi") ? urlconfig[$(this).attr("name")] : urlconfig;
                         var idx=$(this).attr("data-index");
                         //记录操作模式
                         curOperate=(idx!==null&&idx!==undefined)?3:1;
                         //确定当前权限值
-                        var curLimit=config.limitId?({
-                                insert:parent.console.haveLimit(config.limitId,"01"),
-                                remove:parent.console.haveLimit(config.limitId,"02"),
-                                edit:parent.console.haveLimit(config.limitId,"03"),
-                                list:parent.console.haveLimit(config.limitId,"00")
-                            }):limit;
+                        // var curLimit=config.limitId?({
+                        //         insert:parent.console.haveLimit(config.limitId,"01"),
+                        //         remove:parent.console.haveLimit(config.limitId,"02"),
+                        //         edit:parent.console.haveLimit(config.limitId,"03"),
+                        //         list:parent.console.haveLimit(config.limitId,"00")
+                        //     }):limit;
                         submitData(urlconfig,$(this).attr("name"),$(this),$(this).attr("data-to"),$(this).attr("data-extra"),idx);
                     }));
         });

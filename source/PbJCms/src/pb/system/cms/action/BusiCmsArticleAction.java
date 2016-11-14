@@ -145,10 +145,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         if(!this.paramNullCheck(status))
         {
             LoginUser user=this.getLoginUserInSession(request);
-            if(!user.isHaveLimit("BUSI_CMS_ARTICLE",4))
-            {
-                entity.setArticleStatus(0);
-            }
+            entity.setArticleStatus(user.isHaveLimit("BUSI_CMS_ARTICLE",4)?status:"0");
         }
 
         //自动更新内容
@@ -365,10 +362,7 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
         if(!this.paramNullCheck(status))
         {
             LoginUser user=this.getLoginUserInSession(request);
-            if(!user.isHaveLimit("BUSI_CMS_ARTICLE",4))
-            {
-                entity.setArticleStatus(article.getArticleStatus());
-            }
+            entity.setArticleStatus(user.isHaveLimit("BUSI_CMS_ARTICLE",4)?status:(article.getArticleStatus()+""));
         }
 
         //自动更新内容
