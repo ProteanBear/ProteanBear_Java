@@ -246,8 +246,7 @@ var plugins=plugins||{};
                     //1：编辑新创建的文章
                     :(params["handleAfter"]==="1"?("sub_article_edit_"+editUrl[params.articleType]+".html?active=BUSI_CMS_ARTICLE&mode=edit&sectionName="+sectionName+"&sectionCode="+sectionCode+"&appCode="+appCode+"&id="+data.infor)
                     //2：返回文章列表
-                    :"sub_articles.html?sectionName="+sectionName+"&sectionCode="+sectionCode+"&appCode="+appCode);
-            index.loadSubContent(url);
+                    :"sub_articles.html?active=BUSI_CMS_ARTICLE&sectionName="+sectionName+"&sectionCode="+sectionCode+"&appCode="+appCode);
         },
         property:{
             articleId:{type:"hidden"},
