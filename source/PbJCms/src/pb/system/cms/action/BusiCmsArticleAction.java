@@ -590,23 +590,20 @@ public class BusiCmsArticleAction extends AbstractAction<BusiCmsArticle> impleme
                             img.put(
                                     "resourceThumb",this.getFullLink(
                                             request,
-                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+res
-                                                    .getResourceSuffix())
+                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+".jpg")
                                     )
                             );
                             img.put(
                                     "resourceMiddle",this.getFullLink(
                                             request,
-                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceMiddle()+res
-                                                    .getResourceSuffix())
+                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+".jpg")
                                     )
                             );
                             img.put("resourceIsOut",res.getResourceIsOut());
                             img.put(
                                     "resourceLink",this.getFullLink(
                                             request,
-                                            res.getResourceLink()+(res.resourceIsOut()?"":(res.getResourceFile()+res
-                                                    .getResourceSuffix()))
+                                            res.resourceIsOut()?"":(res.getResourceLink()+res.getResourceThumb()+".jpg")
                                     )
                             );
                             img.put("resourceType",res.getResourceType());
